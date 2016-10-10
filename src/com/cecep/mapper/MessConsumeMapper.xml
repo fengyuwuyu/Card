@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.mess.MessConsumeMapper">
+
+	<resultMap type="com.cecep.model.mess.MessConsumeInfo" id="MessConsumeInfo">
+		<result column="dep_name" property="depName" />
+		<result column="region" property="region" />
+		<result column="mc" property="machine" />
+		<result column="userlname" property="username" />
+		<result column="usercard" property="cardSerial" />
+		<result column="userno" property="userNo" />
+		<result column="Sj" property="tradeDate" />
+		<result column="type" property="type" />
+		<result column="company" property="company" />
+	</resultMap>
+
+	<resultMap type="com.cecep.model.mess.DepNum" id="depNum">
+		<id column="dep_serial" property="depSerial" jdbcType="BIGINT" />
+		<result column="dep_parent" property="depParent" jdbcType="VARCHAR" />
+		<result column="dep_name" property="depName" jdbcType="VARCHAR" />
+		<result column="dep_no" property="depNo" jdbcType="VARCHAR" />
+		<result column="total" property="num" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap type="com.cecep.model.mess.MessStatisticsInfo" id="MessStatisticsInfo">
+		<result column="date" property="date" />
+		<result column="dep_name" property="depName" />
+		<result column="region" property="region" />
+		<result column="mc" property="machine" />
+		<collection property="consumeRecords" ofType="com.cecep.model.mess.ConsumeRecord">
+			<id column="xh" property="xh" />
+			<result column="money" property="money" />
+			<result column="type" property="type" />
+		</collection>
+	</resultMap>
+
+	<select id="depNum" parameterType="com.cecep.model.mess.MessQuery"
+		resultMap="depNum">
+		<!-- select aa.* from ( select row_number() over(order by a.dep_no) as
+		rowNumber ,a.* from ( -->
+		select
+		dd.dep_name,d.dep_name dep_parent,zz.total,dd.dep_no,dd.dep_serial
+		from dt_dep dd
+		LEFT JOIN ( select top 100 percent total,d1.dep_no,d1.dep_serial
+		from (select uu.dep_no ,
+		count(uu.dep_no) as total
+		from (select DISTINCT u.user_serial,(select
+		dep_no from dt_dep dep1 where
+		dep_serial=#{depSerialSingle}) as dep_no from dt_user u 
+		left join visitor_blacklist b on u.user_serial =  b.user_serial
+		LEFT JOIN dt_ac_user ac on u.user_serial=ac.user_serial
+		LEFT JOIN dt_ac_type ty on ac.ac_type=ty.ac_bh
+		LEFT JOIN xf_ac_time ti on ty.ac_bh=ti.ac_type
+		LEFT JOIN xf_time xt on ti.time_no=xt.bh
+		where b.id is null and ty.ac_bh!='0000000000000002' and u.user_card is not null and u.user_card!='' and 
+		xt.lname is not null and u.user_dep in 
+			<if test="depSerials!=null">
+				<foreach collection="depSerials" item="item" open="(" close=")"
+					separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="depSerials==null">
+				(dep_serial=#{depSerialSingle})
+			</if>
+		) as uu
+		GROUP BY uu.dep_no ) as u1  
+		LEFT JOIN dt_dep d1 on u1.dep_no=d1.dep_no
+		) as zz on dd.dep_serial=zz.dep_serial
+		LEFT JOIN dt_dep d on dd.dep_parent=d.dep_serial
+		where
+		dd.dep_serial =#{depSerialSingle}
+	</select>
+
+	<select id="dataList" parameterType="com.cecep.model.mess.MessQuery" resultMap="MessConsumeInfo">
+		select
+		dep.dep_name,d.dep_name region,dev.mc mc,
+		u.user_lname userlname,x.user_card usercard,u.user_no userno,x.Jl_sj sj,t.lname type,dep2.dep_name as company
+		from xf_mx x
+		left join dt_user u on x.User_serial=u.user_serial
+		left join visitor_blacklist b on u.user_serial =  b.user_serial
+		left join dt_dep dep on u.user_dep=dep.dep_serial
+		left join cecep_dep_parentSerial p on dep.dep_serial=p.dep_serial
+		left join dt_dep dep2 on dep2.dep_serial=p.parent_serial
+		LEFT JOIN dt_ac_dep d on x.Acdep_serial=d.dep_serial
+		LEFT JOIN st_device dev on x.Dev_serial=dev.bh
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			b.id is null and u.user_serial is not null and
+			<if test="depSerials!=null">
+				x.dep_serial in
+				<foreach collection="depSerials" item="item" close=")" open="("
+					separator=",">
+					#{item}
+				</foreach>
+				and
+			</if>
+			<if test="depNo!=null">
+				d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="machineBh!=null">
+				dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="userNo!=null">
+				u.user_no = #{userNo} and
+			</if>
+			<if test="username!=null">
+				u.user_lname like '%${username}%' and
+			</if>
+			<if test="type!=null and type!=''">
+				<if test="type=='0000000000000000'">
+					x.time_no!=#{type} and
+				</if>
+				<if test="type!='0000000000000000'">
+					x.time_no=#{type} and
+				</if>
+			</if>
+			<if test="machineBh!=null">dev.dlx=2 and</if>
+			CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj}
+			order by dep2.dep_serial,
+			<if test="depNo!=null">d.dep_name,</if>
+			<if test="machineBh!=null">dev.mc,</if>
+			u.user_lname,t.lname,x.Jl_sj 
+		</where>
+	</select>
+	
+	<select id="dataList1" parameterType="com.cecep.model.mess.MessQuery" resultMap="MessConsumeInfo">
+		select
+		dep.dep_name,d.dep_name region,dev.mc mc,
+		u.user_lname userlname,x.user_card usercard,u.user_no userno,x.Jl_sj sj,t.lname type,dep2.dep_name as company
+		from xf_mx x
+		left join dt_user u on x.User_serial=u.user_serial
+		left join visitor_blacklist b on u.user_serial =  b.user_serial
+		left join dt_dep dep on u.user_dep=dep.dep_serial
+		left join cecep_dep_parentSerial p on dep.dep_serial=p.dep_serial
+		left join dt_dep dep2 on dep2.dep_serial=p.parent_serial
+		LEFT JOIN dt_ac_dep d on x.Acdep_serial=d.dep_serial
+		LEFT JOIN st_device dev on x.Dev_serial=dev.bh
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			b.id is null and u.user_serial is not null and
+			<if test="depNo!=null">
+				d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="machineBh!=null">
+				dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="userNo!=null">
+				u.user_no = #{userNo} and
+			</if>
+			<if test="username!=null">
+				u.user_lname like '%${username}%' and
+			</if>
+			<if test="type!=null and type!=''">
+				<if test="type=='0000000000000000'">
+					x.time_no!=#{type} and
+				</if>
+				<if test="type!='0000000000000000'">
+					x.time_no=#{type} and
+				</if>
+			</if>
+			 dev.dlx=2 and CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj}
+			order by  dep2.dep_serial,CONVERT(varchar(10),x.Jl_sj,120) ,dep.dep_serial,
+			<if test="depNo!=null">d.dep_name,</if>
+			<if test="machineBh!=null">dev.mc,</if>
+			u.user_lname,t.lname
+		</where>
+	</select>
+	
+
+	<select id="getTotal" parameterType="com.cecep.model.mess.MessQuery"
+		resultType="java.lang.Integer">
+		select count(1)
+		from xf_mx x
+		left join dt_user u on x.User_serial=u.user_serial
+		left join visitor_blacklist b on u.user_serial =  b.user_serial
+		left join dt_dep dep on x.dep_serial=dep.dep_serial
+		LEFT JOIN st_device dev on x.Dev_serial=dev.bh
+		LEFT JOIN dt_ac_dep d on x.Acdep_serial=d.dep_serial
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			b.id is null and
+			<if test="depSerial!=null">
+				x.dep_serial in
+				<foreach collection="depSerial" item="item" close=")" open="("
+					separator=",">
+					#{item}
+				</foreach>
+				and
+			</if>
+			<if test="depNo!=null">
+				d.dep_no=#{depNo} and
+			</if>
+			<if test="machineBh!=null">
+				x.Dev_serial=#{machineBh} and
+			</if>
+			<if test="username!=null">
+				u.user_lname like '%${username}%' and
+			</if>
+			<if test="type!=null and type!=''">
+				<if test="type=='0000000000000000'">
+					x.time_no!=#{type} and
+				</if>
+				<if test="type!='0000000000000000'">
+					x.time_no=#{type} and
+				</if>
+			</if>
+			CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj}
+		</where>
+	</select>
+
+	<select id="statisticsByDep" parameterType="com.cecep.model.mess.MessQuery"
+		resultMap="MessStatisticsInfo">
+		select t.lname type
+		<if test="depSerial!=null">
+			,(select dep_name from dt_dep where dep_serial = #{depSerialSingle}) as dep_name
+		</if>
+		,temp.xh,temp.New_money money,dep.dep_name
+		<if test="depNo!=null">,d.dep_name region</if>
+		<if test="machineBh!=null">,dev.mc mc</if>
+		<if test="byDay!=null">
+			,CONVERT(varchar(10),temp.Jl_sj,120) date
+		</if>
+		from dt_dep dep
+		<if test="depSerial!=null">
+		left join (select #{depSerialSingle} as
+		dep_serial,x.jl_sj,x.acdep_serial,x.time_no,x.dev_serial,x.New_money,x.xh
+		from dt_dep dep2
+		LEFT JOIN xf_mx x on x.dep_serial=dep2.dep_serial
+		where
+		<if test="depSerials!=null">
+			dep2.dep_serial in
+			<foreach collection="depSerials" item="item" separator=","
+				open="(" close=")">
+				#{item}
+			</foreach>
+			and
+		</if>
+		(x.Jl_sj is null or CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj} )) as
+		temp on temp.dep_serial=dep.dep_serial
+		</if>
+		<if test="depNo!=null">
+			LEFT JOIN dt_ac_dep d on temp.Acdep_serial=d.dep_serial
+		</if>
+		<if test="machineBh!=null">
+			LEFT JOIN st_device dev on temp.Dev_serial=dev.bh
+		</if>
+		LEFT JOIN xf_time t on temp.time_no=t.bh
+		<where>
+			<if test="machineBh!=null">dev.dlx=2 and</if>
+			<trim suffixOverrides="and">
+				<if test="depSerialSingle!=null">
+					dep.dep_serial = #{depSerialSingle} and
+				</if>
+				<if test="depNo!=null">
+				d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="machineBh!=null">
+				dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+				<if test="type!=null and type!=''">
+					<if test="type=='0000000000000000'">
+						temp.time_no!=#{type} and
+					</if>
+					<if test="type!='0000000000000000'">
+						temp.time_no=#{type}
+					</if>
+				</if>
+			</trim>
+		</where>
+		order by CONVERT(varchar(10),temp.Jl_sj,120)
+		<if test="depSerial!=null">,dep.dep_name</if>
+		<if test="depNo!=null">,d.dep_name</if>
+		<if test="machineBh!=null">,dev.mc</if>
+	</select>
+	
+	<select id="statisticsByDep1" parameterType="com.cecep.model.mess.MessQuery"
+		resultMap="MessStatisticsInfo">
+		select t.lname type,x.xh,x.New_money money,'中国节能环保集团公司' as dep_name
+		<if test="depNo!=null">,d.dep_name region</if>
+		<if test="machineBh!=null">,dev.mc mc</if>
+		<if test="byDay!=null">
+			,CONVERT(varchar(10),x.Jl_sj,120) date
+		</if>
+		from dt_dep dep
+		LEFT JOIN xf_mx x on x.dep_serial=dep.dep_serial
+		<if test="depNo!=null">
+			LEFT JOIN dt_ac_dep d on x.Acdep_serial=d.dep_serial
+		</if>
+		<if test="machineBh!=null">
+			LEFT JOIN st_device dev on x.Dev_serial=dev.bh
+		</if>
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			 CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj} 
+			<trim suffixOverrides="and">
+				<if test="depNo!=null">
+				and d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> 
+			</if>
+			<if test="machineBh!=null">
+				 and dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> 
+			</if>
+				<if test="type!=null and type!=''">
+					<if test="type=='0000000000000000'">
+						and x.time_no!=#{type} 
+					</if>
+					<if test="type!='0000000000000000'">
+						and x.time_no=#{type}
+					</if>
+				</if>
+			</trim>
+		</where>
+		order by CONVERT(varchar(10),x.Jl_sj,120)
+		<if test="depSerial!=null">,dep.dep_name</if>
+		<if test="depNo!=null">,d.dep_name</if>
+		<if test="machineBh!=null">,dev.mc</if>
+	</select>
+
+	<select id="statisticsByRegion" parameterType="com.cecep.model.mess.MessQuery"
+		resultMap="MessStatisticsInfo">
+		select 
+		<!-- <if test="depNo!=null"></if> -->
+		d.dep_name region,
+		<if test="depSerial!=null">(select dep_name from dt_dep where dep_serial=#{depSerialSingle}) as dep_name,</if>
+		<if test="machineBh!=null">dev.mc mc,</if>
+		t.lname type,x.New_money money,x.xh
+		<if test="byDay!=null">
+			,CONVERT(varchar(10),x.Jl_sj,120) date
+		</if>
+		from xf_mx x
+		left join dt_ac_dep d on x.Acdep_serial=d.dep_serial
+		<if test="depSerial!=null">LEFT JOIN dt_dep dep on x.dep_serial=dep.dep_serial</if>
+		<if test="machineBh!=null">LEFT JOIN st_device dev on x.Dev_serial=dev.bh</if>
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			<if test="depSerials!=null">
+				x.dep_serial in
+				<foreach collection="depSerials" item="item" close=")" open="("
+					separator=",">
+					#{item}
+				</foreach>
+				and
+			</if>
+			<if test="depNo!=null">
+				d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="machineBh!=null">
+				dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="type!=null and type!=''">
+				<if test="type=='0000000000000000'">
+					x.time_no!=#{type} and
+				</if>
+				<if test="type!='0000000000000000'">
+					x.time_no=#{type} and
+				</if>
+			</if>
+			CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj} 
+			order by CONVERT(varchar(10),x.Jl_sj,120)
+		<if test="depSerial!=null">,dep.dep_name</if>
+		<if test="depNo!=null">,d.dep_name</if>
+		<if test="machineBh!=null">,dev.mc</if>
+		</where>
+	</select>
+	<select id="statisticsByMachine" parameterType="com.cecep.model.mess.MessQuery"
+		resultMap="MessStatisticsInfo">
+		select dev.mc mc,
+		<!-- <if test="machineBh!=null"></if> -->
+		<if test="depSerial!=null">(select dep_name from dt_dep where dep_serial=#{depSerialSingle}) as dep_name,</if>
+		<if test="depNo!=null">d.dep_name region,</if>
+		t.lname type,x.New_money money,x.xh
+		<if test="byDay!=null">
+			,CONVERT(varchar(10),x.Jl_sj,120) date
+		</if>
+		from xf_mx x
+		left join st_device dev on x.Dev_serial=dev.bh
+		<if test="depSerial!=null">LEFT JOIN dt_dep dep on x.dep_serial=dep.dep_serial</if>
+		<if test="depNo!=null">LEFT JOIN dt_ac_dep d on x.Acdep_serial=d.dep_serial</if>
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			<if test="depSerials!=null">
+				x.dep_serial in
+				<foreach collection="depSerials" item="item" close=")" open="(" separator=",">
+					#{item}
+				</foreach>
+				and
+			</if>
+			<if test="depNo!=null">
+				d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="machineBh!=null">
+				dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="type!=null and type!=''">
+				<if test="type=='0000000000000000'">
+					x.time_no!=#{type} and
+				</if>
+				<if test="type!='0000000000000000'">
+					x.time_no=#{type} and
+				</if>
+			</if>
+			(CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj} or
+			x.jl_sj is null)
+			order by CONVERT(varchar(10),x.Jl_sj,120)
+			<if test="depSerial!=null">,dep.dep_name</if>
+			<if test="depNo!=null">,d.dep_name</if>
+			<if test="machineBh!=null">,dev.mc</if>
+		</where>
+	</select>
+
+	<select id="statisticsByPersonal" parameterType="com.cecep.model.mess.MessQuery"
+		resultMap="MessStatisticsInfo">
+		select d.dep_name, 
+		<if test="machineBh!=null">dev.mc mc,</if>
+		<if test="depNo!=null">d.dep_name region,</if>
+		t.lname type,x.New_money money,x.xh
+		<if test="byDay!=null">
+			,CONVERT(varchar(10),x.Jl_sj,120) date
+		</if>
+		from dt_user u
+		left join dt_dep d on u.dep_no=d.dep_no
+		left join xf_mx x on u.user_serial=x.user_serial
+		<if test="machineBh!=null">left join st_device dev on x.Dev_serial=dev.bh</if>
+		<if test="depNo!=null">LEFT JOIN dt_ac_dep d on x.Acdep_serial=d.dep_serial</if>
+		LEFT JOIN xf_time t on x.time_no=t.bh
+		<where>
+			<if test="userNo!=null">
+				u.user_no=#{userNo} and
+			</if>
+			<if test="depNo!=null">
+				d.dep_no in 
+				<foreach collection="depNo" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="machineBh!=null">
+				dev.bh in 
+				<foreach collection="machineBh" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach> and
+			</if>
+			<if test="type!=null and type!=''">
+				<if test="type=='0000000000000000'">
+					x.time_no!=#{type} and
+				</if>
+				<if test="type!='0000000000000000'">
+					x.time_no=#{type} and
+				</if>
+			</if>
+			(CONVERT(varchar(10),x.Jl_sj,120) between #{kssj} and #{jssj} or
+			x.jl_sj is null)
+			order by CONVERT(varchar(10),x.Jl_sj,120)
+			<if test="depNo!=null">,d.dep_name</if>
+			<if test="machineBh!=null">,dev.mc</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="map">
+		insert into
+		xf_mx(dev_serial,user_serial,jl_sj,time_no,Acdep_serial,dep_serial,more_money,rate_money,discount_rate,each_unit,mould,type)
+		values(#{Dev_serial},#{User_serial},#{Jl_sj},#{time_no},#{Acdep_serial},#{depSerial},#{more_money},#{rate_money},#{discount_rate},#{each_unit},#{mould},#{type})
+	</insert>
+	
+	<select id="loadAcdep" resultType="java.util.Map">
+		select 
+			d1.dep_serial id,d1.dep_name text
+			from dbo.dt_ac_dep d1
+			left join dbo.dt_ac_dep d2 on d1.dep_parent=d2.dep_serial
+			left join dbo.dt_dev dev on d1.dep_serial=dev.acdep_serial
+			left join dbo.st_device b on dev.dev_serial=b.bh
+		where
+			b.dlx=2 or b.dev_lb=6
+	</select>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.HaircutPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.HaircutPrice" >
+    <id column="haircut_id" property="haircutId" jdbcType="INTEGER" />
+    <result column="haircut_type" property="haircutType" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="haircut_desc" property="haircutDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    haircut_id, haircut_type, price, haircut_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.haircut_price
+    where haircut_id = #{haircutId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.haircut_price
+    where haircut_id = #{haircutId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.HaircutPrice" >
+    <selectKey resultType="java.lang.Integer" keyProperty="haircutId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_price ( haircut_type, price, 
+      haircut_desc)
+    values ( #{haircutType,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{haircutDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.HaircutPrice" >
+    <selectKey resultType="java.lang.Integer" keyProperty="haircutId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      haircut_id,
+      <if test="haircutType != null" >
+        haircut_type,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="haircutDesc != null" >
+        haircut_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{haircutId,jdbcType=INTEGER},
+      <if test="haircutType != null" >
+        #{haircutType,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="haircutDesc != null" >
+        #{haircutDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.HaircutPrice" >
+    update dbo.haircut_price
+    <set >
+      <if test="haircutType != null" >
+        haircut_type = #{haircutType,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="haircutDesc != null" >
+        haircut_desc = #{haircutDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where haircut_id = #{haircutId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.HaircutPrice" >
+    update dbo.haircut_price
+    set haircut_type = #{haircutType,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      haircut_desc = #{haircutDesc,jdbcType=VARCHAR}
+    where haircut_id = #{haircutId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.HaircutPrice" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.haircut_price.haircut_id) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.haircut_price  
+			where	1 = 1
+		    	<if test="haircutType != null and haircutType != ''" >
+		        	and dbo.haircut_price.haircut_type like '%${haircutType}%'
+		      	</if>	
+	      		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.HaircutPrice" >    
+    select count(1)
+    from dbo.haircut_price  
+	where	0 = 0
+    	<if test="haircutType != null and haircutType != ''" >
+		        	and dbo.haircut_price.haircut_type like '%${haircutType}%'
+      	</if>	
+  </select>
+  
+  
+</mapper>

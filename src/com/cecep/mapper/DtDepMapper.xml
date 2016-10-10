@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.DtDepMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.DtDep" >
+    <id column="dep_serial" property="depSerial" jdbcType="BIGINT" />
+    <result column="dep_parent" property="depParent" jdbcType="INTEGER" />
+    <result column="dep_order" property="depOrder" jdbcType="INTEGER" />
+    <result column="dep_name" property="depName" jdbcType="NVARCHAR" />
+    <result column="dep_no" property="depNo" jdbcType="VARCHAR" />
+    <result column="dep_rule" property="depRule" jdbcType="NVARCHAR" />
+    <result column="dep_regserial" property="depRegserial" jdbcType="NVARCHAR" />
+  </resultMap>
+     <!-- 部门树形结构 -->
+  <resultMap type="com.cecep.model.kq.TreeDep" id="TreeDep">
+  	<id column="dep_serial" property="id" />
+  	<result column="dep_name" property="text" />
+  	<result column="state" property="state" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    dep_serial, dep_parent, dep_order, dep_name, dep_no, dep_rule, dep_regserial
+  </sql>
+  <sql id="DtDep_Column_List" >
+    dbo.dt_dep.dep_serial, dbo.dt_dep.dep_parent, dbo.dt_dep.dep_order, dbo.dt_dep.dep_name, dbo.dt_dep.dep_no, dbo.dt_dep.dep_rule, dbo.dt_dep.dep_regserial
+  </sql>
+  <resultMap id="DtDepResultMap" type="com.cecep.model.DtDep" extends="BaseResultMap" >
+    <result column="state" property="state" jdbcType="NVARCHAR" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.dt_dep
+    where dep_serial = #{depSerial,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dbo.dt_dep
+    where dep_serial = #{depSerial,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.DtDep" >
+    insert into dbo.dt_dep (dep_serial, dep_parent, dep_order, 
+      dep_name, dep_no, dep_rule, 
+      dep_regserial)
+    values (#{depSerial,jdbcType=BIGINT}, #{depParent,jdbcType=INTEGER}, #{depOrder,jdbcType=INTEGER}, 
+      #{depName,jdbcType=NVARCHAR}, #{depNo,jdbcType=VARCHAR}, #{depRule,jdbcType=NVARCHAR}, 
+      #{depRegserial,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.DtDep" >
+    <selectKey resultType="java.lang.Long" keyProperty="depSerial" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.dt_dep
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      dep_serial,
+      <if test="depParent != null" >
+        dep_parent,
+      </if>
+      <if test="depOrder != null" >
+        dep_order,
+      </if>
+      <if test="depName != null" >
+        dep_name,
+      </if>
+      <if test="depNo != null" >
+        dep_no,
+      </if>
+      <if test="depRule != null" >
+        dep_rule,
+      </if>
+      <if test="depRegserial != null" >
+        dep_regserial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{depSerial,jdbcType=BIGINT},
+      <if test="depParent != null" >
+        #{depParent,jdbcType=INTEGER},
+      </if>
+      <if test="depOrder != null" >
+        #{depOrder,jdbcType=INTEGER},
+      </if>
+      <if test="depName != null" >
+        #{depName,jdbcType=NVARCHAR},
+      </if>
+      <if test="depNo != null" >
+        #{depNo,jdbcType=VARCHAR},
+      </if>
+      <if test="depRule != null" >
+        #{depRule,jdbcType=NVARCHAR},
+      </if>
+      <if test="depRegserial != null" >
+        #{depRegserial,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.DtDep" >
+    update dbo.dt_dep
+    <set >
+      <if test="depParent != null" >
+        dep_parent = #{depParent,jdbcType=INTEGER},
+      </if>
+      <if test="depOrder != null" >
+        dep_order = #{depOrder,jdbcType=INTEGER},
+      </if>
+      <if test="depName != null" >
+        dep_name = #{depName,jdbcType=NVARCHAR},
+      </if>
+      <if test="depNo != null" >
+        dep_no = #{depNo,jdbcType=VARCHAR},
+      </if>
+      <if test="depRule != null" >
+        dep_rule = #{depRule,jdbcType=NVARCHAR},
+      </if>
+      <if test="depRegserial != null" >
+        dep_regserial = #{depRegserial,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where dep_serial = #{depSerial,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.DtDep" >
+    update dbo.dt_dep
+    set dep_parent = #{depParent,jdbcType=INTEGER},
+      dep_order = #{depOrder,jdbcType=INTEGER},
+      dep_name = #{depName,jdbcType=NVARCHAR},
+      dep_no = #{depNo,jdbcType=VARCHAR},
+      dep_rule = #{depRule,jdbcType=NVARCHAR},
+      dep_regserial = #{depRegserial,jdbcType=NVARCHAR}
+    where dep_serial = #{depSerial,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPage" resultMap="DtDepResultMap" parameterType="com.cecep.model.DtDep" >
+   	<!-- select u.*
+   	from ( 	 -->
+		    select row_number() over(order by dbo.dt_dep.dep_order) as rowNumber, <include refid="DtDep_Column_List" />,
+		    <choose>
+		    	<when test="depName != null and depName != ''" >'open' as state</when>
+		    	<otherwise>'closed' as state</otherwise>
+		   	</choose>
+		   	, count(dbo.dt_user.user_serial) as total, count(dbo.dt_card.xh) as count
+		   	from dbo.dt_dep
+		   	left join dbo.dt_user
+			on dbo.dt_dep.dep_serial = dbo.dt_user.user_dep
+			left join dbo.dt_card
+			on dbo.dt_user.user_serial = dbo.dt_card.user_serial
+			<where>	 
+				<choose>
+					<when test="depName != null and depName != ''">
+						dbo.dt_dep.dep_name like '%${depName}%'
+					</when>
+					<when test="depParent != null" >
+						dbo.dt_dep.dep_parent = #{depParent}
+					</when>
+					<when test="depParent == null" >
+						dbo.dt_dep.dep_parent = 0 or dbo.dt_dep.dep_parent is null
+					</when>
+				</choose>
+			</where> 
+			group by <include refid="DtDep_Column_List" /> 	   
+	<!-- <where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	 -->
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.DtDep" >     
+    select count(1)
+    from dbo.dt_dep
+	<where>	 
+		<choose>
+			<when test="depName != null and depName != ''">
+				dep_name like '%${depName}%'
+			</when>
+			<when test="depParent != null" >
+				dep_parent = #{depParent}
+			</when>
+			<when test="depParent == null" >
+				dep_parent = 0  or dbo.dt_dep.dep_parent is null
+			</when>
+		</choose>
+	</where> 
+  </select>
+  
+  <select id="load" resultType="java.util.Map" parameterType="java.lang.Integer" >
+    select dep_serial as id,dep_name as text,'closed' as state
+    from dbo.dt_dep
+    <where> 
+    	<if test="value != null" >
+        	dep_parent = #{value}
+      	</if>
+      	<if test="value == null" >
+        	dep_parent = 0
+      	</if>	
+    </where>
+    order by dep_order   	
+  </select>
+  
+  <select id="load2" resultType="java.util.Map" parameterType="com.cecep.model.DtDep" >
+    select dep_no as value,dep_name as text
+    from dbo.dt_dep order by dep_order
+  </select>
+  
+  <select id="selectMaxDepSerial" resultType="java.lang.Integer" >
+    select module_dep
+    from wt_module
+	where module_id = '0002'
+  </select>
+  
+  <update id="updateDepSerial" >
+    update wt_module
+    set module_dep = module_dep + 1
+	where module_id = '0002'
+  </update>
+  
+  <select id="loadByPrivilege" resultType="java.util.Map" parameterType="java.util.Map" >
+    select dep_serial as id,dep_name as text,'closed' as state
+    from dbo.dt_dep
+    <where> 
+    	<if test="depParent != null" >
+        	dep_parent = #{depParent}
+      	</if>
+      	<if test="depParent == null" >
+      		<if test="depSerial==null">
+      			dep_parent=0 or dep_parent=null or dep_parent=''
+      		</if>
+      		<if test="depSerial!=null">
+	        	dep_serial = #{depSerial}
+      		</if>
+      	</if>	
+    </where>   	
+    order by dep_order,dep_serial
+  </select>
+  
+  <select id="getDepNameBySerial" parameterType="java.lang.Integer" resultType="string">
+  	select dep_name from dbo.dt_dep where dep_serial = #{depSerial}
+  </select>
+
+  <select id="getCountBySerial" parameterType="java.lang.Integer" resultType="int">
+  	select count(1) from dbo.dt_user u 
+		left join dbo.dt_dep d on u.dep_no = d.dep_no where dep_serial = #{depSerial}
+  </select>
+  
+  <select id="getDepNameBySerials" parameterType="map" resultType="string">
+  	select dep_name from dbo.dt_dep where dep_serial in 
+  	<foreach collection="depSerials" open="(" close=")" separator="," item="item">
+  		#{item}
+  	</foreach>
+  </select>
+
+  <select id="getCountBySerials" parameterType="map" resultType="int">
+  	select count(1) from dbo.dt_user u 
+		left join dbo.dt_dep d on u.user_dep = d.dep_serial where u.user_type &lt; 31 and dep_serial in 
+	<foreach collection="list" open="(" close=")" separator="," item="item">
+		#{item}
+	</foreach>
+  </select>
+  
+  <select id="getRootDepCOunt" parameterType="java.lang.Integer" resultType="int">
+  	select count(1) from dbo.dt_user u 
+		left join dbo.dt_dep d on u.dep_no = d.dep_no where dep_parent = 0
+  </select>
+    
+  <select id="getTopTreeDep" resultMap="TreeDep">
+  	select dep_no,dep_name as text from dbo.dt_dep where dep_parent = 0
+  </select>
+  
+  <select id="getChildren" parameterType="string"  resultMap="TreeDep" >
+  	select d1.dep_no,d1.dep_name as text from dbo.dt_dep d1 where d1.dep_parent = 
+  	(select d2.dep_serial from dbo.dt_dep d2 where d2.dep_no=#{parentId}) order by d1.dep_order
+  </select>
+  
+  <select id="getChildrenDepSerial" parameterType="long"  resultType="long" >
+  	select dep_serial from dbo.dt_dep where dep_parent = #{depSerial}
+  </select>
+  
+  <select id="getRootDepSerial" resultType="string" parameterType="java.util.Map">
+  	select dep_serial from dt_dep where dep_no = #{depNo}
+  </select>
+  
+  <!-- 清空部门设计的操作，测试使用 -->
+  <update id="initDepSerial" >
+    update wt_module
+    set module_dep = 200000
+	where module_id = '0002'
+  </update>
+  
+  <select id="clearDtDepAcdep" >
+  	truncate table dt_dep_acdep 
+  </select>
+  
+  <select id="clearDtDep">
+  	truncate table dt_dep
+  </select>
+  
+  <insert id="insertRootDep">
+  	INSERT INTO [dbo].[dt_dep] ([dep_serial], [dep_parent], [dep_order], [dep_name], [dep_no], [dep_rule], [dep_regserial]) VALUES ('10000', '0', '0', N'中国节能环保集团公司', '10000000', N'0', NULL);
+  </insert>
+  
+  <select id="selectDepByNameAndSerial" parameterType="map" resultType="string">
+  	select dep_serial from dt_dep where dep_parent=#{parentId} and dep_name=#{name}
+  </select>
+  
+  <select id="selectHasBenbu" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from dt_dep where dep_parent=#{depSerial} and dep_name =(select dep_name+'本部' from dt_dep where dep_serial=#{depSerial}) 
+  </select>
+  
+  <select id="getlevel2Serial" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select isnull(three_serial,parent_serial) from cecep_dep_parentSerial where dep_serial=#{depSerial}
+  </select>
+  
+  <select id="selectThreeLevelDep" resultType="java.lang.Long">
+  	select dep_serial from dt_dep where dep_parent in 
+  	(select dep_serial from dt_dep where dep_parent=10000 and dep_serial!=200001)
+  </select>
+  
+  <select id="selectUsersByDeps" parameterType="java.util.Map" resultType="int">
+  	select count(*) from dt_user where user_dep in 
+  	<foreach collection="set" open="(" close=")" separator="," item="item">
+  		#{item}
+  	</foreach>
+  </select>
+  
+  <delete id="deleteDeps" parameterType="java.util.Map" >
+  	delete from dt_dep where dep_serial in 
+  	<foreach collection="set" open="(" close=")" separator="," item="item">
+  		#{item}
+  	</foreach>
+  </delete>
+  
+  <!-- <select id="selectDepByName" resultMap="BaseResultMap" parameterType="string">
+  	select dep_serial,dep_no from dt_dep where dep_name = #{depName}
+  </select> -->
+  
+  <update id="updateDepOrder" parameterType="java.util.Map">
+  	update dt_dep set dep_order = #{depOrder} where dep_no = #{depNo}
+  </update>
+  
+  <update id="updateUserOrder" parameterType="java.util.Map">
+  	update cecep_user_privilege set user_order=#{userOrder} where user_serial=
+  	(select user_serial from dt_user where user_no=#{userNo} and dep_no=#{depNo} )
+  </update>
+  
+  <update id="updateMidDepOrder" parameterType="java.util.Map">
+  	update mid_dep set dep_order = #{depOrder} where iu_code = #{depNo}
+  </update>
+  
+  <update id="updateMidUserOrder" parameterType="java.util.Map">
+  	update mid_user set user_order=#{userOrder} where dm=#{userNo} and unit_id=#{depNo}
+  </update>
+  
+  <select id="getChildren1" parameterType="com.cecep.model.kq.TreeDep" resultMap="TreeDep">
+  	select dep_serial,dep_name ,'closed' as 'state' from dt_dep where dep_parent=#{id}
+  </select>
+</mapper>

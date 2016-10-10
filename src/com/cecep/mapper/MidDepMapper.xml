@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MidDepMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.MidDep" >
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="iu_code" property="iu_code" jdbcType="VARCHAR" />
+    <result column="iu_fullname" property="iu_fullname" jdbcType="VARCHAR" />
+    <result column="iu_shortname" property="iu_shortname" jdbcType="VARCHAR" />
+    <result column="iu_ssgs" property="iu_ssgs" jdbcType="VARCHAR" />
+    <result column="iu_lssjdw_id" property="iu_lssjdw_id" jdbcType="VARCHAR" />
+    <result column="iu_unit_level" property="iu_unit_level" jdbcType="VARCHAR" />
+    <result column="iu_type" property="iu_type" jdbcType="VARCHAR" />
+    <result column="iu_xndw" property="iu_xndw" jdbcType="VARCHAR" />
+    <result column="iu_gsdjh" property="iu_gsdjh" jdbcType="VARCHAR" />
+    <result column="iu_swdjh" property="iu_swdjh" jdbcType="VARCHAR" />
+    <result column="iu_zzjgz" property="iu_zzjgz" jdbcType="VARCHAR" />
+    <result column="iu_country" property="iu_country" jdbcType="VARCHAR" />
+    <result column="dwccfl" property="dwccfl" jdbcType="VARCHAR" />
+    <result column="djzclx" property="djzclx" jdbcType="VARCHAR" />
+    <result column="sfbbw" property="sfbbw" jdbcType="VARCHAR" />
+    <result column="sffrdw" property="sffrdw" jdbcType="VARCHAR" />
+    <result column="kgbl" property="kgbl" jdbcType="VARCHAR" />
+    <result column="iu_iscustomer" property="iu_iscustomer" jdbcType="VARCHAR" />
+    <result column="zzjgid" property="zzjgid" jdbcType="VARCHAR" />
+    <result column="zzjgcode" property="zzjgcode" jdbcType="VARCHAR" />
+    <result column="zzjgpid" property="zzjgpid" jdbcType="VARCHAR" />
+    <result column="zzjglongcode" property="zzjglongcode" jdbcType="VARCHAR" />
+    <result column="zzjglongname" property="zzjglongname" jdbcType="VARCHAR" />
+    <result column="ssfc" property="ssfc" jdbcType="VARCHAR" />
+    <result column="u_state" property="u_state" jdbcType="VARCHAR" />
+    <result column="u_time" property="u_time" jdbcType="VARCHAR" />
+    <result column="iu_area" property="iu_area" jdbcType="VARCHAR" />
+    <result column="iu_city" property="iu_city" jdbcType="VARCHAR" />
+    <result column="iu_address" property="iu_address" jdbcType="VARCHAR" />
+    <result column="iu_postcode" property="iu_postcode" jdbcType="VARCHAR" />
+    <result column="iu_lanaguecode" property="iu_lanaguecode" jdbcType="VARCHAR" />
+    <result column="iu_tel" property="iu_tel" jdbcType="VARCHAR" />
+    <result column="iu_fax" property="iu_fax" jdbcType="VARCHAR" />
+    <result column="iu_email" property="iu_email" jdbcType="VARCHAR" />
+    <result column="iu_registercapital" property="iu_registercapital" jdbcType="VARCHAR" />
+    <result column="iu_sshy" property="iu_sshy" jdbcType="VARCHAR" />
+    <result column="iu_lscwsjdw_id" property="iu_lscwsjdw_id" jdbcType="VARCHAR" />
+    <result column="iu_lscwsjdw_name" property="iu_lscwsjdw_name" jdbcType="VARCHAR" />
+    <result column="is_synchronized" property="is_synchronized" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    status, iu_code, iu_fullname, 
+      iu_shortname, iu_ssgs, iu_lssjdw_id, 
+      iu_unit_level, iu_type, iu_xndw, 
+      iu_gsdjh, iu_swdjh, iu_zzjgz, 
+      iu_country, dwccfl, djzclx, 
+      sfbbw, sffrdw, kgbl, 
+      iu_iscustomer, zzjgid, zzjgcode, 
+      zzjgpid, zzjglongcode, zzjglongname, 
+      ssfc, u_state, u_time, 
+      iu_area, iu_city, iu_address, 
+      iu_postcode, iu_lanaguecode, iu_tel, 
+      iu_fax, iu_email, iu_registercapital, 
+      iu_sshy, iu_lscwsjdw_id, iu_lscwsjdw_name, 
+      is_synchronized
+  </sql>
+  <insert id="insert" parameterType="com.cecep.model.MidDep" >
+    insert into dbo.mid_dep (status, iu_code, iu_fullname, 
+      iu_shortname, iu_ssgs, iu_lssjdw_id, 
+      iu_unit_level, iu_type, iu_xndw, 
+      iu_gsdjh, iu_swdjh, iu_zzjgz, 
+      iu_country, dwccfl, djzclx, 
+      sfbbw, sffrdw, kgbl, 
+      iu_iscustomer, zzjgid, zzjgcode, 
+      zzjgpid, zzjglongcode, zzjglongname, 
+      ssfc, u_state, u_time, 
+      iu_area, iu_city, iu_address, 
+      iu_postcode, iu_lanaguecode, iu_tel, 
+      iu_fax, iu_email, iu_registercapital, 
+      iu_sshy, iu_lscwsjdw_id, iu_lscwsjdw_name, 
+      is_synchronized)
+    values (#{status,jdbcType=VARCHAR}, #{iu_code,jdbcType=VARCHAR}, #{iu_fullname,jdbcType=VARCHAR}, 
+      #{iu_shortname,jdbcType=VARCHAR}, #{iu_ssgs,jdbcType=VARCHAR}, #{iu_lssjdw_id,jdbcType=VARCHAR}, 
+      #{iu_unit_level,jdbcType=VARCHAR}, #{iu_type,jdbcType=VARCHAR}, #{iu_xndw,jdbcType=VARCHAR}, 
+      #{iu_gsdjh,jdbcType=VARCHAR}, #{iu_swdjh,jdbcType=VARCHAR}, #{iu_zzjgz,jdbcType=VARCHAR}, 
+      #{iu_country,jdbcType=VARCHAR}, #{dwccfl,jdbcType=VARCHAR}, #{djzclx,jdbcType=VARCHAR}, 
+      #{sfbbw,jdbcType=VARCHAR}, #{sffrdw,jdbcType=VARCHAR}, #{kgbl,jdbcType=VARCHAR}, 
+      #{iu_iscustomer,jdbcType=VARCHAR}, #{zzjgid,jdbcType=VARCHAR}, #{zzjgcode,jdbcType=VARCHAR}, 
+      #{zzjgpid,jdbcType=VARCHAR}, #{zzjglongcode,jdbcType=VARCHAR}, #{zzjglongname,jdbcType=VARCHAR}, 
+      #{ssfc,jdbcType=VARCHAR}, #{u_state,jdbcType=VARCHAR}, #{u_time,jdbcType=VARCHAR}, 
+      #{iu_area,jdbcType=VARCHAR}, #{iu_city,jdbcType=VARCHAR}, #{iu_address,jdbcType=VARCHAR}, 
+      #{iu_postcode,jdbcType=VARCHAR}, #{iu_lanaguecode,jdbcType=VARCHAR}, #{iu_tel,jdbcType=VARCHAR}, 
+      #{iu_fax,jdbcType=VARCHAR}, #{iu_email,jdbcType=VARCHAR}, #{iu_registercapital,jdbcType=VARCHAR}, 
+      #{iu_sshy,jdbcType=VARCHAR}, #{iu_lscwsjdw_id,jdbcType=VARCHAR}, #{iu_lscwsjdw_name,jdbcType=VARCHAR}, 
+      #{is_synchronized,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MidDep" >
+    insert into dbo.mid_dep
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="iuCode != null" >
+        iu_code,
+      </if>
+      <if test="iuFullname != null" >
+        iu_fullname,
+      </if>
+      <if test="iuShortname != null" >
+        iu_shortname,
+      </if>
+      <if test="iuSsgs != null" >
+        iu_ssgs,
+      </if>
+      <if test="iuLssjdwId != null" >
+        iu_lssjdw_id,
+      </if>
+      <if test="iuUnitLevel != null" >
+        iu_unit_level,
+      </if>
+      <if test="iuType != null" >
+        iu_type,
+      </if>
+      <if test="iuXndw != null" >
+        iu_xndw,
+      </if>
+      <if test="iuGsdjh != null" >
+        iu_gsdjh,
+      </if>
+      <if test="iuSwdjh != null" >
+        iu_swdjh,
+      </if>
+      <if test="iuZzjgz != null" >
+        iu_zzjgz,
+      </if>
+      <if test="iuCountry != null" >
+        iu_country,
+      </if>
+      <if test="dwccfl != null" >
+        dwccfl,
+      </if>
+      <if test="djzclx != null" >
+        djzclx,
+      </if>
+      <if test="sfbbw != null" >
+        sfbbw,
+      </if>
+      <if test="sffrdw != null" >
+        sffrdw,
+      </if>
+      <if test="kgbl != null" >
+        kgbl,
+      </if>
+      <if test="iuIscustomer != null" >
+        iu_iscustomer,
+      </if>
+      <if test="zzjgid != null" >
+        zzjgid,
+      </if>
+      <if test="zzjgcode != null" >
+        zzjgcode,
+      </if>
+      <if test="zzjgpid != null" >
+        zzjgpid,
+      </if>
+      <if test="zzjglongcode != null" >
+        zzjglongcode,
+      </if>
+      <if test="zzjglongname != null" >
+        zzjglongname,
+      </if>
+      <if test="ssfc != null" >
+        ssfc,
+      </if>
+      <if test="uState != null" >
+        u_state,
+      </if>
+      <if test="uTime != null" >
+        u_time,
+      </if>
+      <if test="iuArea != null" >
+        iu_area,
+      </if>
+      <if test="iuCity != null" >
+        iu_city,
+      </if>
+      <if test="iuAddress != null" >
+        iu_address,
+      </if>
+      <if test="iuPostcode != null" >
+        iu_postcode,
+      </if>
+      <if test="iuLanaguecode != null" >
+        iu_lanaguecode,
+      </if>
+      <if test="iuTel != null" >
+        iu_tel,
+      </if>
+      <if test="iuFax != null" >
+        iu_fax,
+      </if>
+      <if test="iuEmail != null" >
+        iu_email,
+      </if>
+      <if test="iuRegistercapital != null" >
+        iu_registercapital,
+      </if>
+      <if test="iuSshy != null" >
+        iu_sshy,
+      </if>
+      <if test="iuLscwsjdwId != null" >
+        iu_lscwsjdw_id,
+      </if>
+      <if test="iuLscwsjdwName != null" >
+        iu_lscwsjdw_name,
+      </if>
+      <if test="isSynchronized != null" >
+        is_synchronized,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="iuCode != null" >
+        #{iuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="iuFullname != null" >
+        #{iuFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="iuShortname != null" >
+        #{iuShortname,jdbcType=VARCHAR},
+      </if>
+      <if test="iuSsgs != null" >
+        #{iuSsgs,jdbcType=VARCHAR},
+      </if>
+      <if test="iuLssjdwId != null" >
+        #{iuLssjdwId,jdbcType=VARCHAR},
+      </if>
+      <if test="iuUnitLevel != null" >
+        #{iuUnitLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="iuType != null" >
+        #{iuType,jdbcType=VARCHAR},
+      </if>
+      <if test="iuXndw != null" >
+        #{iuXndw,jdbcType=VARCHAR},
+      </if>
+      <if test="iuGsdjh != null" >
+        #{iuGsdjh,jdbcType=VARCHAR},
+      </if>
+      <if test="iuSwdjh != null" >
+        #{iuSwdjh,jdbcType=VARCHAR},
+      </if>
+      <if test="iuZzjgz != null" >
+        #{iuZzjgz,jdbcType=VARCHAR},
+      </if>
+      <if test="iuCountry != null" >
+        #{iuCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dwccfl != null" >
+        #{dwccfl,jdbcType=VARCHAR},
+      </if>
+      <if test="djzclx != null" >
+        #{djzclx,jdbcType=VARCHAR},
+      </if>
+      <if test="sfbbw != null" >
+        #{sfbbw,jdbcType=VARCHAR},
+      </if>
+      <if test="sffrdw != null" >
+        #{sffrdw,jdbcType=VARCHAR},
+      </if>
+      <if test="kgbl != null" >
+        #{kgbl,jdbcType=VARCHAR},
+      </if>
+      <if test="iuIscustomer != null" >
+        #{iuIscustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjgid != null" >
+        #{zzjgid,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjgcode != null" >
+        #{zzjgcode,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjgpid != null" >
+        #{zzjgpid,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjglongcode != null" >
+        #{zzjglongcode,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjglongname != null" >
+        #{zzjglongname,jdbcType=VARCHAR},
+      </if>
+      <if test="ssfc != null" >
+        #{ssfc,jdbcType=VARCHAR},
+      </if>
+      <if test="uState != null" >
+        #{uState,jdbcType=VARCHAR},
+      </if>
+      <if test="uTime != null" >
+        #{uTime,jdbcType=VARCHAR},
+      </if>
+      <if test="iuArea != null" >
+        #{iuArea,jdbcType=VARCHAR},
+      </if>
+      <if test="iuCity != null" >
+        #{iuCity,jdbcType=VARCHAR},
+      </if>
+      <if test="iuAddress != null" >
+        #{iuAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="iuPostcode != null" >
+        #{iuPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="iuLanaguecode != null" >
+        #{iuLanaguecode,jdbcType=VARCHAR},
+      </if>
+      <if test="iuTel != null" >
+        #{iuTel,jdbcType=VARCHAR},
+      </if>
+      <if test="iuFax != null" >
+        #{iuFax,jdbcType=VARCHAR},
+      </if>
+      <if test="iuEmail != null" >
+        #{iuEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="iuRegistercapital != null" >
+        #{iuRegistercapital,jdbcType=VARCHAR},
+      </if>
+      <if test="iuSshy != null" >
+        #{iuSshy,jdbcType=VARCHAR},
+      </if>
+      <if test="iuLscwsjdwId != null" >
+        #{iuLscwsjdwId,jdbcType=VARCHAR},
+      </if>
+      <if test="iuLscwsjdwName != null" >
+        #{iuLscwsjdwName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSynchronized != null" >
+        #{isSynchronized,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultType="java.lang.Integer" parameterType="com.cecep.model.MidDep" >
+    select count(1)
+    from dbo.mid_dep
+    where iu_code = #{iuCode}
+  </select>  
+  
+     
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MidDep" >
+    update dbo.mid_dep
+    set status = #{status,jdbcType=VARCHAR},
+      iu_fullname = #{iu_fullname,jdbcType=VARCHAR},
+      iu_shortname = #{iu_shortname,jdbcType=VARCHAR},
+      iu_ssgs = #{iu_ssgs,jdbcType=VARCHAR},
+      iu_lssjdw_id = #{iu_lssjdw_id,jdbcType=VARCHAR},
+      iu_unit_level = #{iu_unit_level,jdbcType=VARCHAR},
+      iu_type = #{iu_type,jdbcType=VARCHAR},
+      iu_xndw = #{iu_xndw,jdbcType=VARCHAR},
+      iu_gsdjh = #{iu_gsdjh,jdbcType=VARCHAR},
+      iu_swdjh = #{iu_swdjh,jdbcType=VARCHAR},
+      iu_zzjgz = #{iu_zzjgz,jdbcType=VARCHAR},
+      iu_country = #{iu_country,jdbcType=VARCHAR},
+      dwccfl = #{dwccfl,jdbcType=VARCHAR},
+      djzclx = #{djzclx,jdbcType=VARCHAR},
+      sfbbw = #{sfbbw,jdbcType=VARCHAR},
+      sffrdw = #{sffrdw,jdbcType=VARCHAR},
+      kgbl = #{kgbl,jdbcType=VARCHAR},
+      iu_iscustomer = #{iu_iscustomer,jdbcType=VARCHAR},
+      zzjgid = #{zzjgid,jdbcType=VARCHAR},
+      zzjgcode = #{zzjgcode,jdbcType=VARCHAR},
+      zzjgpid = #{zzjgpid,jdbcType=VARCHAR},
+      zzjglongcode = #{zzjglongcode,jdbcType=VARCHAR},
+      zzjglongname = #{zzjglongname,jdbcType=VARCHAR},
+      ssfc = #{ssfc,jdbcType=VARCHAR},
+      u_state = #{u_state,jdbcType=VARCHAR},
+      u_time = #{u_time,jdbcType=VARCHAR},
+      iu_area = #{iu_area,jdbcType=VARCHAR},
+      iu_city = #{iu_area,jdbcType=VARCHAR},
+      iu_address = #{iu_address,jdbcType=VARCHAR},
+      iu_postcode = #{iu_postcode,jdbcType=VARCHAR},
+      iu_lanaguecode = #{iu_lanaguecode,jdbcType=VARCHAR},
+      iu_tel = #{iu_tel,jdbcType=VARCHAR},
+      iu_fax = #{iu_fax,jdbcType=VARCHAR},
+      iu_email = #{iu_email,jdbcType=VARCHAR},
+      iu_registercapital = #{iu_registercapital,jdbcType=VARCHAR},
+      iu_sshy = #{iu_sshy,jdbcType=INTEGER},
+      iu_lscwsjdw_id = #{iu_lscwsjdw_id,jdbcType=VARCHAR},
+      iu_lscwsjdw_name = #{iu_lscwsjdw_name,jdbcType=VARCHAR},
+      is_synchronized = #{is_synchronized,jdbcType=VARCHAR}
+    where iu_code = #{iu_code,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectIsSynchronized" resultType="int" >
+    select count(1)
+    from dbo.mid_dep a	 
+    left join dbo.dt_dep b on a.iu_lssjdw_id = b.dep_no	
+	where a.is_synchronized = 0 and b.dep_serial is not null
+  </select>
+  
+  <select id="selectIsSynchronizedFirst" resultType="int" >
+    select count(1)
+    from dbo.mid_dep a	 
+    left join cecep_dep b on a.iu_code = b.dep_serial	
+	where a.is_synchronized = 0 and b.isSynchronized = 0
+  </select>
+  
+  <select id="load" resultType="java.util.Map" parameterType="string" >
+    select a.iu_code as id,'closed' as state ,
+    CASE WHEN b.dep_serial is null THEN a.iu_fullname  ELSE a.iu_fullname+'（已同步）' end as text 
+    from mid_dep a
+    left join dt_dep b on a.iu_code=b.dep_no
+	<where>
+	a.status='活动'
+		<if test="value !=null">
+			and a.iu_lssjdw_id=#{value}
+		</if>
+		<if test="value ==null">
+			and a.iu_lssjdw_id=''
+		</if>
+		ORDER BY b.dep_serial DESC
+	</where>
+
+  </select>	
+  
+  <resultMap id="DtDepResultMap" type="com.cecep.model.DtDep" >
+    <id column="dep_serial" property="depSerial" jdbcType="BIGINT" />
+    <result column="dep_parent" property="depParent" jdbcType="INTEGER" />
+    <result column="dep_order" property="depOrder" jdbcType="INTEGER" />
+    <result column="dep_name" property="depName" jdbcType="NVARCHAR" />
+    <result column="dep_no" property="depNo" jdbcType="VARCHAR" />
+    <result column="dep_rule" property="depRule" jdbcType="NVARCHAR" />
+    <result column="dep_regserial" property="depRegserial" jdbcType="NVARCHAR" />
+    <result column="acdep_serial" property="acdepSerial" jdbcType="NVARCHAR" />
+    <result column="extend" property="extend" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="synchronize" resultMap="DtDepResultMap" parameterType="java.util.Map">
+  <if test="first == null">  <!-- 不是第一次与主数据同步 -->
+  	select u.*
+  	from (
+			select 	dbo.mid_dep.iu_code as dep_no,
+				 	dbo.mid_dep.iu_fullname as dep_name,
+				 	dbo.mid_dep.dep_order,
+				 	'0' as dep_rule,
+				 	a.dep_serial as dep_parent,
+				 	b.dep_serial as dep_serial
+			from dbo.mid_dep
+			left join dbo.dt_dep a
+			on dbo.mid_dep.iu_lssjdw_id = a.dep_no
+			left join dbo.dt_dep b
+			on dbo.mid_dep.iu_code = b.dep_no
+			where dbo.mid_dep.is_synchronized = 0 and a.dep_serial is not null ) u
+	<where>
+		<if test="depNos != null" >
+			u.dep_no in  
+	    	<foreach item="item" collection="depNos" separator="," open="(" close=")" index="index">  
+	      		#{item, jdbcType=VARCHAR}  
+	    	</foreach> 	
+	    </if> 	 
+	</where>	
+  </if>
+  <if test="first != null">  <!-- 第一次与主数据同步 -->
+  		select a.iu_code as dep_no,
+				 	a.iu_fullname as dep_name,
+				 	0 as dep_order,
+				 	'0' as dep_rule,
+				 	d.dep_serial as dep_parent,
+				 	b.acdep_serial,
+				 	b.extend
+		from cecep_dep b
+		LEFT JOIN mid_dep a on a.iu_code = b.dep_serial
+		left join dt_dep d on b.parent_id = d.dep_no
+		where b.isSynchronized=0 and b.dep_serial in 
+		<foreach collection="depNos" open="(" close=")" separator="," item="item">
+			#{item}
+		</foreach>
+  </if>
+  </select>
+  
+  <update id="updateIsSynchronized" parameterType="java.util.Map">
+  	<if test="first ==null">  <!-- 不是第一次与主数据同步 -->
+  		update dbo.mid_dep	    
+		  	set is_synchronized = 1
+			<where>
+			    	iu_code in  
+			    	<foreach item="item" collection="list" separator="," open="(" close=")" index="index">  
+			      		#{item.depNo, jdbcType=VARCHAR}  
+			    	</foreach> 
+			</where> 
+  	</if>
+  	<if test="first !=null"> <!-- 第一次与主数据同步 -->
+  		update dbo.mid_dep	    
+		  	set is_synchronized = 1
+		  	where is_synchronized = 0
+  	</if>
+  </update>
+  
+  <select id="selectCecepDep" resultType="string" parameterType="string">
+  	select dep_serial from cecep_dep where isSynchronized=0 and parent_id = #{parentId}
+  </select>
+  
+  <update id="updateHasSynchronized" parameterType="java.util.Map">
+  	update cecep_dep set isSynchronized = 1 where dep_serial in 
+  		<foreach collection="depNos" open="(" close=")" separator="," item="item">
+  			#{item.depNo}
+  		</foreach>
+  </update>
+  
+  <resultMap type="com.cecep.model.CecepDep" id="CecepDep">
+  	<id column="id" property="id"/>
+  	<result column="dep_serial" property="depSerial"/>
+  	<result column="dep_name" property="depName"/>
+  	<result column="parent_id" property="parentId"/>
+  	<result column="isSynchronized" property="isSynchronized"/>
+  	<result column="extend" property="extend"/>
+  	<result column="acdep_serial" property="acdepSerial"/>
+  </resultMap>
+  
+  <select id="selectBenBu" resultType="string" >
+  	select dep_serial from cecep_dep where level =2 
+  </select>
+  
+  <select id="selectByIds" resultMap="CecepDep" parameterType="java.util.Map">
+  	select iu_code as dep_serial,iu_fullname as dep_name,iu_lssjdw_id as parent_id  
+  	 from mid_dep where iu_lssjdw_id in 
+  	<foreach collection="ids" open="(" close=")" separator="," item="item">
+  		#{item}
+  	</foreach>
+  	and status='活动'
+  </select>
+  
+  <select id="selectById" resultType="int" parameterType="string">
+  	select count(*)  
+  	 from cecep_dep where dep_serial =#{depSerial}
+  </select>
+  
+  <select id="getAcdepSerialByParentId" parameterType="java.lang.String" resultType="java.lang.String">
+  	select ac_dep_serial from dt_dep_acdep where dep_serial=#{parentId}
+  </select>
+  
+  <select id="getAcdepSerialByDepNo" parameterType="java.lang.String" resultType="java.lang.String">
+  	select ac_dep_serial from dt_dep_acdep where dep_serial=(select dep_serial from dt_dep where dep_no=#{depNo})
+  </select>
+  
+  <select id="getAcdepSerialByDepNo1" parameterType="java.lang.String" resultType="java.lang.String">
+  	select acdep_serial from cecep_dep where dep_serial=#{depNo}
+  </select>
+  
+  <insert id="insertCecep" parameterType="com.cecep.model.CecepDep" >
+  	insert into cecep_dep(dep_serial,dep_name,parent_id,isSynchronized) 
+  	values(#{depSerial},#{depName},#{parentId},#{isSynchronized})
+  </insert>
+  
+  <select id="selectByParentId" parameterType="string" resultMap="CecepDep">
+  	select iu_code as dep_serial,iu_fullname as dep_name,iu_lssjdw_id as parent_id 
+  	from mid_dep where iu_lssjdw_id = #{parentId} and status='活动'
+  </select>
+  
+  <select id="selectParentId" parameterType="string" resultType="string">
+  	select iu_lssjdw_id from mid_dep where iu_code=#{depSerial}
+  </select>
+  
+  <insert id="insertById" parameterType="string">
+	   insert into dbo.dt_dep (dep_serial, dep_parent, dep_order, 
+      dep_name, dep_no, dep_rule, 
+      dep_regserial)
+    	select 	#{depNo} as dep_no,
+				 	dbo.mid_dep.iu_fullname as dep_name,
+				 	0 as dep_order,
+				 	'0' as dep_rule,
+				 	#{parentSerial} as dep_parent,
+				 	#{depSerial} as dep_serial
+			from dbo.mid_dep where iu_code = #{depNo}
+  </insert>
+  
+  <select id="selectById1" parameterType="string" resultType="java.lang.Integer">
+  	select dep_serial from dt_dep where dep_no=#{depNo}
+  </select>
+  
+  <select id="selectByIuCode" resultMap="DtDepResultMap" parameterType="java.util.Map">
+			select 	iu_code as dep_no,
+				 	iu_fullname as dep_name,
+				 	0 as dep_order,
+				 	'0' as dep_rule
+			from mid_dep
+			where iu_code=#{iuCode}
+	</select>
+	
+	<select id="selectByIuLssjdwId" resultMap="DtDepResultMap" parameterType="java.util.Map">
+			select 	dbo.mid_dep.iu_code as dep_no,
+				 	dbo.mid_dep.iu_fullname as dep_name,
+				 	0 as dep_order,
+				 	'0' as dep_rule
+			from dbo.mid_dep
+			where iu_lssjdw_id=#{iuLssjdwId}
+	</select>
+</mapper>

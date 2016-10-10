@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.SysMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.SysMenu" >
+    <id column="menu_id" property="menuId" jdbcType="INTEGER" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="menu_deleted" property="menuDeleted" jdbcType="INTEGER" />
+    <result column="menu_des" property="menuDes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    menu_id,menu_name, url, sequence, parent_id, menu_deleted, menu_des
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dbo.sys_menu
+    where menu_id = #{value,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.sys_menu
+    where menu_id = #{value,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.SysMenu" >
+    insert into dbo.sys_menu (menu_name, url, sequence, parent_id, menu_deleted, menu_des)
+    values (#{menuName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{sequence,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 0, 
+      #{menuDes,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.SysMenu" >
+    <selectKey resultType="java.lang.Integer" keyProperty="menuId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      menu_id,
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="sequence != null" >
+        sequence,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="menuDeleted != null" >
+        menu_deleted,
+      </if>
+      <if test="menuDes != null" >
+        menu_des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{menuId,jdbcType=INTEGER},
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="menuDeleted != null" >
+        #{menuDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="menuDes != null" >
+        #{menuDes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.SysMenu" >
+    update dbo.sys_menu
+    <set >
+      <if test="menuName != null" >
+        menu_name = #{menuName},
+      </if>
+      <if test="url != null" >
+        url = #{url},
+      </if>
+      <if test="sequence != null" >
+        sequence = #{sequence},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId},
+      </if>
+      <if test="menuDeleted != null" >
+        menu_deleted = #{menuDeleted},
+      </if>
+      <if test="menuDes != null" >
+        menu_des = #{menuDes},
+      </if>
+    </set>
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.SysMenu" >
+    update dbo.sys_menu
+    set menu_name = #{menuName,jdbcType=VARCHAR},
+      	url = #{url,jdbcType=VARCHAR},
+      	sequence = #{sequence,jdbcType=INTEGER},
+      	menu_des = #{menuDes,jdbcType=VARCHAR}
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.SysMenu" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by menu_id) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.sys_menu
+			where	menu_deleted = 0
+		    	<if test="menuName != null and menuName != ''" >
+		        	and menu_name like '%${menuName}%'
+		      	</if>		      	
+		      	<if test="parentId == null" >
+		        	and parent_id is null
+		      	</if>
+		      	<if test="parentId != null" >
+		        	and parent_id = #{parentId}
+		      	</if> ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.SysMenu" >  
+    select count(1)
+    from dbo.sys_menu
+	where	menu_deleted = 0
+    	<if test="menuName != null and menuName != ''" >
+        	and menu_name like '%${menuName}%'
+      	</if>		      	
+      	<if test="parentId == null" >
+        	and parent_id is null
+      	</if>
+      	<if test="parentId != null" >
+        	and parent_id = #{parentId}
+      	</if>	
+  </select>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.KqSjManageMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.KqSjManage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="sj" property="sj" jdbcType="TIME" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, sj
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.kq_sj_manage
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="dataList" resultMap="BaseResultMap">
+  	select * from kq_sj_manage 
+  </select>
+  
+<!--   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.kq_sj_manage
+    where id = #{id,jdbcType=INTEGER}
+  </delete> -->
+  
+  <!-- <insert id="insert" parameterType="com.cecep.model.KqSjManage" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.kq_sj_manage ( type, sj
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{sj,jdbcType=TIME}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.KqSjManage" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.kq_sj_manage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="sj != null" >
+        sj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sj != null" >
+        #{sj,jdbcType=TIME},
+      </if>
+    </trim>
+  </insert> -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.KqSjManage" >
+    update dbo.kq_sj_manage
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="sj != null" >
+        sj = #{sj,jdbcType=TIME},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.KqSjManage" >
+    update dbo.kq_sj_manage
+    set sj = #{sj}
+    where id = #{id}
+  </update>
+</mapper>

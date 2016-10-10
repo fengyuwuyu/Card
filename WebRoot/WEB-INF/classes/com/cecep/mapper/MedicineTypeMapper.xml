@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MedicineTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.MedicineType" >
+    <id column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="medicine_detailed" property="medicineDetailed" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    type_id, type_name, medicine_detailed
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.medicine_type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.medicine_type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.MedicineType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="typeId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.medicine_type ( type_name, medicine_detailed
+      )
+    values (#{typeName,jdbcType=VARCHAR}, #{medicineDetailed,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MedicineType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="typeId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.medicine_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      type_id,
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="medicineDetailed != null" >
+        medicine_detailed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{typeId,jdbcType=INTEGER},
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineDetailed != null" >
+        #{medicineDetailed,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.MedicineType" >
+    update dbo.medicine_type
+    <set >
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineDetailed != null" >
+        medicine_detailed = #{medicineDetailed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MedicineType" >
+    update dbo.medicine_type
+    set type_name = #{typeName,jdbcType=VARCHAR},
+      medicine_detailed = #{medicineDetailed,jdbcType=VARCHAR}
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.MedicineType" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.medicine_type.type_id) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.medicine_type
+			where	1 = 1
+		    	<if test="typeName != null and typeName != ''" >
+		        	and dbo.medicine_type.type_name like '%${typeName}%'
+		      	</if>		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.MedicineType" >    
+    select count(1)
+    from dbo.medicine_type
+	where	0 = 0
+    	<if test="typeName != null and typeName != ''" >
+		        	and dbo.medicine_type.type_name like '%${typeName}%'
+      	</if>	   
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

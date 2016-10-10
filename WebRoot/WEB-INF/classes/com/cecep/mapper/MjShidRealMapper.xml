@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MjShidRealMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.MjShidReal" >
+    <id column="bh" property="bh" jdbcType="INTEGER" />
+    <result column="sd_name" property="sdName" jdbcType="NVARCHAR" />
+    <result column="kssj" property="kssj" jdbcType="TIMESTAMP" />
+    <result column="jssj" property="jssj" jdbcType="TIMESTAMP" />
+    <result column="ks_month" property="ksMonth" jdbcType="INTEGER" />
+    <result column="js_month" property="jsMonth" jdbcType="INTEGER" />
+    <result column="ks_day" property="ksDay" jdbcType="INTEGER" />
+    <result column="js_day" property="jsDay" jdbcType="INTEGER" />
+    <result column="ks_week" property="ksWeek" jdbcType="INTEGER" />
+    <result column="js_week" property="jsWeek" jdbcType="INTEGER" />
+    <result column="ks_sj1" property="ksSj1" jdbcType="VARCHAR" />
+    <result column="js_sj1" property="jsSj1" jdbcType="VARCHAR" />
+    <result column="ks_sj2" property="ksSj2" jdbcType="VARCHAR" />
+    <result column="js_sj2" property="jsSj2" jdbcType="VARCHAR" />
+    <result column="sj" property="sj" jdbcType="TIMESTAMP" />
+    <result column="gly_no" property="glyNo" jdbcType="NVARCHAR" />
+    <result column="ks_sj3" property="ksSj3" jdbcType="VARCHAR" />
+    <result column="js_sj3" property="jsSj3" jdbcType="VARCHAR" />
+    <result column="ks_sj4" property="ksSj4" jdbcType="VARCHAR" />
+    <result column="js_sj4" property="jsSj4" jdbcType="VARCHAR" />
+    <result column="regserial" property="regserial" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bh, sd_name, kssj, jssj, ks_month, js_month, ks_day, js_day, ks_week, js_week, ks_sj1, 
+    js_sj1, ks_sj2, js_sj2, sj, gly_no, ks_sj3, js_sj3, ks_sj4, js_sj4, regserial
+  </sql>
+  <resultMap id="MjShidRealResultMap" type="com.cecep.model.MjShidReal" extends="BaseResultMap" >
+    <result column="rule_name" property="ruleName" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="MjShidReal_Column_List" >
+    dbo.mj_shid_real.bh, dbo.mj_shid_real.sd_name, dbo.mj_shid_real.kssj, dbo.mj_shid_real.jssj, dbo.mj_shid_real.ks_month, dbo.mj_shid_real.js_month, dbo.mj_shid_real.ks_day, dbo.mj_shid_real.js_day, dbo.mj_shid_real.ks_week, dbo.mj_shid_real.js_week, dbo.mj_shid_real.ks_sj1, 
+    dbo.mj_shid_real.js_sj1, dbo.mj_shid_real.ks_sj2, dbo.mj_shid_real.js_sj2, dbo.mj_shid_real.sj, dbo.mj_shid_real.gly_no, dbo.mj_shid_real.ks_sj3, dbo.mj_shid_real.js_sj3, dbo.mj_shid_real.ks_sj4, dbo.mj_shid_real.js_sj4, dbo.mj_shid_real.regserial
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.mj_shid_real
+    where bh = #{bh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.mj_shid_real
+    where bh = #{bh,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.MjShidReal" >
+    <selectKey resultType="java.lang.Integer" keyProperty="bh" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.mj_shid_real (bh, sd_name, kssj, 
+      jssj, ks_month, js_month, 
+      ks_day, js_day, ks_week, 
+      js_week, ks_sj1, js_sj1, 
+      ks_sj2, js_sj2, sj, 
+      gly_no, ks_sj3, js_sj3, 
+      ks_sj4, js_sj4, regserial
+      )
+    values (#{bh,jdbcType=INTEGER}, #{sdName,jdbcType=NVARCHAR}, #{kssj,jdbcType=TIMESTAMP}, 
+      #{jssj,jdbcType=TIMESTAMP}, #{ksMonth,jdbcType=INTEGER}, #{jsMonth,jdbcType=INTEGER}, 
+      #{ksDay,jdbcType=INTEGER}, #{jsDay,jdbcType=INTEGER}, #{ksWeek,jdbcType=INTEGER}, 
+      #{jsWeek,jdbcType=INTEGER}, #{ksSj1,jdbcType=VARCHAR}, #{jsSj1,jdbcType=VARCHAR}, 
+      #{ksSj2,jdbcType=VARCHAR}, #{jsSj2,jdbcType=VARCHAR}, #{sj,jdbcType=TIMESTAMP}, 
+      #{glyNo,jdbcType=NVARCHAR}, #{ksSj3,jdbcType=VARCHAR}, #{jsSj3,jdbcType=VARCHAR}, 
+      #{ksSj4,jdbcType=VARCHAR}, #{jsSj4,jdbcType=VARCHAR}, #{regserial,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MjShidReal" >
+    <selectKey resultType="java.lang.Integer" keyProperty="bh" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.mj_shid_real
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      bh,
+      <if test="sdName != null" >
+        sd_name,
+      </if>
+      <if test="kssj != null" >
+        kssj,
+      </if>
+      <if test="jssj != null" >
+        jssj,
+      </if>
+      <if test="ksMonth != null" >
+        ks_month,
+      </if>
+      <if test="jsMonth != null" >
+        js_month,
+      </if>
+      <if test="ksDay != null" >
+        ks_day,
+      </if>
+      <if test="jsDay != null" >
+        js_day,
+      </if>
+      <if test="ksWeek != null" >
+        ks_week,
+      </if>
+      <if test="jsWeek != null" >
+        js_week,
+      </if>
+      <if test="ksSj1 != null" >
+        ks_sj1,
+      </if>
+      <if test="jsSj1 != null" >
+        js_sj1,
+      </if>
+      <if test="ksSj2 != null" >
+        ks_sj2,
+      </if>
+      <if test="jsSj2 != null" >
+        js_sj2,
+      </if>
+      <if test="sj != null" >
+        sj,
+      </if>
+      <if test="glyNo != null" >
+        gly_no,
+      </if>
+      <if test="ksSj3 != null" >
+        ks_sj3,
+      </if>
+      <if test="jsSj3 != null" >
+        js_sj3,
+      </if>
+      <if test="ksSj4 != null" >
+        ks_sj4,
+      </if>
+      <if test="jsSj4 != null" >
+        js_sj4,
+      </if>
+      <if test="regserial != null" >
+        regserial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{bh,jdbcType=INTEGER},
+      <if test="sdName != null" >
+        #{sdName,jdbcType=NVARCHAR},
+      </if>
+      <if test="kssj != null" >
+        #{kssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jssj != null" >
+        #{jssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ksMonth != null" >
+        #{ksMonth,jdbcType=INTEGER},
+      </if>
+      <if test="jsMonth != null" >
+        #{jsMonth,jdbcType=INTEGER},
+      </if>
+      <if test="ksDay != null" >
+        #{ksDay,jdbcType=INTEGER},
+      </if>
+      <if test="jsDay != null" >
+        #{jsDay,jdbcType=INTEGER},
+      </if>
+      <if test="ksWeek != null" >
+        #{ksWeek,jdbcType=INTEGER},
+      </if>
+      <if test="jsWeek != null" >
+        #{jsWeek,jdbcType=INTEGER},
+      </if>
+      <if test="ksSj1 != null" >
+        #{ksSj1,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj1 != null" >
+        #{jsSj1,jdbcType=VARCHAR},
+      </if>
+      <if test="ksSj2 != null" >
+        #{ksSj2,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj2 != null" >
+        #{jsSj2,jdbcType=VARCHAR},
+      </if>
+      <if test="sj != null" >
+        #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="glyNo != null" >
+        #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="ksSj3 != null" >
+        #{ksSj3,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj3 != null" >
+        #{jsSj3,jdbcType=VARCHAR},
+      </if>
+      <if test="ksSj4 != null" >
+        #{ksSj4,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj4 != null" >
+        #{jsSj4,jdbcType=VARCHAR},
+      </if>
+      <if test="regserial != null" >
+        #{regserial,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.MjShidReal" >
+    update dbo.mj_shid_real
+    <set >
+      <if test="sdName != null" >
+        sd_name = #{sdName,jdbcType=NVARCHAR},
+      </if>
+      <if test="kssj != null" >
+        kssj = #{kssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jssj != null" >
+        jssj = #{jssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ksMonth != null" >
+        ks_month = #{ksMonth,jdbcType=INTEGER},
+      </if>
+      <if test="jsMonth != null" >
+        js_month = #{jsMonth,jdbcType=INTEGER},
+      </if>
+      <if test="ksDay != null" >
+        ks_day = #{ksDay,jdbcType=INTEGER},
+      </if>
+      <if test="jsDay != null" >
+        js_day = #{jsDay,jdbcType=INTEGER},
+      </if>
+      <if test="ksWeek != null" >
+        ks_week = #{ksWeek,jdbcType=INTEGER},
+      </if>
+      <if test="jsWeek != null" >
+        js_week = #{jsWeek,jdbcType=INTEGER},
+      </if>
+      <if test="ksSj1 != null" >
+        ks_sj1 = #{ksSj1,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj1 != null" >
+        js_sj1 = #{jsSj1,jdbcType=VARCHAR},
+      </if>
+      <if test="ksSj2 != null" >
+        ks_sj2 = #{ksSj2,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj2 != null" >
+        js_sj2 = #{jsSj2,jdbcType=VARCHAR},
+      </if>
+      <if test="sj != null" >
+        sj = #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="glyNo != null" >
+        gly_no = #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="ksSj3 != null" >
+        ks_sj3 = #{ksSj3,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj3 != null" >
+        js_sj3 = #{jsSj3,jdbcType=VARCHAR},
+      </if>
+      <if test="ksSj4 != null" >
+        ks_sj4 = #{ksSj4,jdbcType=VARCHAR},
+      </if>
+      <if test="jsSj4 != null" >
+        js_sj4 = #{jsSj4,jdbcType=VARCHAR},
+      </if>
+      <if test="regserial != null" >
+        regserial = #{regserial,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where bh = #{bh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MjShidReal" >
+    update dbo.mj_shid_real
+    set sd_name = #{sdName,jdbcType=NVARCHAR},
+      kssj = #{kssj,jdbcType=TIMESTAMP},
+      jssj = #{jssj,jdbcType=TIMESTAMP},
+      ks_month = #{ksMonth,jdbcType=INTEGER},
+      js_month = #{jsMonth,jdbcType=INTEGER},
+      ks_day = #{ksDay,jdbcType=INTEGER},
+      js_day = #{jsDay,jdbcType=INTEGER},
+      ks_week = #{ksWeek,jdbcType=INTEGER},
+      js_week = #{jsWeek,jdbcType=INTEGER},
+      ks_sj1 = #{ksSj1,jdbcType=VARCHAR},
+      js_sj1 = #{jsSj1,jdbcType=VARCHAR},
+      ks_sj2 = #{ksSj2,jdbcType=VARCHAR},
+      js_sj2 = #{jsSj2,jdbcType=VARCHAR},
+      sj = #{sj,jdbcType=TIMESTAMP},
+      gly_no = #{glyNo,jdbcType=NVARCHAR},
+      ks_sj3 = #{ksSj3,jdbcType=VARCHAR},
+      js_sj3 = #{jsSj3,jdbcType=VARCHAR},
+      ks_sj4 = #{ksSj4,jdbcType=VARCHAR},
+      js_sj4 = #{jsSj4,jdbcType=VARCHAR},
+      regserial = #{regserial,jdbcType=NVARCHAR}
+    where bh = #{bh,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="selectByPage" resultMap="MjShidRealResultMap" parameterType="com.cecep.model.MjShidReal" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.mj_shid_real.bh) as rowNumber,<include refid="MjShidReal_Column_List" />, dbo.mj_rule_real.rule_name as ruleName
+		    from dbo.mj_shid_real
+		    left join dbo.mj_sd_rule_real
+		    on dbo.mj_shid_real.bh = dbo.mj_sd_rule_real.sd_no
+		    left join dbo.mj_rule_real
+		    on dbo.mj_sd_rule_real.rule_no = dbo.mj_rule_real.rule_no
+			<where>	
+		    	<if test="sdName != null and sdName != ''" >
+		        	dbo.mj_shid_real.sd_name like '%${sdName}%'
+		      	</if>		      	
+		     </where> ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.MjShidReal" >      
+    select count(1)
+    from dbo.mj_shid_real
+    left join dbo.mj_sd_rule_real
+    on dbo.mj_shid_real.bh = dbo.mj_sd_rule_real.sd_no
+    left join dbo.mj_rule_real
+    on dbo.mj_sd_rule_real.rule_no = dbo.mj_rule_real.rule_no
+	<where>	
+    	<if test="sdName != null and sdName != ''" >
+        	dbo.mj_shid_real.sd_name like '%${sdName}%'
+      	</if>		      	
+    </where> 
+   </select>
+</mapper>

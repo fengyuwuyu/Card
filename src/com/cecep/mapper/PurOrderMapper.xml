@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.PurOrderMapper">
+	<resultMap id="BaseResultMap" type="com.cecep.model.PurOrder">
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="card_number" property="cardNumber" jdbcType="VARCHAR" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="med_record_id" property="medRecordId" jdbcType="INTEGER" />
+
+		<!-- 药品关联 -->
+		<result column="medicine_id" property="medicineId" jdbcType="INTEGER" />
+		<result column="medicine_name" property="medicineName"	jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="NUMERIC" />
+		<result column="vendor" property="vendor" jdbcType="VARCHAR" />
+		<result column="medicine_desc" property="medicineDesc"	jdbcType="VARCHAR" />
+		<result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+		<result column="medicine_type" property="medicineType"  jdbcType="VARCHAR" />
+
+		<!-- 人员关联 -->
+		<result column="account_id" property="accountId" jdbcType="INTEGER" />
+		<result column="card_number" property="cardNumber" jdbcType="INTEGER" />
+		<result column="amount" property="amount" jdbcType="NUMERIC" />
+		<result column="acc_type" property="accType" jdbcType="VARCHAR" />
+		<result column="accType1" property="accType1" jdbcType="VARCHAR" />
+		<result column="user_no" property="userNo" jdbcType="VARCHAR" />
+		<result column="user_lname" property="userLname" jdbcType="VARCHAR" />
+		<result column="sexname" property="sexName" jdbcType="VARCHAR" />
+		<result column="tt_name" property="ttName" jdbcType="VARCHAR" />
+		<result column="user_depname" property="userDepname" jdbcType="VARCHAR" />
+		<result column="userType" property="userType" jdbcType="INTEGER" />
+		<result column="userType1" property="userType1" jdbcType="VARCHAR" />
+		<result column="user_serial" property="userSerial" jdbcType="INTEGER" />
+		<result column="user_duty" property="userDuty" jdbcType="VARCHAR" />
+		<result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+		<result column="record" property="record" jdbcType="INTEGER" />
+		<result column="pur_record_id" property="purRecordId" jdbcType="INTEGER" />
+  		<result column="dep_serial" property="depSerial" jdbcType="INTEGER" />
+		<result column="time" property="createTime" jdbcType="DATE" />
+		<result column="price" property="price" jdbcType="NUMERIC" />
+		<result column="quantity" property="quantity" jdbcType="INTEGER" />
+		<result column="cou" property="cou" jdbcType="INTEGER" />
+		<result column="user_duty" property="userDuty" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="NVARCHAR" />
+		<result column="dep_name" property="depName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		order_id, card_number, time, med_record_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select 'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from dbo.pur_order
+		where order_id = #{orderId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from dbo.pur_order
+		where order_id = #{orderId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cecep.model.PurOrder">
+		<selectKey resultType="java.lang.Integer" keyProperty="orderId"
+			order="BEFORE">
+			SELECT SCOPE_IDENTITY()
+		</selectKey>
+		insert into dbo.pur_order (card_number, time)
+		values (#{userSerial,jdbcType=INTEGER}, GETDATE())
+	</insert>
+	<insert id="insertSelective" parameterType="com.cecep.model.PurOrder">
+		<selectKey resultType="java.lang.Integer" keyProperty="orderId"
+			order="BEFORE">
+			SELECT SCOPE_IDENTITY()
+		</selectKey>
+		insert into dbo.pur_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			order_id,
+			<if test="cardNumber != null">
+				card_number,
+			</if>
+			<if test="time != null">
+				time,
+			</if>
+			<if test="medRecordId != null">
+				med_record_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{orderId,jdbcType=INTEGER},
+			<if test="cardNumber != null">
+				#{cardNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="medRecordId != null">
+				#{medRecordId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.PurOrder">
+		update dbo.pur_order
+		<set>
+			<if test="cardNumber != null">
+				card_number = #{cardNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="medRecordId != null">
+				med_record_id = #{medRecordId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where order_id = #{orderId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cecep.model.PurOrder">
+		update dbo.pur_order
+		set card_number = #{cardNumber,jdbcType=VARCHAR},
+		time = #{time,jdbcType=TIMESTAMP},
+		med_record_id = #{medRecordId,jdbcType=INTEGER}
+		where order_id = #{orderId,jdbcType=INTEGER}
+	</update>
+	<select id="medicineMsg" resultType="java.util.Map"
+		parameterType="com.cecep.model.PurOrder">
+		select
+		medicine_id,medicine_name,medicine_desc,price,vendor,bar_code,medicine_type
+		from medicine
+		where 1 = 1
+		<if test="medicineId != null and medicineId != ''">
+			and dbo.medicine.medicine_id =#{medicineId,jdbcType=INTEGER}
+		</if>
+		<if test="barCode != null and barCode != ''">
+			and dbo.medicine.bar_code =#{barCode,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<insert id="addPurchaseForm">
+		<selectKey resultType="java.lang.Integer" keyProperty="pur_record_id"
+			order="BEFORE">
+			SELECT SCOPE_IDENTITY()
+		</selectKey>
+		insert into dbo.purchase_record (med_id, quantity,order_id)
+		values
+		( #{medId,jdbcType=INTEGER},
+		#{quantity,jdbcType=NUMERIC},#{orderId,jdbcType=INTEGER} )
+	</insert>
+	<insert id="addRecord">
+		<selectKey resultType="java.lang.Integer" keyProperty="med_record_id"
+			order="BEFORE">
+			SELECT SCOPE_IDENTITY()
+		</selectKey>
+		insert into med_record (amount,med_time,account_id,order_id )VALUES(
+		#{totalAmount1,jdbcType=NUMERIC},
+		GETDATE(),#{accountId,jdbcType=INTEGER},#{orderId,jdbcType=INTEGER}
+		)
+	</insert>
+	<select id="getUserData" resultType="java.util.Map"  parameterType="com.cecep.model.PurOrder">
+		select
+		med_account.card_number,
+		CONVERT (
+				DECIMAL (18, 2),
+				med_account.amount
+			) amount,
+		med_account.account_id,
+		(CASE when med_account.acc_type='1' then '是' else '否' END) accType,
+		(CASE when med_account.acc_type='1' then '1' else '0' END) accType1,
+		dt_user.user_serial,
+		dt_user.user_no,
+		dt_user.user_lname,
+		dt_user.user_depname,
+		dt_user.user_sex sexname,
+		dt_card.card_hao,
+		dt_user.user_duty,
+		dt_user.user_type userType,
+		dt_user.user_duty
+		from med_account
+		left join dt_user ON dt_user.User_serial=med_account.card_number
+		LEFT JOIN dt_card on dt_card.User_serial = dt_user.User_serial
+		left join dt_dep on dt_user.user_dep=dt_dep.dep_serial
+		where card_hao=#{cardHao,jdbcType=VARCHAR}  and  dt_card.card_type='0'
+	</select>
+	<update id="updateAmount" parameterType="com.cecep.model.PurOrder">
+		UPDATE med_account SET amount=amount-#{totalAmount,jdbcType=NUMERIC} WHERE
+		card_number=#{userSerial,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectAmount" resultType="java.lang.Double"
+		parameterType="com.cecep.model.PurOrder">
+		select CONVERT (
+				DECIMAL (18, 2),
+				med_account.amount
+			) amount from med_account where
+		card_number=#{userSerial,jdbcType=INTEGER}
+	</select>
+	<select id="selectinsertid" resultType="java.lang.Integer"
+		parameterType="com.cecep.model.Inventory">
+		select top 1 order_id from pur_order order by order_id desc
+	</select>
+	<select id="selectAccountId" resultType="java.lang.Integer"
+		parameterType="com.cecep.model.Inventory">
+		select account_id from med_account where
+		card_number=#{userSerial,jdbcType=INTEGER}
+	</select>
+
+	<update id="updateInventory" parameterType="com.cecep.model.PurOrder">
+		UPDATE inventory SET quantity=quantity-#{quantity,jdbcType=NUMERIC}
+		where examiner_id=#{medId,jdbcType=INTEGER}
+	</update>
+
+	<select id="selectInventory" resultType="java.lang.Integer"
+		parameterType="com.cecep.model.Inventory">
+		select count(1) from inventory where examiner_id=#{medId,jdbcType=INTEGER}
+		and quantity &gt;=#{quantity,jdbcType=NUMERIC}
+	</select>
+	<select id="selectMedName" resultType="String"
+		parameterType="com.cecep.model.Inventory">
+		select medicine_name from medicine WHERE
+		medicine_id=#{medId,jdbcType=INTEGER}
+	</select>
+
+
+
+	<select id="selectByPage1" resultMap="BaseResultMap"  parameterType="com.cecep.model.PurOrder">
+	  <if test="depSerial != null and depSerial != ''" >
+  	  with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerial,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+		</if>	
+		select u.* from  (
+			select row_number() over(order by user_serial) as rowNumber,
+				tab.user_serial,
+				tab.user_lname,
+				tab.user_depname,
+				tab.user_dep  depSerial,
+				tab.card_number,
+				tab.user_no,
+				sum(tab.price) price
+			 from  (	
+				SELECT
+						dt_user.user_serial,
+						dt_user.user_lname,
+						dt_user.user_depname,
+						dt_user.user_dep,
+						dt_user.user_no,
+				med_account.card_number,
+						t.price
+				FROM
+					(
+						SELECT
+							SUM (
+								CONVERT (
+									DECIMAL (18, 2),
+									medicine.price * purchase_record.quantity
+								)
+							) price,
+							pur_order.card_number
+						FROM
+							purchase_record
+						LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+						LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+					where 1=1	
+						<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, pur_order.time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, pur_order.time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+						GROUP BY
+							pur_order.card_number
+					) t
+						LEFT JOIN dt_user ON t.card_number = dt_user.user_serial
+						left join   med_account  on dt_user.user_serial=med_account.card_number
+						LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial	
+						where 1=1	
+						<if test="cardHao != null and cardHao  != ''" >
+			        		and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+			      		</if>	
+				union ALL
+						SELECT 
+									dt_user.user_serial,
+									dt_user.user_lname,
+									dt_user.user_depname,
+									dt_user.user_dep  depSerial,
+									dt_user.user_no,
+										pre_order.card_number,
+								CONVERT (
+									DECIMAL (18, 2),
+									pre_order.money
+								) price
+									FROM
+										pre_order
+									LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+									LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+									LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial
+								where 1=1	
+						<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+				        <if test="cardHao != null and cardHao  != ''" >
+		        			and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      			</if>		
+									
+					) tab
+					where 1=1
+				<if test="userLname != null and userLname != ''" >
+		        	and tab.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		      			and ( tab.user_dep in(select dep_serial from cte )
+		        	or tab.user_dep=#{depSerial,jdbcType=INTEGER} )
+		      	</if>
+		      		group  by  
+							tab.user_lname,
+							tab.user_depname,
+							tab.user_dep,
+							tab.user_serial,
+							tab.card_number,
+							tab.user_no
+)  u
+		<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]>
+			</if>
+		</where>
+	</select>
+
+
+
+ <select id="selectCount1" resultType="java.lang.Integer" parameterType="com.cecep.model.PurOrder" >   
+ <if test="depSerial != null and depSerial != ''" >
+  	  with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerial,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+	</if>	
+  
+    select count(1) from  (
+		select row_number() over(order by user_serial) as rowNumber,
+				tab.user_serial,
+				tab.user_lname,
+				tab.user_depname,
+				tab.user_dep  depSerial,
+				tab.card_number,
+				tab.user_no,
+				sum(tab.price) price
+			 from  (	
+				SELECT
+						dt_user.user_serial,
+						dt_user.user_lname,
+						dt_user.user_depname,
+						dt_user.user_dep,
+						dt_user.user_no,
+				med_account.card_number,
+						t.price
+				FROM
+					(
+						SELECT
+							SUM (
+								CONVERT (
+									DECIMAL (18, 2),
+									medicine.price * purchase_record.quantity
+								)
+							) price,
+							pur_order.card_number
+						FROM
+							purchase_record
+						LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+						LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+						where 1=1	
+						<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, pur_order.time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, pur_order.time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						
+						GROUP BY
+							pur_order.card_number
+					) t
+						LEFT JOIN dt_user ON t.card_number = dt_user.user_serial
+						left join   med_account  on dt_user.user_serial=med_account.card_number
+						LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial	
+						where 1=1	
+						<if test="cardHao != null and cardHao  != ''" >
+			        		and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+			      		</if>	
+				union ALL
+						SELECT 
+									dt_user.user_serial,
+									dt_user.user_lname,
+									dt_user.user_depname,
+									dt_user.user_dep  depSerial,
+									dt_user.user_no,
+										pre_order.card_number,
+								CONVERT (
+									DECIMAL (18, 2),
+									pre_order.money
+								) price
+									FROM
+										pre_order
+									LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+									LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+									LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial
+						where 1=1	
+						<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+			        	<if test="cardHao != null and cardHao  != ''" >
+			        		and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+			      		</if>				
+									
+					) tab
+					 where 1=1
+				<if test="userLname != null and userLname != ''" >
+		        	and tab.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		      		and tab.user_dep in(select dep_serial from cte )
+		        	or tab.user_dep=#{depSerial,jdbcType=INTEGER}
+		      	</if>
+		      		group  by  
+						tab.user_lname,
+						tab.user_depname,
+						tab.user_dep,
+						tab.user_serial,
+						tab.card_number,
+						tab.user_no
+	
+)  u
+  </select>
+
+
+
+
+
+	<select id="selectByPage2" resultMap="BaseResultMap"  parameterType="com.cecep.model.PurOrder">
+					
+	 	with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depParent,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+			SELECT t.*,
+			(case when t2.money is null then 0 else t2.money end )  price
+			 FROM(	SELECT
+					row_number () OVER (ORDER BY dbo.dt_dep.dep_serial) AS rowNumber,
+					dbo.dt_dep.dep_serial,
+					dbo.dt_dep.dep_parent,
+					dbo.dt_dep.dep_name,
+					<choose>
+		    		<when test="depName != null and depName != ''" >'open' as state</when>
+		    			<otherwise>'closed' as state</otherwise>
+		   			</choose>
+		   			 from
+		 				dbo.dt_dep
+						LEFT JOIN dbo.dt_user ON dbo.dt_dep.dep_serial = dbo.dt_user.user_dep
+						LEFT JOIN dbo.dt_card ON dbo.dt_user.user_serial = dbo.dt_card.user_serial
+						WHERE
+							dbo.dt_dep.dep_parent =#{depParent,jdbcType=INTEGER}
+						OR dbo.dt_dep.dep_parent IS NULL
+						GROUP BY
+							dbo.dt_dep.dep_serial,
+							dbo.dt_dep.dep_parent,
+							dbo.dt_dep.dep_name
+			)  t  LEFT JOIN
+			
+			(select  
+				SUM(t1.money) money,
+			dt_dep.dep_serial
+			from 	
+				(select med_record.amount money,dt_user.user_serial,dt_user.user_dep from  med_record
+					left JOIN  pur_order  on  med_record.order_id=pur_order.order_id
+					left JOIN  dt_user  on  pur_order.card_number=dt_user.user_serial
+					where 1=1
+					<if test="beginDate != null and beginDate != ''" >
+		        		and Datediff(day, med_record.med_time,#{beginDate,jdbcType=DATE})&lt;=0
+			      	</if>
+			      	<if test="endDate != null and endDate != ''" >
+			        	and Datediff(day,med_record.med_time,#{endDate,jdbcType=DATE})&gt;=0
+			        </if>
+					union ALL
+					SELECT  pre_order.money money ,dt_user.user_serial,dt_user.user_dep FROM  pre_order  
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+					where 1=1
+					<if test="beginDate != null and beginDate != ''" >
+		        		and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+			      	</if>
+			      	<if test="endDate != null and endDate != ''" >
+			        	and Datediff(day,pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+			        </if>
+					
+					) t1
+			left join dt_dep  on  t1.user_dep=dt_dep.dep_serial 
+			WHERE (	t1.user_dep in(select dep_serial from cte)
+					  or dt_dep.dep_serial=#{depParent,jdbcType=INTEGER})
+			GROUP BY dt_dep.dep_serial
+			
+			) t2 on  t.dep_serial=t2.dep_serial
+		<where>
+	   	<if test="depSerial != null and depSerial != ''" >
+			      and t.dep_serial=#{depSerial,jdbcType=INTEGER}
+		</if>
+	</where>
+	</select>
+
+
+
+ <select id="selectCount2" resultType="java.lang.Integer" parameterType="com.cecep.model.PurOrder" > 
+ 		 with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depParent,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+ 
+    select count(1) 
+    		from (SELECT t.*,t2.money price FROM(	SELECT
+					row_number () OVER (ORDER BY dbo.dt_dep.dep_serial) AS rowNumber,
+					dbo.dt_dep.dep_serial,
+					dbo.dt_dep.dep_parent,
+					dbo.dt_dep.dep_name,
+					<choose>
+		    		<when test="depName != null and depName != ''" >'open' as state</when>
+		    			<otherwise>'closed' as state</otherwise>
+		   			</choose>
+		   			FROM
+		 				dbo.dt_dep
+						LEFT JOIN dbo.dt_user ON dbo.dt_dep.dep_serial = dbo.dt_user.user_dep
+						LEFT JOIN dbo.dt_card ON dbo.dt_user.user_serial = dbo.dt_card.user_serial
+						WHERE
+							dbo.dt_dep.dep_parent =#{depParent,jdbcType=INTEGER}
+						OR dbo.dt_dep.dep_parent IS NULL
+						GROUP BY
+							dbo.dt_dep.dep_serial,
+							dbo.dt_dep.dep_parent,
+							dbo.dt_dep.dep_name
+			)  t  LEFT JOIN
+			
+			(select  
+				SUM(t1.money) money,
+			dt_dep.dep_serial
+			from 	
+				(select med_record.amount money,dt_user.user_serial,dt_user.user_dep from  med_record
+					left JOIN  pur_order  on  med_record.order_id=pur_order.order_id
+					left JOIN  dt_user  on  pur_order.card_number=dt_user.user_serial
+					where 1=1
+					<if test="beginDate != null and beginDate != ''" >
+		        		and Datediff(day, med_record.med_time,#{beginDate,jdbcType=DATE})&lt;=0
+			      	</if>
+			      	<if test="endDate != null and endDate != ''" >
+			        	and Datediff(day,med_record.med_time,#{endDate,jdbcType=DATE})&gt;=0
+			        </if>
+					union ALL
+					SELECT  pre_order.money money ,dt_user.user_serial,dt_user.user_dep FROM  pre_order  
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+					where 1=1
+					<if test="beginDate != null and beginDate != ''" >
+		        		and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+			      	</if>
+			      	<if test="endDate != null and endDate != ''" >
+			        	and Datediff(day,pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+			        </if>
+					
+					) t1
+			left join dt_dep  on  t1.user_dep=dt_dep.dep_serial 
+			WHERE (	t1.user_dep in(select dep_serial from cte)
+					  or dt_dep.dep_serial=#{depParent,jdbcType=INTEGER})
+			GROUP BY dt_dep.dep_serial
+			
+			) t2 on  t.dep_serial=t2.dep_serial
+		<where>
+	   	<if test="depSerial != null and depSerial != ''" >
+			      and t.dep_serial=#{depSerial,jdbcType=INTEGER}
+		</if>
+	</where>
+		) as u
+  </select>
+  
+  
+  
+  
+    <select id="selectByPage3" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	select u.*
+   	from ( 	
+		 	SELECT
+			row_number () OVER (ORDER BY tab.user_serial) AS rowNumber,
+			tab.price,
+			tab.createTime,
+			tab.user_Lname,
+			tab.user_serial,
+			tab.user_dep,
+			tab.medicine_name,
+			tab.quantity,
+			tab.quantity*tab.price total
+		FROM
+			(	SELECT
+					CONVERT (
+						DECIMAL (18, 2),
+						medicine.price
+					) price,
+					CONVERT (VARCHAR, pur_order. TIME, 120) createTime,
+					dt_user.user_Lname,
+					dt_user.user_serial,
+					dt_user.user_dep,
+					purchase_record.quantity,
+					medicine.medicine_name
+				FROM
+					purchase_record
+				LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+				LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+				LEFT JOIN med_record ON pur_order.order_id = med_record.order_id
+				LEFT JOIN dt_user ON dt_user.user_serial = pur_order.card_number
+				UNION ALL
+					SELECT
+						CONVERT (
+							DECIMAL (18, 2),
+							pre_order.money
+						) price,
+						CONVERT (
+							VARCHAR,
+							pre_order.creat_date,
+							120
+						) createTime,
+						dt_user.user_Lname,
+						dt_user.user_serial,
+						dt_user.user_dep,
+						1 quantity,
+						'代购药品' medicine_name
+					FROM
+						pre_order
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+			) tab
+			WHERE  tab.user_serial=#{userSerial,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, tab.createTime,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day,tab.createTime,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+  
+  <select id="selectCount3" resultType="java.lang.Integer" parameterType="com.cecep.model.PurOrder" >    
+    	select count(1)
+   		from ( 	
+		 	SELECT
+			row_number () OVER (ORDER BY tab.user_serial) AS rowNumber,
+			tab.price,
+			tab.createTime,
+			tab.user_Lname,
+			tab.user_serial,
+			tab.user_dep,
+			tab.medicine_name,
+			tab.quantity,
+			tab.quantity*tab.price total
+		FROM
+			(SELECT
+					CONVERT (
+						DECIMAL (18, 2),
+						medicine.price
+					) price,
+					CONVERT (VARCHAR, pur_order. TIME, 120) createTime,
+					dt_user.user_Lname,
+					dt_user.user_serial,
+					dt_user.user_dep,
+					purchase_record.quantity,
+					medicine.medicine_name
+				FROM
+					purchase_record
+				LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+				LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+				LEFT JOIN med_record ON pur_order.order_id = med_record.order_id
+				LEFT JOIN dt_user ON dt_user.user_serial = pur_order.card_number
+				UNION ALL
+					SELECT
+						CONVERT (
+							DECIMAL (18, 2),
+							pre_order.money
+						) price,
+						CONVERT (
+							VARCHAR,
+							pre_order.creat_date,
+							120
+						) createTime,
+						dt_user.user_Lname,
+						dt_user.user_serial,
+						dt_user.user_dep,
+						1 quantity,
+						'代购药品' medicine_name
+					FROM
+						pre_order
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+			) tab
+			WHERE  tab.user_serial=#{userSerial,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, tab.createTime,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day,tab.createTime,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u	
+  </select>
+
+  <select id="selectByPage4" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+  	 with cte(dep_serial,dep_parent)
+			as
+			(
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerial,jdbcType=INTEGER} 
+			union all	
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+	select 	ua.*
+  		 	from ( 	
+				SELECT 
+				row_number () OVER (
+					
+							ORDER BY
+								dbo.dt_user.User_serial
+						) AS rowNumber,
+				 dt_user.user_lname,
+				dt_user.user_no,
+				dt_user.user_dep,
+				Convert(decimal(18,2),(case when t2.money is null then 0 else t2.money end ))  totalPrice
+				FROM
+				(select  
+					SUM(t1.money) money,
+					t1.user_serial
+				from 	
+					(select med_record.amount money,dt_user.user_serial,dt_user.user_dep from  med_record
+						left JOIN  pur_order  on  med_record.order_id=pur_order.order_id
+						left JOIN  dt_user  on  pur_order.card_number=dt_user.user_serial
+						where 1=1
+						<if test="beginDate != null and beginDate != ''" >
+		        			and Datediff(day, med_record.med_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day,med_record.med_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						union ALL
+						SELECT  pre_order.money money ,dt_user.user_serial,dt_user.user_dep FROM  pre_order  
+						LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+						<if test="beginDate != null and beginDate != ''" >
+		        			and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day,pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						
+						) t1
+				left join dt_user  on  t1.user_serial=dt_user.user_serial 
+				WHERE (	t1.user_dep in(select dep_serial from cte)
+						  or t1.user_dep =#{depSerial,jdbcType=INTEGER} )
+				GROUP BY t1.user_serial)
+			 t2 LEFT JOIN  dt_user  on  t2.user_serial=dt_user.user_serial
+		      	) as ua	
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ ua.rowNumber >= #{start} and ua.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+  
+  <select id="selectCount4" resultType="java.lang.Integer" parameterType="com.cecep.model.PurOrder" > 
+   with cte(dep_serial,dep_parent)
+			as
+			(
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerial,jdbcType=INTEGER} 
+			union all	
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+     
+    	select count(1)  from(
+    	SELECT  dt_user.user_lname,
+				dt_user.user_no,
+				dt_user.user_dep,
+				Convert(decimal(18,2),(case when t2.money is null then 0 else t2.money end ))  totalPrice
+				FROM
+				(select  
+					SUM(t1.money) money,
+					t1.user_serial
+				from 	
+					(select med_record.amount money,dt_user.user_serial,dt_user.user_dep from  med_record
+						left JOIN  pur_order  on  med_record.order_id=pur_order.order_id
+						left JOIN  dt_user  on  pur_order.card_number=dt_user.user_serial
+						where 1=1
+						<if test="beginDate != null and beginDate != ''" >
+		        			and Datediff(day, med_record.med_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day,med_record.med_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						union ALL
+						SELECT  pre_order.money money ,dt_user.user_serial,dt_user.user_dep FROM  pre_order  
+						LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+						<if test="beginDate != null and beginDate != ''" >
+		        			and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day,pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						
+						) t1
+				left join dt_user  on  t1.user_serial=dt_user.user_serial 
+				WHERE (	t1.user_dep in(select dep_serial from cte)
+						  or t1.user_dep =#{depSerial,jdbcType=INTEGER} )
+				GROUP BY t1.user_serial)
+			 t2 LEFT JOIN  dt_user  on  t2.user_serial=dt_user.user_serial
+    	
+    	) ua
+		    
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+    <select id="selectByPage5" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+select u.* from  (
+			select row_number() over(order by user_serial) as rowNumber,
+				tab.user_serial,
+				tab.user_lname,
+				tab.user_depname,
+				tab.user_dep  depSerial,
+				tab.card_number,
+				tab.user_no,
+				sum(tab.price) price
+			 from  (	
+				SELECT
+						dt_user.user_serial,
+						dt_user.user_lname,
+						dt_user.user_depname,
+						dt_user.user_dep,
+						dt_user.user_no,
+				med_account.card_number,
+						t.price
+				FROM
+					(
+						SELECT
+							SUM (
+								CONVERT (
+									DECIMAL (18, 2),
+									medicine.price * purchase_record.quantity
+								)
+							) price,
+							pur_order.card_number
+						FROM
+							purchase_record
+						LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+						LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+					where 1=1	
+						<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, pur_order.time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, pur_order.time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+						GROUP BY
+							pur_order.card_number
+					) t
+						LEFT JOIN dt_user ON t.card_number = dt_user.user_serial
+						left join   med_account  on dt_user.user_serial=med_account.card_number
+				union ALL
+						SELECT 
+										dt_user.user_serial,
+									dt_user.user_lname,
+									dt_user.user_depname,
+									dt_user.user_dep  depSerial,
+									dt_user.user_no,
+										pre_order.card_number,
+								CONVERT (
+									DECIMAL (18, 2),
+									pre_order.money
+								) price
+									FROM
+										pre_order
+									LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+									LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+									LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial
+								where 1=1	
+						<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>			
+									
+					) tab
+				<if test="userLname != null and userLname != ''" >
+		        	and tab.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		        	and tab.user_dep=#{depSerial,jdbcType=INTEGER}
+		      	</if>
+		      		group  by  
+							tab.user_lname,
+							tab.user_depname,
+							tab.user_dep,
+							tab.user_serial,
+							tab.card_number,
+							tab.user_no
+)  u
+  </select>
+  
+  
+  
+  <select id="selectByPage6" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent in
+			  <foreach collection="result" item="item" open="(" close=")" separator=",">
+								#{item}
+			</foreach>
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+			SELECT 
+				dt_dep.dep_serial,
+				dt_dep.dep_name,
+			Convert(decimal(18,2),(case when t2.money is null then 0 else t2.money end )) price
+			 FROM
+			 dt_dep  LEFT JOIN
+			(select  
+			SUM(t1.money) money,
+			dt_dep.dep_serial
+			from 	
+				(select med_record.amount money,dt_user.user_serial,dt_user.user_dep from  med_record
+					left JOIN  pur_order  on  med_record.order_id=pur_order.order_id
+					left JOIN  dt_user  on  pur_order.card_number=dt_user.user_serial
+					where 1=1
+					<if test="beginDate != null and beginDate != ''" >
+		        		and Datediff(day, med_record.med_time,#{beginDate,jdbcType=DATE})&lt;=0
+			      	</if>
+			      	<if test="endDate != null and endDate != ''" >
+			        	and Datediff(day,med_record.med_time,#{endDate,jdbcType=DATE})&gt;=0
+			        </if>
+					union ALL
+					SELECT  pre_order.money money ,dt_user.user_serial,dt_user.user_dep FROM  pre_order  
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+					where 1=1
+					<if test="beginDate != null and beginDate != ''" >
+		        		and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+			      	</if>
+			      	<if test="endDate != null and endDate != ''" >
+			        	and Datediff(day,pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+			        </if>
+					
+					) t1
+			left join dt_dep  on  t1.user_dep=dt_dep.dep_serial 
+			WHERE (	t1.user_dep in(select dep_serial from cte)
+					  or dt_dep.dep_serial in   	
+					  <foreach collection="result" item="item" open="(" close=")" separator=",">
+								#{item}
+					</foreach> )
+			GROUP BY dt_dep.dep_serial
+			) t2 on  dt_dep.dep_serial=t2.dep_serial
+		<where>
+			      and dt_dep.dep_serial in
+			      	 <foreach collection="result" item="item" open="(" close=")" separator=",">
+							#{item}
+				</foreach>
+		</where>
+  </select>
+  
+	 <select id="selectByPage7" resultMap="BaseResultMap" parameterType="com.cecep.model.PurOrder" >
+   	select u.*
+   	from ( 	
+		 	SELECT
+			row_number () OVER (ORDER BY tab.user_serial) AS rowNumber,
+			tab.price,
+			tab.createTime,
+			tab.user_Lname,
+			tab.user_serial,
+			tab.user_dep,
+			tab.medicine_name,
+			tab.quantity,
+			tab.quantity*tab.price total 
+		FROM
+			(	SELECT
+					CONVERT (
+						DECIMAL (18, 2),
+						medicine.price
+					) price,
+					CONVERT (VARCHAR, pur_order. TIME, 120) createTime,
+					dt_user.user_Lname,
+					dt_user.user_serial,
+					dt_user.user_dep,
+					purchase_record.quantity ,
+					medicine.medicine_name
+				FROM
+					purchase_record
+				LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+				LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+				LEFT JOIN med_record ON pur_order.order_id = med_record.order_id
+				LEFT JOIN dt_user ON dt_user.user_serial = pur_order.card_number
+				UNION ALL
+					SELECT
+						CONVERT (
+							DECIMAL (18, 2),
+							pre_order.money
+						) price,
+						CONVERT (
+							VARCHAR,
+							pre_order.creat_date,
+							120
+						) createTime,
+						dt_user.user_Lname,
+						dt_user.user_serial,
+						dt_user.user_dep,
+						1 quantity,
+						'代购药品' medicine_name
+					FROM
+						pre_order
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+			) tab
+			WHERE  tab.user_serial=#{userSerial,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, tab.createTime,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day,tab.createTime,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+  </select>
+ <select id="selectByPage8" resultMap="BaseResultMap" parameterType="com.cecep.model.PurOrder" >
+	 with cte(dep_serial,dep_parent)
+			as
+			(
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerialAccount,jdbcType=INTEGER} 
+			union all	
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+	select  sum(ua.totalPrice)  price,
+				ua.rowNumber,
+				ua.user_lname,
+				ua.user_no,
+				ua.user_dep
+	
+  		 	from ( 	
+				SELECT 
+				row_number () OVER (
+					
+							ORDER BY
+								dbo.dt_user.User_serial
+						) AS rowNumber,
+				 dt_user.user_lname,
+				dt_user.user_no,
+				dt_user.user_dep,
+				Convert(decimal(18,2),(case when t2.money is null then 0 else t2.money end ))  totalPrice
+				FROM
+				(select  
+					SUM(t1.money) money,
+					t1.user_serial
+				from 	
+					(select med_record.amount money,dt_user.user_serial,dt_user.user_dep from  med_record
+						left JOIN  pur_order  on  med_record.order_id=pur_order.order_id
+						left JOIN  dt_user  on  pur_order.card_number=dt_user.user_serial
+						where 1=1
+						<if test="beginDate != null and beginDate != ''" >
+		        			and Datediff(day, med_record.med_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day,med_record.med_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						union ALL
+						SELECT  pre_order.money money ,dt_user.user_serial,dt_user.user_dep FROM  pre_order  
+						LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+						<if test="beginDate != null and beginDate != ''" >
+		        			and Datediff(day, pre_order.creat_date,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day,pre_order.creat_date,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>
+						
+						) t1
+				left join dt_user  on  t1.user_serial=dt_user.user_serial 
+				WHERE (	t1.user_dep in(select dep_serial from cte)
+						  or t1.user_dep =#{depSerialAccount,jdbcType=INTEGER} )
+				GROUP BY t1.user_serial)
+			 t2 LEFT JOIN  dt_user  on  t2.user_serial=dt_user.user_serial
+		      	) as ua	
+  </select>
+    <select id="selectByUser" resultType="java.util.Map" parameterType="com.cecep.model.PurOrder" >
+		  SELECT
+		  top(1)
+			dt_user.user_lname,
+			dt_user.user_depname
+		FROM
+			dt_user
+		LEFT JOIN dt_dep  ON dt_user.user_dep = dt_dep.dep_serial
+  where  1=1
+  				<if test="userSerial !=-1 and userSerial != '-1'" >
+		        	and dbo.dt_user.user_serial =#{userSerial,jdbcType=INTEGER}
+		      	</if>
+		      	<if test="depSerialAccount != 0 and depSerialAccount != '0'" >
+		        	and dbo. dt_dep.dep_serial=#{depSerialAccount,jdbcType=INTEGER}
+		      	</if>
+  </select>
+  <!-- 个人消费记录 -->
+     <select id="personalRecharge" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+	 	select u.*
+   	from ( 	
+		 	SELECT
+			row_number () OVER (ORDER BY tab.user_serial) AS rowNumber,
+			tab.price,
+			tab.createTime,
+			tab.user_Lname,
+			tab.user_serial,
+			tab.user_dep,
+			tab.medicine_name,
+			tab.quantity,
+			tab.quantity*tab.price total
+		FROM
+			(	SELECT
+					CONVERT (
+						DECIMAL (18, 2),
+						medicine.price
+					) price,
+					CONVERT (VARCHAR, pur_order. TIME, 120) createTime,
+					dt_user.user_Lname,
+					dt_user.user_serial,
+					dt_user.user_dep,
+					purchase_record.quantity,
+					medicine.medicine_name
+				FROM
+					purchase_record
+				LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+				LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+				LEFT JOIN med_record ON pur_order.order_id = med_record.order_id
+				LEFT JOIN dt_user ON dt_user.user_serial = pur_order.card_number
+				UNION ALL
+					SELECT
+						CONVERT (
+							DECIMAL (18, 2),
+							pre_order.money
+						) price,
+						CONVERT (
+							VARCHAR,
+							pre_order.creat_date,
+							120
+						) createTime,
+						dt_user.user_Lname,
+						dt_user.user_serial,
+						dt_user.user_dep,
+						1 quantity,
+						'代购药品' medicine_name
+					FROM
+						pre_order
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+			) tab
+			WHERE  tab.user_serial=#{userSerial1,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, tab.createTime,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day,tab.createTime,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>		
+  </select>
+  
+  
+  
+    <select id="personalRechargeCou" resultType="java.lang.Integer"  parameterType="com.cecep.model.MedAccount" >
+	  	select count(1)
+   		from ( 	
+		 	SELECT
+			row_number () OVER (ORDER BY tab.user_serial) AS rowNumber,
+			tab.price,
+			tab.createTime,
+			tab.user_Lname,
+			tab.user_serial,
+			tab.user_dep,
+			tab.medicine_name,
+			tab.quantity,
+			tab.quantity*tab.price total
+		FROM
+			(SELECT
+					CONVERT (
+						DECIMAL (18, 2),
+						medicine.price
+					) price,
+					CONVERT (VARCHAR, pur_order. TIME, 120) createTime,
+					dt_user.user_Lname,
+					dt_user.user_serial,
+					dt_user.user_dep,
+					purchase_record.quantity,
+					medicine.medicine_name
+				FROM
+					purchase_record
+				LEFT JOIN pur_order ON pur_order.order_id = purchase_record.order_id
+				LEFT JOIN medicine ON medicine.medicine_id = purchase_record.med_id
+				LEFT JOIN med_record ON pur_order.order_id = med_record.order_id
+				LEFT JOIN dt_user ON dt_user.user_serial = pur_order.card_number
+				UNION ALL
+					SELECT
+						CONVERT (
+							DECIMAL (18, 2),
+							pre_order.money
+						) price,
+						CONVERT (
+							VARCHAR,
+							pre_order.creat_date,
+							120
+						) createTime,
+						dt_user.user_Lname,
+						dt_user.user_serial,
+						dt_user.user_dep,
+						1 quantity,
+						'代购药品' medicine_name
+					FROM
+						pre_order
+					LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+			) tab
+			WHERE  tab.user_serial=#{userSerial1,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, tab.createTime,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day,tab.createTime,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u	
+		
+  </select>
+  
+  
+</mapper>

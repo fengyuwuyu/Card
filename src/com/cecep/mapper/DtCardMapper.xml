@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.DtCardMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.DtCard" >
+    <id column="card_serial" property="cardSerial" jdbcType="CHAR" />
+    <result column="xh" property="xh" jdbcType="INTEGER" />
+    <result column="lx" property="lx" jdbcType="INTEGER" />
+    <result column="gly_no" property="glyNo" jdbcType="NVARCHAR" />
+    <result column="card_photo" property="cardPhoto" jdbcType="VARCHAR" />
+    <result column="sj" property="sj" jdbcType="TIMESTAMP" />
+    <result column="user_serial" property="userSerial" jdbcType="BIGINT" />
+    <result column="card_lx" property="cardLx" jdbcType="INTEGER" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+    <result column="card_order" property="cardOrder" jdbcType="INTEGER" />
+    <result column="card_bz" property="cardBz" jdbcType="NVARCHAR" />
+    <result column="card_verify" property="cardVerify" jdbcType="VARCHAR" />
+    <result column="readd_count" property="readdCount" jdbcType="INTEGER" />
+    <result column="loss_count" property="lossCount" jdbcType="INTEGER" />
+    <result column="Card_work" property="cardWork" jdbcType="INTEGER" />
+    <result column="card_form" property="cardForm" jdbcType="NVARCHAR" />
+    <result column="isCardReplace" property="iscardreplace" jdbcType="INTEGER" />
+    <result column="iscarddel" property="iscarddel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    card_serial, xh, lx, gly_no, card_photo, sj, user_serial, card_lx, card_type, card_hao, 
+    card_order, card_bz, card_verify, readd_count, loss_count, Card_work, card_form, 
+    isCardReplace, iscarddel
+  </sql>
+  
+  <parameterMap id="OpenCardParameterMap" type="com.cecep.model.DtCard">
+  	<parameter property="devSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="lx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="acType" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="BIGINT" mode="IN"/>
+	<parameter property="cardHao" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="jmkh" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="cardSerial" javaType="java.lang.String" jdbcType="CHAR" mode="IN"/>
+	<parameter property="cardLx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="cardWork" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="cardType" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="ip" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+	<parameter property="glyNo" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>	
+    <parameter property="regSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>   	
+  </parameterMap>
+  
+  <parameterMap id="LockCardParameterMap" type="com.cecep.model.DtCard">	
+	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="BIGINT" mode="IN"/>
+	<parameter property="cardHao" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="cardBz" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>
+	<parameter property="lx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>	
+	<parameter property="ip" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+	<parameter property="glyNo" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>	
+    <parameter property="regSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>   	
+  </parameterMap>
+  
+  <parameterMap id="UnlockCardParameterMap" type="com.cecep.model.DtCard">
+  	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="BIGINT" mode="IN"/>
+  	<parameter property="cardSerial" javaType="java.lang.String" jdbcType="CHAR" mode="IN"/>
+	<parameter property="cardHao" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="cardLx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="lx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>	
+	<parameter property="ip" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+	<parameter property="glyNo" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>	
+    <parameter property="regSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>     	
+  </parameterMap>
+  
+  <parameterMap id="ReturnCardParameterMap" type="com.cecep.model.DtCard">
+  	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="BIGINT" mode="IN"/>
+  	<parameter property="cardSerial" javaType="java.lang.String" jdbcType="CHAR" mode="IN"/>
+  	<parameter property="cardHao" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="cardVerify" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>
+	<parameter property="cardForm" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>
+	<parameter property="cardLx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="cardType" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="lx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="ip" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+	<parameter property="glyNo" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>	
+    <parameter property="regSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/> 
+    <parameter property="versionNo" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>   	
+  </parameterMap>
+  
+  <resultMap id="DtUserResultMap" type="com.cecep.model.DtUser" >
+    <id column="user_serial" property="userSerial" jdbcType="BIGINT" />
+    <result column="user_no" property="userNo" jdbcType="NVARCHAR" />
+    <result column="user_lname" property="userLname" jdbcType="NVARCHAR" />
+    <result column="user_fname" property="userFname" jdbcType="NVARCHAR" />
+    <result column="dep_no" property="depNo" jdbcType="VARCHAR" />
+    <result column="user_dep" property="userDep" jdbcType="INTEGER" />
+    <result column="user_depname" property="userDepname" jdbcType="NVARCHAR" />
+    <result column="user_workday" property="userWorkday" jdbcType="TIMESTAMP" />
+    <result column="user_duty" property="userDuty" jdbcType="NVARCHAR" />
+    <result column="user_card" property="userCard" jdbcType="NVARCHAR" />
+    <result column="user_finger" property="userFinger" jdbcType="NVARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="pwd_begin" property="pwdBegin" jdbcType="TIMESTAMP" />
+    <result column="pwd_end" property="pwdEnd" jdbcType="TIMESTAMP" />
+    <result column="user_type" property="userType" jdbcType="SMALLINT" />
+    <result column="pact_begin" property="pactBegin" jdbcType="TIMESTAMP" />
+    <result column="pact_end" property="pactEnd" jdbcType="TIMESTAMP" />
+    <result column="user_level" property="userLevel" jdbcType="INTEGER" />
+    <result column="user_photo" property="userPhoto" jdbcType="INTEGER" />
+    <result column="user_sex" property="userSex" jdbcType="NVARCHAR" />
+    <result column="user_nation" property="userNation" jdbcType="NVARCHAR" />
+    <result column="user_xueli" property="userXueli" jdbcType="NVARCHAR" />
+    <result column="user_native" property="userNative" jdbcType="NVARCHAR" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="NVARCHAR" />
+    <result column="user_post" property="userPost" jdbcType="NVARCHAR" />
+    <result column="user_linkman" property="userLinkman" jdbcType="NVARCHAR" />
+    <result column="user_telephone" property="userTelephone" jdbcType="NVARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="NVARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="NVARCHAR" />
+    <result column="user_1" property="user1" jdbcType="NVARCHAR" />
+    <result column="user_2" property="user2" jdbcType="NVARCHAR" />
+    <result column="user_bz" property="userBz" jdbcType="NVARCHAR" />
+    <result column="kq_rule" property="kqRule" jdbcType="VARCHAR" />
+    <result column="kq_taoban" property="kqTaoban" jdbcType="NVARCHAR" />
+    <result column="kq_tiaoxiu" property="kqTiaoxiu" jdbcType="INTEGER" />
+    <result column="xf_time" property="xfTime" jdbcType="TIMESTAMP" />
+    <result column="xf_jiange" property="xfJiange" jdbcType="INTEGER" />
+    <result column="xf_je" property="xfJe" jdbcType="INTEGER" />
+    <result column="user_sj" property="userSj" jdbcType="TIMESTAMP" />
+    <result column="user_rank" property="userRank" jdbcType="NVARCHAR" />
+    <result column="gly_img" property="glyImg" jdbcType="INTEGER" />
+    <result column="user_ac" property="userAc" jdbcType="INTEGER" />
+    <result column="user_gsbh" property="userGsbh" jdbcType="VARCHAR" />
+    <result column="user_yglx" property="userYglx" jdbcType="VARCHAR" />
+    <result column="user_zhbh" property="userZhbh" jdbcType="VARCHAR" />
+    <result column="user_zhlx" property="userZhlx" jdbcType="VARCHAR" />
+    <result column="user_txm" property="userTxm" jdbcType="VARCHAR" />
+    <result column="user_lx" property="userLx" jdbcType="INTEGER" />
+    <result column="user_mj" property="userMj" jdbcType="INTEGER" />
+    <result column="card_xh" property="cardXh" jdbcType="VARCHAR" />
+  	<result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+    <result column="card_serial" property="cardSerial" jdbcType="CHAR" />
+  	<result column="card_lx" property="cardLx" jdbcType="INTEGER" />
+  	<result column="tt_name" property="ttName" jdbcType="VARCHAR" />  	
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />   
+    <result column="card_sj" property="cardSj" jdbcType="TIMESTAMP" />
+    <result column="loss_count" property="cardLossCount" jdbcType="INTEGER" />
+    <result column="card_bz" property="cardBz" jdbcType="NVARCHAR" />  
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  	<result column="role_name" property="roleName" jdbcType="VARCHAR" />  
+    <result column="ac_bh" property="acBh" jdbcType="CHAR" />
+  	<result column="ac_name" property="acName" jdbcType="VARCHAR" />
+  	<result column="pass_max" property="passMax" jdbcType="INTEGER" />
+    <result column="ac_pass" property="acPass" jdbcType="VARCHAR" />
+  	<result column="ac_kssj" property="acBegin" jdbcType="TIMESTAMP" />
+  	<result column="ac_jssj" property="acEnd" jdbcType="TIMESTAMP" />  	
+    <result column="sj" property="acSj" jdbcType="TIMESTAMP" />   
+    <result column="ac_money" property="acMoney" jdbcType="INTEGER" />   
+    <result column="med_money" property="medMoney" jdbcType="INTEGER" /> 
+    <result column="user_type_name" property="userTypeName" jdbcType="VARCHAR" /> 
+  </resultMap>
+  
+  <sql id="DtUser_Column_List" >
+    dbo.dt_user.user_serial, dbo.dt_user.user_no, dbo.dt_user.user_lname, dbo.dt_user.user_fname, dbo.dt_user.dep_no, dbo.dt_user.user_dep, dbo.dt_user.user_depname, dbo.dt_user.user_workday, 
+    dbo.dt_user.user_duty, dbo.dt_user.user_card, dbo.dt_user.user_finger, dbo.dt_user.user_password, dbo.dt_user.pwd_begin, dbo.dt_user.pwd_end, dbo.dt_user.user_type, 
+    dbo.dt_user.pact_begin, dbo.dt_user.pact_end, dbo.dt_user.user_level, dbo.dt_user.user_photo, dbo.dt_user.user_sex, dbo.dt_user.user_nation, dbo.dt_user.user_xueli, 
+    dbo.dt_user.user_native, dbo.dt_user.user_birthday, dbo.dt_user.user_id, dbo.dt_user.user_post, dbo.dt_user.user_linkman, dbo.dt_user.user_telephone, dbo.dt_user.user_address, 
+    dbo.dt_user.user_email, dbo.dt_user.user_1, dbo.dt_user.user_2, dbo.dt_user.user_bz, dbo.dt_user.kq_rule, dbo.dt_user.kq_taoban, dbo.dt_user.kq_tiaoxiu, dbo.dt_user.xf_time, dbo.dt_user.xf_jiange, 
+    dbo.dt_user.xf_je, dbo.dt_user.user_sj, dbo.dt_user.user_rank, dbo.dt_user.gly_img, dbo.dt_user.user_ac, dbo.dt_user.user_gsbh, dbo.dt_user.user_yglx, dbo.dt_user.user_zhbh, dbo.dt_user.user_zhlx, 
+    dbo.dt_user.user_txm, dbo.dt_user.user_lx, dbo.dt_user.user_mj
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.dt_card
+    where card_serial = #{cardSerial,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dbo.dt_card
+    where card_serial = #{cardSerial,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.DtCard" >
+    <selectKey resultType="java.lang.String" keyProperty="cardSerial" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.dt_card (card_serial, xh, lx, 
+      gly_no, card_photo, sj, 
+      user_serial, card_lx, card_type, 
+      card_hao, card_order, card_bz, 
+      card_verify, readd_count, loss_count, 
+      Card_work, card_form, isCardReplace, 
+      iscarddel)
+    values (#{cardSerial,jdbcType=CHAR}, #{xh,jdbcType=INTEGER}, #{lx,jdbcType=INTEGER}, 
+      #{glyNo,jdbcType=NVARCHAR}, #{cardPhoto,jdbcType=VARCHAR}, #{sj,jdbcType=TIMESTAMP}, 
+      #{userSerial,jdbcType=BIGINT}, #{cardLx,jdbcType=INTEGER}, #{cardType,jdbcType=INTEGER}, 
+      #{cardHao,jdbcType=VARCHAR}, #{cardOrder,jdbcType=INTEGER}, #{cardBz,jdbcType=NVARCHAR}, 
+      #{cardVerify,jdbcType=VARCHAR}, #{readdCount,jdbcType=INTEGER}, #{lossCount,jdbcType=INTEGER}, 
+      #{cardWork,jdbcType=INTEGER}, #{cardForm,jdbcType=NVARCHAR}, #{iscardreplace,jdbcType=INTEGER}, 
+      #{iscarddel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.DtCard" >
+    <selectKey resultType="java.lang.String" keyProperty="cardSerial" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.dt_card
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      card_serial,
+      <if test="xh != null" >
+        xh,
+      </if>
+      <if test="lx != null" >
+        lx,
+      </if>
+      <if test="glyNo != null" >
+        gly_no,
+      </if>
+      <if test="cardPhoto != null" >
+        card_photo,
+      </if>
+      <if test="sj != null" >
+        sj,
+      </if>
+      <if test="userSerial != null" >
+        user_serial,
+      </if>
+      <if test="cardLx != null" >
+        card_lx,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="cardHao != null" >
+        card_hao,
+      </if>
+      <if test="cardOrder != null" >
+        card_order,
+      </if>
+      <if test="cardBz != null" >
+        card_bz,
+      </if>
+      <if test="cardVerify != null" >
+        card_verify,
+      </if>
+      <if test="readdCount != null" >
+        readd_count,
+      </if>
+      <if test="lossCount != null" >
+        loss_count,
+      </if>
+      <if test="cardWork != null" >
+        Card_work,
+      </if>
+      <if test="cardForm != null" >
+        card_form,
+      </if>
+      <if test="iscardreplace != null" >
+        isCardReplace,
+      </if>
+      <if test="iscarddel != null" >
+        iscarddel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{cardSerial,jdbcType=CHAR},
+      <if test="xh != null" >
+        #{xh,jdbcType=INTEGER},
+      </if>
+      <if test="lx != null" >
+        #{lx,jdbcType=INTEGER},
+      </if>
+      <if test="glyNo != null" >
+        #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="cardPhoto != null" >
+        #{cardPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="sj != null" >
+        #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userSerial != null" >
+        #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="cardLx != null" >
+        #{cardLx,jdbcType=INTEGER},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="cardHao != null" >
+        #{cardHao,jdbcType=VARCHAR},
+      </if>
+      <if test="cardOrder != null" >
+        #{cardOrder,jdbcType=INTEGER},
+      </if>
+      <if test="cardBz != null" >
+        #{cardBz,jdbcType=NVARCHAR},
+      </if>
+      <if test="cardVerify != null" >
+        #{cardVerify,jdbcType=VARCHAR},
+      </if>
+      <if test="readdCount != null" >
+        #{readdCount,jdbcType=INTEGER},
+      </if>
+      <if test="lossCount != null" >
+        #{lossCount,jdbcType=INTEGER},
+      </if>
+      <if test="cardWork != null" >
+        #{cardWork,jdbcType=INTEGER},
+      </if>
+      <if test="cardForm != null" >
+        #{cardForm,jdbcType=NVARCHAR},
+      </if>
+      <if test="iscardreplace != null" >
+        #{iscardreplace,jdbcType=INTEGER},
+      </if>
+      <if test="iscarddel != null" >
+        #{iscarddel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.DtCard" >
+    update dbo.dt_card
+    <set >
+      <if test="xh != null" >
+        xh = #{xh,jdbcType=INTEGER},
+      </if>
+      <if test="lx != null" >
+        lx = #{lx,jdbcType=INTEGER},
+      </if>
+      <if test="glyNo != null" >
+        gly_no = #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="cardPhoto != null" >
+        card_photo = #{cardPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="sj != null" >
+        sj = #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userSerial != null" >
+        user_serial = #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="cardLx != null" >
+        card_lx = #{cardLx,jdbcType=INTEGER},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=INTEGER},
+      </if>
+      <if test="cardHao != null" >
+        card_hao = #{cardHao,jdbcType=VARCHAR},
+      </if>
+      <if test="cardOrder != null" >
+        card_order = #{cardOrder,jdbcType=INTEGER},
+      </if>
+      <if test="cardBz != null" >
+        card_bz = #{cardBz,jdbcType=NVARCHAR},
+      </if>
+      <if test="cardVerify != null" >
+        card_verify = #{cardVerify,jdbcType=VARCHAR},
+      </if>
+      <if test="readdCount != null" >
+        readd_count = #{readdCount,jdbcType=INTEGER},
+      </if>
+      <if test="lossCount != null" >
+        loss_count = #{lossCount,jdbcType=INTEGER},
+      </if>
+      <if test="cardWork != null" >
+        Card_work = #{cardWork,jdbcType=INTEGER},
+      </if>
+      <if test="cardForm != null" >
+        card_form = #{cardForm,jdbcType=NVARCHAR},
+      </if>
+      <if test="iscardreplace != null" >
+        isCardReplace = #{iscardreplace,jdbcType=INTEGER},
+      </if>
+      <if test="iscarddel != null" >
+        iscarddel = #{iscarddel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where card_serial = #{cardSerial,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.DtCard" >
+    update dbo.dt_card
+    set xh = #{xh,jdbcType=INTEGER},
+      lx = #{lx,jdbcType=INTEGER},
+      gly_no = #{glyNo,jdbcType=NVARCHAR},
+      card_photo = #{cardPhoto,jdbcType=VARCHAR},
+      sj = #{sj,jdbcType=TIMESTAMP},
+      user_serial = #{userSerial,jdbcType=BIGINT},
+      card_lx = #{cardLx,jdbcType=INTEGER},
+      card_type = #{cardType,jdbcType=INTEGER},
+      card_hao = #{cardHao,jdbcType=VARCHAR},
+      card_order = #{cardOrder,jdbcType=INTEGER},
+      card_bz = #{cardBz,jdbcType=NVARCHAR},
+      card_verify = #{cardVerify,jdbcType=VARCHAR},
+      readd_count = #{readdCount,jdbcType=INTEGER},
+      loss_count = #{lossCount,jdbcType=INTEGER},
+      Card_work = #{cardWork,jdbcType=INTEGER},
+      card_form = #{cardForm,jdbcType=NVARCHAR},
+      isCardReplace = #{iscardreplace,jdbcType=INTEGER},
+      iscarddel = #{iscarddel,jdbcType=INTEGER}
+    where card_serial = #{cardSerial,jdbcType=CHAR}
+  </update>
+  
+  
+  <select id="selectBySelective" resultMap="BaseResultMap" parameterType="com.cecep.model.DtCard" >
+    select top(1) <include refid="Base_Column_List" />
+    from dbo.dt_card
+    <where>	  
+	      <if test="cardHao != null and cardHao != ''" >
+	        card_hao = #{cardHao}
+	      </if>
+	</where>
+  </select>
+  
+  <select id="readCard" resultMap="DtUserResultMap" parameterType="java.lang.String" >
+    select <include refid="DtUser_Column_List" />, dbo.dt_card.xh as card_xh, dbo.dt_card.card_hao as card_hao, dbo.dt_card.card_serial as card_serial, dbo.dt_card.card_lx as card_lx, dbo.tt_card.tt_name as tt_name, dbo.dt_card.card_type as card_type, dbo.dt_card.sj as card_sj, dbo.dt_card.card_bz as card_bz, dbo.dt_card.loss_count as loss_count, dbo.dt_ac_user.ac_money as acMoney, dbo.dt_ac_user.ac_pass as ac_pass, dbo.dt_ac_user.ac_kssj as ac_kssj, dbo.dt_ac_user.ac_jssj as ac_jssj, dbo.dt_ac_type.ac_bh as ac_bh, dbo.dt_ac_type.ac_name as ac_name, dbo.dt_ac_type.pass_max as pass_max, dbo.dt_ac_card.sj as sj, dbo.sys_role.role_id as role_id, dbo.sys_role.role_name as role_name, dbo.tt_lizhi.tt_name as user_type_name, dbo.med_account.amount as med_money  
+    from dbo.dt_user
+    left join dbo.dt_card
+    on dbo.dt_user.user_serial = dbo.dt_card.user_serial
+    left join dbo.tt_card
+    on dbo.dt_card.card_lx = dbo.tt_card.tt_xh
+    left join dbo.dt_ac_user
+    on dbo.dt_user.user_serial = dbo.dt_ac_user.user_serial
+    left join dbo.dt_ac_type
+    on dbo.dt_ac_user.ac_type = dbo.dt_ac_type.ac_bh
+    left join dbo.dt_ac_card
+    on dbo.dt_card.card_serial = dbo.dt_ac_card.card_serial
+    left join dbo.role_user
+    on dbo.dt_user.user_serial = dbo.role_user.user_serial
+    left join dbo.sys_role
+    on dbo.role_user.role_id = dbo.sys_role.role_id
+    left join dbo.med_account
+    on dbo.dt_user.user_serial = dbo.med_account.card_number
+    left join dbo.tt_lizhi
+	on dbo.dt_user.user_type = dbo.tt_lizhi.tt_order
+    where dbo.dt_card.card_hao = #{value,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectMaxCardSerial" resultType="java.lang.Integer" >
+    select module_card 
+    from wt_module
+	where module_id = '0009'
+  </select>
+  
+  <update id="updateCardSerial" >
+    update wt_module
+    set module_card = module_card + 1
+	where module_id = '0009'
+  </update>
+    
+  <insert id="openCard" parameterMap="OpenCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_add_c (?,?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="openCard2" parameterMap="OpenCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_add_c2 (?,?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="lockCard" parameterMap="LockCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_loss (?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="unlockCard" parameterMap="UnlockCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_unloss (?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="returnCard" parameterMap="ReturnCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_back (?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="returnCard2" parameterMap="ReturnCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_back_c (?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <update id="updateDeadline" parameterType="com.cecep.model.DtCard" >
+  	update cecep_user_privilege set
+  	<if test="deadline==null">
+  		 deadline=null
+  	</if>
+  	<if test="deadline!=null">
+  		 deadline=#{deadline}
+  	</if>
+  	 where user_serial = #{userSerial}
+  </update>
+</mapper>

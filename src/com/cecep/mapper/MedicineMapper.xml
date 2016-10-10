@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MedicineMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.Medicine" >
+    <id column="medicine_id" property="medicineId" jdbcType="INTEGER" />
+    <result column="medicine_name" property="medicineName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="NUMERIC" />
+    <result column="pro_date" property="proDate" jdbcType="VARCHAR" />
+    <result column="due_date" property="dueDate" jdbcType="VARCHAR" />
+    <result column="vendor" property="vendor" jdbcType="VARCHAR" />
+    <result column="medicine_desc" property="medicineDesc" jdbcType="VARCHAR" />
+     <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+     <result column="medicine_type" property="medicineType" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="medicine_detailed" property="medicineDetailed" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    medicine_id,  medicine_name, price, vendor, medicine_desc,bar_code,type_name,medicine_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.medicine  left  join  medicine_type  on  medicine.medicine_type=medicine_type.type_id
+    where medicine_id = #{medicineId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.medicine
+    where medicine_id = #{medicineId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.Medicine" >
+    <selectKey resultType="java.lang.Integer" keyProperty="medicineId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.medicine (medicine_name, 
+      price, pro_date, due_date, 
+      vendor, medicine_desc,bar_code,medicine_type)
+    values ( #{medicineName,jdbcType=VARCHAR}, 
+      #{price,jdbcType=NUMERIC}, #{proDate,jdbcType=VARCHAR}, #{dueDate,jdbcType=VARCHAR}, 
+      #{vendor,jdbcType=VARCHAR}, #{medicineDesc,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR},#{medicineType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.Medicine" >
+    <selectKey resultType="java.lang.Integer" keyProperty="medicineId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.medicine
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+  
+      <if test="medicineName != null" >
+        medicine_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="proDate != null" >
+        pro_date,
+      </if>
+      <if test="dueDate != null" >
+        due_date,
+      </if>
+      <if test="vendor != null" >
+        vendor,
+      </if>
+      <if test="medicineDesc != null" >
+        medicine_desc,
+      </if>
+      <if test="barCode != null" >
+        bar_code,
+      </if>
+       <if test="medicineType != null" >
+        medicine_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{medicineId,jdbcType=INTEGER},
+      <if test="medicineName != null" >
+        #{medicineName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=NUMERIC},
+      </if>
+      <if test="proDate != null" >
+        #{proDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dueDate != null" >
+        #{dueDate,jdbcType=VARCHAR},
+      </if>
+      <if test="vendor != null" >
+        #{vendor,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineDesc != null" >
+        #{medicineDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+       <if test="medicineType != null" >
+        #{medicineType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.Medicine" >
+    update dbo.medicine
+    <set >
+      <if test="medicineName != null" >
+        medicine_name = #{medicineName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=NUMERIC},
+      </if>
+      <if test="proDate != null" >
+        pro_date = #{proDate,jdbcType=VARCHAR},
+      </if>
+      <if test="dueDate != null" >
+        due_date = #{dueDate,jdbcType=VARCHAR},
+      </if>
+      <if test="vendor != null" >
+        vendor = #{vendor,jdbcType=VARCHAR},
+      </if>
+      <if test="medicineDesc != null" >
+        medicine_desc = #{medicineDesc,jdbcType=VARCHAR},
+      </if>
+       <if test="barCode != null" >
+       bar_code= #{barCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where medicine_id = #{medicineId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.Medicine" >
+    update dbo.medicine
+    set 
+      medicine_name = #{medicineName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=NUMERIC},
+      pro_date = #{proDate,jdbcType=VARCHAR},
+      due_date = #{dueDate,jdbcType=VARCHAR},
+      vendor = #{vendor,jdbcType=VARCHAR},
+      medicine_desc = #{medicineDesc,jdbcType=VARCHAR},
+      bar_code= #{barCode,jdbcType=VARCHAR},
+      medicine_type=#{medicineType,jdbcType=INTEGER}
+    where medicine_id = #{medicineId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.Medicine" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.medicine.medicine_id) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.medicine   left join  medicine_type  on  medicine.medicine_type=medicine_type.type_id
+			where	1 = 1
+		    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+		      	</if>	
+	      		<if test="barCode != null and barCode != ''" >
+		        	and dbo.medicine.bar_code= #{barCode,jdbcType=VARCHAR}
+		      	</if>		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.Medicine" >    
+    select count(1)
+    from dbo.medicine  left join  medicine_type  on  medicine.medicine_type=medicine_type.type_id
+	where	0 = 0
+    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+      	</if>	
+      	<if test="barCode != null and barCode != ''" >
+		        	and dbo.medicine.bar_code= #{barCode,jdbcType=VARCHAR}
+      	</if>   
+  </select>
+  
+  <select id="selectType" resultType="java.util.Map"  >
+    select type_id  as typeId,type_name  as  typeName
+    from dbo.medicine_type
+  </select>
+  
+    <select id="selectCouBarCode" resultType="java.lang.Integer" parameterType="com.cecep.model.Medicine" >    
+    select count(1) from  medicine  where  bar_code=#{barCode,jdbcType=VARCHAR} and bar_code !=NULL
+  </select>
+   <select id="selectCou" resultType="java.lang.Integer" parameterType="com.cecep.model.Medicine" >    
+ 	 SELECT  count(1) from  inventory  where  examiner_id=#{medicineId,jdbcType=INTEGER}
+  </select>
+</mapper>

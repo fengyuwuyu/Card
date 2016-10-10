@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.HaircutArticlesMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.HaircutArticles" >
+    <id column="articles_id" property="articlesId" jdbcType="INTEGER" />
+    <result column="articles_name" property="articlesName" jdbcType="VARCHAR" />
+    <result column="articles_price" property="articlesPrice" jdbcType="DECIMAL" />
+    <result column="articles_desc" property="articlesDesc" jdbcType="VARCHAR" />
+    <result column="articles_address" property="articlesAddress" jdbcType="VARCHAR" />
+    <result column="terms_id" property="termsId" jdbcType="INTEGER" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    articles_id, articles_name, articles_price, articles_desc,articles_address,terms_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.haircut_articles
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.haircut_articles
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.HaircutArticles" >
+    <selectKey resultType="java.lang.Integer" keyProperty="articlesId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_articles (articles_name, articles_price, 
+      articles_desc,articles_address,terms_id)
+    values (#{articlesName,jdbcType=VARCHAR}, #{articlesPrice,jdbcType=DECIMAL}, 
+      #{articlesDesc,jdbcType=VARCHAR}, #{articlesAddress,jdbcType=VARCHAR},#{termsId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.HaircutArticles" >
+    <selectKey resultType="java.lang.Integer" keyProperty="articlesId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_articles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      articles_id,
+      <if test="articlesName != null" >
+        articles_name,
+      </if>
+      <if test="articlesPrice != null" >
+        articles_price,
+      </if>
+      <if test="articlesDesc != null" >
+        articles_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{articlesId,jdbcType=INTEGER},
+      <if test="articlesName != null" >
+        #{articlesName,jdbcType=VARCHAR},
+      </if>
+      <if test="articlesPrice != null" >
+        #{articlesPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="articlesDesc != null" >
+        #{articlesDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.HaircutArticles" >
+    update dbo.haircut_articles
+    <set >
+      <if test="articlesName != null" >
+        articles_name = #{articlesName,jdbcType=VARCHAR},
+      </if>
+      <if test="articlesPrice != null" >
+        articles_price = #{articlesPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="articlesDesc != null" >
+        articles_desc = #{articlesDesc,jdbcType=VARCHAR},
+      </if>
+        <if test="articlesAddress != null" >
+        articles_address = #{articlesAddress,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.HaircutArticles" >
+    update dbo.haircut_articles
+    set articles_name = #{articlesName,jdbcType=VARCHAR},
+      articles_price = #{articlesPrice,jdbcType=DECIMAL},
+      articles_desc = #{articlesDesc,jdbcType=VARCHAR},
+      terms_id=#{termsId,jdbcType=INTEGER}
+    where articles_id = #{articlesId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+    <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.HaircutArticles" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.haircut_articles.articles_id) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.haircut_articles  
+			where	1 = 1
+		    	<if test="articlesName != null and articlesName != ''" >
+		        	 and dbo.haircut_articles.articles_name like '%${articlesName}%'
+		      	</if>	
+	      		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.HaircutArticles" >    
+    select count(1)
+    from dbo.haircut_articles  
+	where	0 = 0
+    	<if test="articlesName != null and articlesName != ''" >
+		        	and dbo.haircut_articles.articles_name like '%${articlesName}%'
+      	</if>	
+  </select>
+  
+  <select id="selectCount1" resultType="java.lang.Integer" parameterType="com.cecep.model.HaircutArticles" >    
+    select count(1)
+    from dbo.haircut_articles  
+	where	0 = 0
+    	<if test="articlesName != null and articlesName != ''" >
+		        	and dbo.haircut_articles.articles_name =#{articlesName,jdbcType=VARCHAR}
+      	</if>	
+  </select>
+  
+  
+</mapper>

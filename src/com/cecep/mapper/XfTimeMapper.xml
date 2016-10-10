@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.XfTimeMapper">
+	<resultMap id="BaseResultMap" type="com.cecep.model.XfTime">
+		<id column="bh" property="bh" jdbcType="CHAR" />
+		<result column="kssj" property="kssj" jdbcType="INTEGER" />
+		<result column="jssj" property="jssj" jdbcType="INTEGER" />
+		<result column="day_offset" property="dayOffset" jdbcType="INTEGER" />
+		<result column="sj" property="sj" jdbcType="TIMESTAMP" />
+		<result column="gly_no" property="glyNo" jdbcType="NVARCHAR" />
+		<result column="dev_serial" property="devSerial" jdbcType="CHAR" />
+		<result column="day_order" property="dayOrder" jdbcType="INTEGER" />
+		<result column="lname" property="lname" jdbcType="NVARCHAR" />
+		<result column="regserial" property="regserial" jdbcType="NVARCHAR" />
+	</resultMap>
+
+	<resultMap id="XfTime" type="com.cecep.model.XfTime">
+		<id column="bh" property="bh" jdbcType="CHAR" />
+		<result column="kssj" property="kssjI" jdbcType="INTEGER" />
+		<result column="jssj" property="jssjI" jdbcType="INTEGER" />
+		<result column="sj" property="sj" jdbcType="TIMESTAMP" />
+		<result column="lname" property="lname" jdbcType="NVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		bh, kssj, jssj, day_offset, sj, gly_no, dev_serial, day_order, lname,
+		regserial
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from dbo.xf_time
+		where bh = #{bh,jdbcType=CHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from dbo.xf_time
+		where bh = #{bh,jdbcType=CHAR}
+	</delete>
+	
+	<select id="getMaxBh" resultType="string">
+		select max(bh) from dbo.xf_time 
+	</select>
+	
+	<select id="getAcTypeCountByBh" resultType="int"  parameterType="java.lang.String">
+		select count(*) from dbo.xf_ac_time where time_no = #{bh} and lx = 0
+	</select>
+	
+	<select id="getRegionCountByBh" resultType="int"  parameterType="java.lang.String">
+		select count(*) from dbo.xf_ac_time where time_no = #{bh} and lx = 2 
+	</select>
+	
+	<insert id="insert" parameterType="com.cecep.model.XfTime">
+		insert into dbo.xf_time (bh, kssj, jssj,
+		day_offset, sj, gly_no,
+		dev_serial, day_order, lname,
+		regserial)
+		values (#{bh,jdbcType=CHAR}, #{kssjI,jdbcType=INTEGER},
+		#{jssjI,jdbcType=INTEGER},
+		#{dayOffset,jdbcType=INTEGER}, #{sj,jdbcType=TIMESTAMP}, #{glyNo,jdbcType=NVARCHAR},
+		#{devSerial,jdbcType=CHAR}, #{dayOrder,jdbcType=INTEGER},
+		#{lname,jdbcType=NVARCHAR},
+		#{regserial,jdbcType=NVARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.cecep.model.XfTime">
+		insert into dbo.xf_time
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			bh,
+			<if test="kssj != null">
+				kssj,
+			</if>
+			<if test="jssj != null">
+				jssj,
+			</if>
+			<if test="dayOffset != null">
+				day_offset,
+			</if>
+			<if test="sj != null">
+				sj,
+			</if>
+			<if test="glyNo != null">
+				gly_no,
+			</if>
+			<if test="devSerial != null">
+				dev_serial,
+			</if>
+			<if test="dayOrder != null">
+				day_order,
+			</if>
+			<if test="lname != null">
+				lname,
+			</if>
+			<if test="regserial != null">
+				regserial,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{bh,jdbcType=CHAR},
+			<if test="kssj != null">
+				#{kssj,jdbcType=INTEGER},
+			</if>
+			<if test="jssj != null">
+				#{jssj,jdbcType=INTEGER},
+			</if>
+			<if test="dayOffset != null">
+				#{dayOffset,jdbcType=INTEGER},
+			</if>
+			<if test="sj != null">
+				#{sj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="glyNo != null">
+				#{glyNo,jdbcType=NVARCHAR},
+			</if>
+			<if test="devSerial != null">
+				#{devSerial,jdbcType=CHAR},
+			</if>
+			<if test="dayOrder != null">
+				#{dayOrder,jdbcType=INTEGER},
+			</if>
+			<if test="lname != null">
+				#{lname,jdbcType=NVARCHAR},
+			</if>
+			<if test="regserial != null">
+				#{regserial,jdbcType=NVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.XfTime">
+		update dbo.xf_time
+		<set>
+			<if test="kssj != null">
+				kssj = #{kssj,jdbcType=INTEGER},
+			</if>
+			<if test="jssj != null">
+				jssj = #{jssj,jdbcType=INTEGER},
+			</if>
+			<if test="dayOffset != null">
+				day_offset = #{dayOffset,jdbcType=INTEGER},
+			</if>
+			<if test="sj != null">
+				sj = #{sj,jdbcType=TIMESTAMP},
+			</if>
+			<if test="glyNo != null">
+				gly_no = #{glyNo,jdbcType=NVARCHAR},
+			</if>
+			<if test="devSerial != null">
+				dev_serial = #{devSerial,jdbcType=CHAR},
+			</if>
+			<if test="dayOrder != null">
+				day_order = #{dayOrder,jdbcType=INTEGER},
+			</if>
+			<if test="lname != null">
+				lname = #{lname,jdbcType=NVARCHAR},
+			</if>
+			<if test="regserial != null">
+				regserial = #{regserial,jdbcType=NVARCHAR},
+			</if>
+		</set>
+		where bh = #{bh,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cecep.model.XfTime">
+		update dbo.xf_time
+		set kssj = #{kssj,jdbcType=INTEGER},
+		jssj = #{jssj,jdbcType=INTEGER},
+		day_offset = #{dayOffset,jdbcType=INTEGER},
+		sj = #{sj,jdbcType=TIMESTAMP},
+		gly_no = #{glyNo,jdbcType=NVARCHAR},
+		dev_serial = #{devSerial,jdbcType=CHAR},
+		day_order = #{dayOrder,jdbcType=INTEGER},
+		lname = #{lname,jdbcType=NVARCHAR},
+		regserial = #{regserial,jdbcType=NVARCHAR}
+		where bh = #{bh,jdbcType=CHAR}
+	</update>
+
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.cecep.model.XfTime">
+		select u.*
+		from (
+		select row_number() over(order by bh) as rowNumber,
+		<include refid="Base_Column_List" />
+		from dbo.xf_time
+		<where>
+			lname!='非时段'
+			<if test="lname != null and lname != ''">
+				and lname like '%${lname}%'
+			</if>
+		</where>
+		) as u
+		<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]>
+			</if>
+		</where>
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="com.cecep.model.XfTime">
+		select count(1)
+		from dbo.xf_time
+		<where>
+			<if test="lname != null and lname != ''">
+				lname like '%${lname}%'
+			</if>
+			<trim prefixOverrides="and">
+				and lname!='非时段'
+			</trim>
+		</where>
+	</select>
+
+	<select id="load" resultType="java.util.Map" parameterType="com.cecep.model.XfTime">
+		select bh as value,lname as text
+		from dbo.xf_time
+	</select>
+
+	<update id="update" parameterType="com.cecep.model.XfTime">
+		update dbo.xf_time
+		<set>
+			<if test="lname!=null">
+				lname = #{lname},
+			</if>
+			<if test="kssjI != null">
+				kssj = #{kssjI,jdbcType=INTEGER},
+			</if>
+			<if test="jssjI != null">
+				jssj = #{jssjI,jdbcType=INTEGER},
+			</if>
+			sj = #{sj}
+		</set>
+		where bh = #{bh,jdbcType=CHAR}
+	</update>
+
+	<select id="getById" resultMap="XfTime" parameterType="java.lang.String">
+		select bh, kssj, jssj, sj, gly_no, lname
+		from dbo.xf_time
+		where bh = #{bh,jdbcType=CHAR}
+	</select>
+
+	<select id="selectByPageI" resultMap="XfTime" parameterType="com.cecep.model.XfTime">
+		select u.*
+		from (
+		select row_number() over(order by bh) as rowNumber,bh, kssj, jssj, sj,
+		gly_no, lname
+		from dbo.xf_time
+		<where>
+			<if test="lname != null and lname != ''">
+				lname like '%${lname}%'
+			</if>
+			<trim prefixOverrides="and">
+				and lname!='非时段'
+			</trim>
+		</where>
+		) as u
+		<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]>
+			</if>
+		</where>
+	</select>
+
+	<select id="getExternalXfTimes" resultMap="XfTime">
+		select bh,lname
+		from dbo.xf_time
+		where bh!='0000000000000000'
+	</select>
+<!-- 
+	<select id="queryByDepSerial" parameterType="int" resultType="String">
+		select
+		tt.bh
+		from dbo.dt_ac_dep d1
+		left join dbo.xf_ac_time ta on
+		d1.dep_serial=ta.acdep_serial
+		left join dbo.xf_time tt on
+		ta.time_no=tt.bh where d1.dep_serial=#{depSerial}
+	</select> -->
+
+	<insert id="saveDevTime" parameterType="map">
+		insert into xf_ac_time(lx,acdep_serial,day_order,time_no,day_offset,sj,gly_no,each_unit) 
+			VALUES(2,#{depSerial},1,#{bh},0,#{time},#{username},0)
+	</insert>
+	
+	<delete id="deleteByDepSerial" >
+		delete from dbo.xf_ac_time where acdep_serial=#{depserial} and lx=2
+	</delete>
+</mapper>

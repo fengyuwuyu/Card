@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.PreOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.PreOrderDetail" >
+    <id column="pre_order_id" property="preOrderId" jdbcType="INTEGER" />
+    <result column="pre_record_id" property="preRecordId" jdbcType="INTEGER" />
+    <result column="med_name" property="medName" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="NUMERIC" />
+     <result column="price" property="price" jdbcType="NUMERIC" />
+    
+     <result column="preOrderId1" property="preOrderId1" jdbcType="INTEGER" />
+   	 <result column="card_number" property="cardNumber" jdbcType="INTEGER" />
+   	 <result column="phone" property="phone" jdbcType="VARCHAR" />
+   	 <result column="preType1" property="preType1" jdbcType="VARCHAR" />
+     <result column="pre_type" property="preType" jdbcType="VARCHAR" />
+     <result column="user_serial" property="userSerial" jdbcType="INTEGER" />
+     <result column="user_lname" property="userLname" jdbcType="VARCHAR" />
+     <result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+      <result column="acc_type" property="accType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pre_order_id, pre_record_id, med_name, quantity,price
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.pre_order_detail
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.pre_order_detail
+    where pre_record_id = #{preOrderId1,jdbcType=INTEGER}
+  </delete>
+  <delete id="delete" parameterType="java.lang.Integer" >
+    delete from dbo.pre_order
+    where pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.PreOrderDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="preOrderId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.pre_order_detail  (pre_record_id, med_name, 
+      quantity,price)
+    values (#{preOrderId1,jdbcType=INTEGER}, #{medName,jdbcType=VARCHAR}, 
+      #{quantity,jdbcType=NUMERIC}, #{price,jdbcType=NUMERIC})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.PreOrderDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="preOrderId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.pre_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      pre_order_id,
+      <if test="preRecordId != null" >
+        pre_record_id,
+      </if>
+      <if test="medName != null" >
+        med_name,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{preOrderId,jdbcType=INTEGER},
+      <if test="preRecordId != null" >
+        #{preRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="medName != null" >
+        #{medName,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.PreOrderDetail" >
+    update dbo.pre_order_detail
+    <set >
+      <if test="preRecordId != null" >
+        pre_record_id = #{preRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="medName != null" >
+        med_name = #{medName,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.PreOrderDetail" >
+    update dbo.pre_order_detail
+    set pre_record_id = #{preOrderId1,jdbcType=INTEGER},
+      med_name = #{medName,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=NUMERIC},
+      price = #{price,jdbcType=NUMERIC}
+    where pre_order_id = #{preOrderId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 添加预定人信息 -->
+  
+   <insert id="insertUser" parameterType="com.cecep.model.PreOrderDetail" >
+    <selectKey resultType="java.lang.Integer" keyProperty="preOrderId1" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+	    insert into dbo.pre_order ( card_number,phone,
+	      pre_type)
+	    values ( #{cardNumber,jdbcType=INTEGER}, 
+	      #{phone,jdbcType=VARCHAR},'0')
+  </insert>
+  <update id="updateUser" parameterType="com.cecep.model.PreOrderDetail" >
+    update dbo.pre_order
+    set card_number = #{cardNumber,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},pre_type=#{preType,jdbcType=VARCHAR}
+    where pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </update>
+  
+   <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.PreOrderDetail" >
+   	select u.*
+   	from ( 	
+		    SELECT  row_number() over(order by dbo.pre_order.pre_order_id) as rowNumber,
+		   			pre_order.pre_order_id  preOrderId1,
+					pre_order.pre_type,
+					pre_order.card_number,
+					pre_order.phone,
+					dt_user.user_serial,
+					dt_user.user_lname,
+					(CASE  when  pre_order.pre_type='1'  then '完成'  else '未完成'  END) preType1
+				FROM
+					pre_order
+				LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+				 WHERE 1=1
+				 <if test='preType == "-1" or preType == "0"  or preType==null or preType==""' >
+		        	and dbo.pre_order. pre_type='0' 
+		      	</if>
+	      		<if test='preType =="1" ' >
+		        	and dbo.pre_order. pre_type='1' 
+		      	</if>
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.PreOrderDetail" >    
+    select count(1) FROM  pre_order
+				LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+				 WHERE 1=1
+				 <if test='preType == "-1" or preType == "0"  or preType==null or preType==""' >
+		        	and dbo.pre_order. pre_type='0' 
+		      	</if>
+	      		<if test='preType =="1" ' >
+		        	and dbo.pre_order. pre_type='1' 
+		      	</if>
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>		      	  
+  	</select>
+  
+  
+  
+  <select id="selectUser" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   	 	 select 'true' as QUERYID,
+    				pre_order.pre_order_id  preOrderId1,
+					pre_order.pre_type,
+					pre_order.card_number,
+					pre_order.phone,
+					dt_user.user_serial,
+					dt_user.user_lname,
+					dt_card.card_hao,
+    	(CASE  when  pre_order.pre_type='1'  then '完成'  else '未完成'  END) preType1
+				FROM
+					pre_order
+				LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+				left  join  dt_card on  dt_card.user_serial=dt_user.user_serial
+    where pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  
+  
+  
+   <select id="selectByPage1" resultMap="BaseResultMap" parameterType="com.cecep.model.PreOrderDetail" >
+   	select u.*
+   	from ( 	
+		    SELECT
+			row_number() over(order by dbo.pre_order_detail.pre_order_id) as rowNumber,
+				pre_order_detail.pre_order_id,
+				pre_order_detail.med_name,
+				pre_order_detail.quantity,
+				pre_order_detail.price
+			FROM
+				pre_order_detail
+			LEFT JOIN pre_order ON pre_order_detail.pre_record_id = pre_order.pre_order_id  where 
+			pre_order_detail.pre_record_id=#{preOrderId1,jdbcType=INTEGER}
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount1" resultType="java.lang.Integer" parameterType="com.cecep.model.PreOrderDetail" >    
+    select count(1) 
+			FROM
+				pre_order_detail
+			LEFT JOIN pre_order ON pre_order_detail.pre_record_id = pre_order.pre_order_id  where 
+			pre_order_detail.pre_record_id=#{preOrderId1,jdbcType=INTEGER}	      	  
+  </select>
+  
+  
+  
+  
+  <select id="getType" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select pre_order.pre_type  from  pre_order
+    where pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </select>
+  
+   <select id="getCardNumber" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+		 SELECT
+			dt_user.user_serial  userSerial
+		FROM
+		pre_order
+		LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+		LEFT JOIN  med_account  on dt_user.user_serial=med_account.card_number
+		WHERE  pre_order.pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </select>
+   <select id="getCardNumberType" resultType="java.lang.String" parameterType="java.lang.Integer" >
+		 SELECT
+			med_account.acc_type  accType
+		FROM
+		pre_order
+		LEFT JOIN dt_user ON pre_order.card_number = dt_user.user_serial
+		LEFT JOIN  med_account  on dt_user.user_serial=med_account.card_number
+		WHERE  pre_order.pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </select>
+  
+   <update id="updatePreOrder" parameterType="com.cecep.model.PreOrderDetail" >
+    update dbo.pre_order  set
+    pre_type='1'
+    where pre_order_id = #{preOrderId1,jdbcType=INTEGER}
+  </update>
+  <update id="updateMedAccount" parameterType="com.cecep.model.PreOrderDetail" >
+    update dbo.med_account
+   set 
+       amount=amount-#{totalAmount,jdbcType=NUMERIC}
+    where card_number = #{cardNumber,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+   <select id="selectAmount"  resultType="java.math.BigDecimal"  parameterType="java.lang.Integer" >
+		 SELECT
+			amount
+		FROM  dbo.med_account
+		 where card_number = #{cardNumber,jdbcType=INTEGER}
+  </select>
+  
+  <select id="checkPrintMsg"  resultType="java.util.Map" parameterType="com.cecep.model.PreOrderDetail" >
+		 SELECT
+			row_number() over(order by dbo.pre_order_detail.pre_order_id) as rowNumber,
+				pre_order_detail.pre_order_id,
+				pre_order_detail.med_name,
+				pre_order_detail.quantity,
+				pre_order_detail.price
+			FROM
+				pre_order_detail
+			LEFT JOIN pre_order ON pre_order_detail.pre_record_id = pre_order.pre_order_id  where 
+			pre_order_detail.pre_record_id in 
+			<foreach item="item" index="index" collection="printList" 
+				open="(" separator="," close=")">
+		#{item}
+</foreach>
+  </select>
+  
+  
+</mapper>

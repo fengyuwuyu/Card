@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.SysRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.SysRole" >
+    <id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_status" property="roleStatus" jdbcType="INTEGER" />
+    <result column="role_deleted" property="roleDeleted" jdbcType="INTEGER" />
+    <result column="role_des" property="roleDes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    role_id, role_name, role_status, role_deleted, role_des
+  </sql>
+  <sql id="Role_Column_List" >
+    dbo.sys_role.role_id, dbo.sys_role.role_name, dbo.sys_role.role_status, dbo.sys_role.role_deleted, dbo.sys_role.role_des
+  </sql>
+  
+  <resultMap id="SysRoleResultMap" type="com.cecep.model.SysRole">
+	<id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_status" property="roleStatus" jdbcType="INTEGER" />
+    <result column="role_deleted" property="roleDeleted" jdbcType="INTEGER" />
+    <result column="role_des" property="roleDes" jdbcType="VARCHAR" />
+	<collection property="menuRoles" ofType="com.cecep.model.MenuRole" javaType="java.util.List" >
+		<id column="menu_role_id" property="menuRoleId" jdbcType="INTEGER" />
+		<result column="menu_id" property="menuId" jdbcType="INTEGER" />
+		<result column="role_id2" property="roleId" jdbcType="INTEGER"/>	
+	</collection>
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" resultMap="SysRoleResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Role_Column_List" />,dbo.menu_role.menu_role_id,dbo.menu_role.menu_id,dbo.menu_role.role_id as role_id2
+    from dbo.sys_role
+    left join dbo.menu_role
+    on dbo.sys_role.role_id = dbo.menu_role.role_id
+    left join dbo.sys_menu
+    on dbo.menu_role.menu_id = dbo.sys_menu.menu_id
+    where dbo.sys_role.role_id = #{value,jdbcType=INTEGER} and dbo.sys_menu.menu_deleted = 0 
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.sys_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.SysRole" useGeneratedKeys="true" keyProperty="roleId" >
+    insert into dbo.sys_role (role_name, role_status, 
+      role_deleted, role_des)
+    values (#{roleName,jdbcType=VARCHAR}, #{roleStatus,jdbcType=INTEGER}, 
+      0, #{roleDes,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.SysRole" >
+    <selectKey resultType="java.lang.Integer" keyProperty="roleId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.sys_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      role_id,
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="roleStatus != null" >
+        role_status,
+      </if>
+      <if test="roleDeleted != null" >
+        role_deleted,
+      </if>
+      <if test="roleDes != null" >
+        role_des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{roleId,jdbcType=INTEGER},
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleStatus != null" >
+        #{roleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="roleDeleted != null" >
+        #{roleDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="roleDes != null" >
+        #{roleDes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.SysRole" >
+    update dbo.sys_role
+    <set >
+      <if test="roleName != null" >
+        role_name = #{roleName},
+      </if>
+      <if test="roleStatus != null" >
+        role_status = #{roleStatus},
+      </if>
+      <if test="roleDeleted != null" >
+        role_deleted = #{roleDeleted},
+      </if>
+      <if test="roleDes != null" >
+        role_des = #{roleDes}
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.SysRole" >
+    update dbo.sys_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_status = #{roleStatus,jdbcType=INTEGER},
+      role_des = #{roleDes,jdbcType=VARCHAR}
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>  
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.SysRole" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by role_id) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.sys_role
+			where dbo.sys_role.role_deleted = 0
+		    	<if test="roleName != null and roleName != ''" >
+		        	and role_name like '%${roleName}%'
+		      	</if>
+		      	<if test="roleStatus != null" >
+		        	and role_status = #{roleStatus}
+		      	</if> ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.SysRole" >   
+    select count(1)
+    from dbo.sys_role
+	where dbo.sys_role.role_deleted = 0
+    	<if test="roleName != null and roleName != ''" >
+        	and role_name like '%${roleName}%'
+      	</if>
+      	<if test="roleStatus != null" >
+        	and role_status = #{roleStatus}
+      	</if> 		   
+  </select>
+  
+  <select id="load" resultType="java.util.Map" parameterType="com.cecep.model.SysRole" >
+    select role_id as value,role_name as text
+    from dbo.sys_role
+    where role_deleted = 0  and role_id not in (1,3)
+  </select>
+  
+  <select id="getMenuTree" resultType="com.cecep.model.TreeNode" parameterType="java.lang.Integer" >
+  	select menu_id as id,menu_name as text,<if test="value != null" >'open'</if><if test="value == null" >'closed'</if> as state,'false' as checked
+  	from dbo.sys_menu
+  	where menu_deleted = 0 
+  		<if test="value == null" >
+        	and parent_id is null   
+      	</if> 
+  		<if test="value != null" >
+        	and parent_id = #{value}    
+      	</if>     			
+  	order by sequence
+  </select>
+  
+  <delete id="deleteForMenuRole" parameterType="java.lang.Integer" >
+    delete from dbo.menu_role
+    where role_id = #{value,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertForMenuRole" parameterType="java.util.Map" >
+    insert into dbo.menu_role (menu_id, role_id)
+    <foreach item="item" collection="menuIds" separator="union all" index="index">  
+		select #{item,jdbcType=INTEGER},#{roleId,jdbcType=INTEGER}
+	</foreach>  
+  </insert>
+ 
+  
+</mapper>

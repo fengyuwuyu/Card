@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cecep.dao.MedRecordMapper">
+  <resultMap id="BaseResultMap" type="com.cecep.model.MedRecord">
+    <id column="med_record_id" jdbcType="INTEGER" property="medRecordId" />
+    <result column="amount" jdbcType="NUMERIC" property="amount" />
+    <result column="med_time" jdbcType="TIMESTAMP" property="medTime" />
+    <result column="account_id" jdbcType="INTEGER" property="accountId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    med_record_id, amount, med_time, account_id, order_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.med_record
+    where med_record_id = #{medRecordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dbo.med_record
+    where med_record_id = #{medRecordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.MedRecord">
+    <selectKey keyProperty="medRecordId" order="BEFORE" resultType="java.lang.Integer">
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.med_record (med_record_id, amount, med_time, 
+      account_id, order_id)
+    values (#{medRecordId,jdbcType=INTEGER}, #{amount,jdbcType=NUMERIC}, #{medTime,jdbcType=TIMESTAMP}, 
+      #{accountId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MedRecord">
+    <selectKey keyProperty="medRecordId" order="BEFORE" resultType="java.lang.Integer">
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.med_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      med_record_id,
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="medTime != null">
+        med_time,
+      </if>
+      <if test="accountId != null">
+        account_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{medRecordId,jdbcType=INTEGER},
+      <if test="amount != null">
+        #{amount,jdbcType=NUMERIC},
+      </if>
+      <if test="medTime != null">
+        #{medTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountId != null">
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.MedRecord">
+    update dbo.med_record
+    <set>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=NUMERIC},
+      </if>
+      <if test="medTime != null">
+        med_time = #{medTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountId != null">
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where med_record_id = #{medRecordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MedRecord">
+    update dbo.med_record
+    set amount = #{amount,jdbcType=NUMERIC},
+      med_time = #{medTime,jdbcType=TIMESTAMP},
+      account_id = #{accountId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER}
+    where med_record_id = #{medRecordId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

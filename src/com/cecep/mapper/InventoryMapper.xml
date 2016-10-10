@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.InventoryMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.Inventory" >
+    <id column="inventory_id" property="inventoryId" jdbcType="INTEGER" />
+    <result column="examiner_id" property="examinerId" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="medicine_id" property="medicineId" jdbcType="INTEGER" />
+    <result column="medicine_name" property="medicineName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="NUMERIC" />
+    <result column="vendor" property="vendor" jdbcType="VARCHAR" />
+    <result column="medicine_desc" property="medicineDesc" jdbcType="VARCHAR" />
+    <result column="out_time" property="outTime" jdbcType="DATE" />
+    <result column="inv_record_id" property="invRecordId" jdbcType="INTEGER" />
+    <result column="inv_time" property="invTime" jdbcType="DATE" />
+    <result column="cou" property="cou" jdbcType="NUMERIC" />
+     <result column="cou1" property="cou1" jdbcType="NUMERIC" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    inventory_id, examiner_id, quantity
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.inventory
+    where inventory_id = #{inventoryId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.inventory
+    where inventory_id =#{inventoryId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert"  parameterType="com.cecep.model.Inventory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="inventoryId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.inventory ( examiner_id, quantity
+      )
+    values (#{examinerId,jdbcType=INTEGER}, #{quantity,jdbcType=NUMERIC}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.Inventory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="inventoryId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.inventory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      inventory_id,
+      <if test="examinerId != null" >
+        examiner_id,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{inventoryId,jdbcType=INTEGER},
+      <if test="examinerId != null" >
+        #{examinerId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.Inventory" >
+    update dbo.inventory
+    <set >
+      <if test="examinerId != null" >
+        examiner_id = #{examinerId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where inventory_id = #{inventoryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.Inventory" >
+    update dbo.inventory
+    set  quantity=quantity+#{quantity,jdbcType=NUMERIC}
+    where examiner_id =#{examinerId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory" >
+   	select u.*
+   	from ( 	
+		   select row_number() over(order by dbo.inventory.inventory_id) as rowNumber,
+		   		inventory.inventory_id,
+				inventory.quantity,
+				medicine.medicine_name,
+				medicine.price,
+				medicine.vendor,
+				medicine.medicine_desc
+			FROM
+				inventory 
+			LEFT JOIN medicine  ON inventory.examiner_id = medicine.medicine_id  where 1=1
+		    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+		      	</if>
+		      	<if test="barCode != null and barCode != ''" >
+		        	and dbo.medicine.bar_code= #{barCode,jdbcType=VARCHAR}
+		      	</if>			      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.Inventory" >    
+    select count(1)
+			FROM
+				inventory 
+			LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id  where 1=1
+    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+      	</if>
+      	<if test="barCode != null and barCode != ''" >
+		        and dbo.medicine.bar_code= #{barCode,jdbcType=VARCHAR}
+		 </if>		   
+  </select>
+  
+  
+  
+   <select id="selectCou" resultType="java.lang.Integer" parameterType="com.cecep.model.Inventory" >    
+    	select count(1)  FROM  inventory where examiner_id=#{examinerId}
+  </select>
+  
+  <insert id="insertdetailed" parameterType="com.cecep.model.Inventory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="invRecordId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey> 
+    insert into dbo.inventory_detail(inventory_id, number,inv_time,pro_id,out_type
+      )
+    values (#{inventory,jdbcType=INTEGER}, #{quantity,jdbcType=NUMERIC},getDate(),0,0
+      )
+  </insert>
+  
+  <select id="selectid" resultType="java.lang.Integer" parameterType="com.cecep.model.Inventory" >    
+    	select inventory_id  FROM  inventory where examiner_id=#{examinerId}
+  </select>
+  <select id="selectinsertid" resultType="java.lang.Integer" parameterType="com.cecep.model.Inventory" >    
+    	select top 1 inventory_id from inventory order by inventory_id desc
+  </select>
+  <select id="impotmsg" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory">
+   	select row_number() over(order by dbo.inventory.inventory_id) as rowNumber,
+		   		inventory.inventory_id,
+				inventory.quantity,
+				medicine.medicine_name,
+				Convert(decimal(18,2),medicine.price) price,
+				medicine.vendor,
+				medicine.medicine_desc
+			FROM
+				inventory 
+			LEFT JOIN medicine  ON inventory.examiner_id = medicine.medicine_id
+  </select>
+  
+  
+   <select id="outTimeMedicine" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory">
+		  SELECT
+					inventory.quantity  number,
+					inventory_detail.inventory_id,
+					inventory_detail.inv_record_id
+				FROM
+					inventory_detail  
+				left join inventory on  inventory_detail.inventory_id=inventory.inventory_id
+				WHERE
+					inventory_detail.out_time &lt; GETDATE()
+  </select>
+  
+  <update id="updateOutMedicine">
+	  update dbo.inventory
+	    set  quantity=quantity-#{quantity,jdbcType=NUMERIC}
+	    where inventory_id =#{inventoryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateType">
+	  update dbo.inventory_detail
+	    set  out_type=1
+	    where inv_record_id =#{invRecordId,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updateMoney">
+	  update dbo.med_account
+	    set  amount=amount-#{money,jdbcType=NUMERIC}
+	    where card_number =#{cardNumber,jdbcType=INTEGER}
+  </update>
+  <insert id="saveMoneyMsg" parameterType="com.cecep.model.Inventory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="preOrderId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey> 
+		insert  into pre_order  (
+		card_number,money,remarks,creat_date
+		)  VALUES(
+		#{cardNumber,jdbcType=INTEGER}
+		,#{money1,jdbcType=NUMERIC}
+		,#{remarks,jdbcType=VARCHAR},
+		GETDATE()
+		)
+  </insert>
+  
+    <select id="selectByPage1" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory" >
+   	select u.*
+   	from ( 	
+			  select row_number() over(order by tm.inventory_id) as rowNumber,
+					tm.inventory_id,
+					tm.number,
+					tm.medicine_name,
+					tm.num  cou1,
+					tm.quantity,
+					tm.medicine_id,
+					(
+						tm.number - tm.num - tm.quantity
+					) cou
+				FROM
+					(
+						SELECT
+							SUM (inventory_detail.number) number,
+							medicine.medicine_name,
+							 medicine.medicine_id,
+							(
+								CASE
+								WHEN t.num IS NULL THEN
+									0
+								ELSE
+									t.num
+								END
+							) num,
+							inventory.quantity,
+							inventory.inventory_id
+						FROM
+							inventory_detail
+						LEFT JOIN (
+							SELECT
+								inventory_detail.inventory_id,
+								SUM (inventory_detail.number) num
+							FROM
+								inventory_detail
+							WHERE
+								inventory_detail.out_type = '1'
+							GROUP BY
+								inventory_detail.inventory_id
+						) t ON inventory_detail.inventory_id = t.inventory_id
+						LEFT JOIN inventory ON inventory_detail.inventory_id = inventory.inventory_id
+						LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id
+						where  1=1
+						<if test="beginDate != null and beginDate != ''" >
+	        				and Datediff(day, dbo.inventory_detail.inv_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, dbo.inventory_detail.inv_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+						GROUP BY
+							inventory_detail.inventory_id,
+							medicine.medicine_name,
+							t.num,
+							inventory.quantity,
+							inventory.inventory_id,
+							medicine.medicine_id
+				) tm
+			where  1=1	
+			<if test="medicineName != null and medicineName != ''" >
+		        	and tm.medicine_name like '%${medicineName}%'
+		     </if>	 
+	      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount1" resultType="java.lang.Integer" parameterType="com.cecep.model.Inventory" >    
+   	select count(1)
+  	from ( 	
+			  select row_number() over(order by tm.inventory_id) as rowNumber,
+					tm.inventory_id,
+					tm.number,
+					tm.medicine_name,
+					tm.num  cou1,
+					tm.quantity,
+					tm.medicine_id,
+					(
+						tm.number - tm.num - tm.quantity
+					) cou
+				FROM
+					(
+						SELECT
+							SUM (inventory_detail.number) number,
+							medicine.medicine_name,
+							medicine.medicine_id,
+							(
+								CASE
+								WHEN t.num IS NULL THEN
+									0
+								ELSE
+									t.num
+								END
+							) num,
+							inventory.quantity,
+							inventory.inventory_id
+						FROM
+							inventory_detail
+						LEFT JOIN (
+							SELECT
+								inventory_detail.inventory_id,
+								SUM (inventory_detail.number) num
+							FROM
+								inventory_detail
+							WHERE
+								inventory_detail.out_type = '1'
+							GROUP BY
+								inventory_detail.inventory_id
+						) t ON inventory_detail.inventory_id = t.inventory_id
+						LEFT JOIN inventory ON inventory_detail.inventory_id = inventory.inventory_id
+						LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id
+						where  1=1
+						<if test="beginDate != null and beginDate != ''" >
+	        				and Datediff(day, dbo.inventory_detail.inv_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, dbo.inventory_detail.inv_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+						GROUP BY
+							inventory_detail.inventory_id,
+							medicine.medicine_name,
+							t.num,
+							inventory.quantity,
+							inventory.inventory_id,
+							medicine.medicine_id
+				) tm
+			where  1=1	
+			<if test="medicineName != null and medicineName != ''" >
+		        	and tm.medicine_name like '%${medicineName}%'
+		     </if>	 
+	      	) as u	
+  </select>
+   <select id="selectByPage2" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory" >
+   	select u.*
+   	from ( 	
+		   select row_number() over(order by dbo.inventory_detail.inv_record_id) as rowNumber,
+		   		inventory_detail.inv_record_id,
+					inventory_detail.number,
+					medicine.medicine_name,
+					CONVERT (
+						VARCHAR,
+						inventory_detail.inv_time,
+						120
+					) invTime
+				FROM
+					inventory_detail
+				LEFT JOIN inventory ON inventory_detail.inventory_id = inventory.inventory_id
+				LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id
+				 where   medicine.medicine_id=#{medicineId,jdbcType=INTEGER}
+		    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+		      	</if>
+		      	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, dbo.inventory_detail.inv_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, dbo.inventory_detail.inv_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+   <select id="selectCount2" resultType="java.lang.Integer" parameterType="com.cecep.model.Inventory" >    
+    select count(1)
+			FROM
+					inventory_detail
+				LEFT JOIN inventory ON inventory_detail.inventory_id = inventory.inventory_id
+				LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id
+				 where   medicine.medicine_id=#{medicineId,jdbcType=INTEGER}
+		    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+		      	</if>
+		      	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, dbo.inventory_detail.inv_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, dbo.inventory_detail.inv_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+  </select>
+  
+  <select id="selectByPage3" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory" >
+   		select u.*
+   	from ( 	
+			  select row_number() over(order by tm.inventory_id) as rowNumber,
+					tm.inventory_id,
+					tm.number,
+					tm.medicine_name,
+					tm.num  cou1,
+					tm.quantity,
+					(
+						tm.number - tm.num - tm.quantity
+					) cou
+				FROM
+					(
+						SELECT
+							SUM (inventory_detail.number) number,
+							medicine.medicine_name,
+							(
+								CASE
+								WHEN t.num IS NULL THEN
+									0
+								ELSE
+									t.num
+								END
+							) num,
+							inventory.quantity,
+							inventory.inventory_id
+						FROM
+							inventory_detail
+						LEFT JOIN (
+							SELECT
+								inventory_detail.inventory_id,
+								SUM (inventory_detail.number) num
+							FROM
+								inventory_detail
+							WHERE
+								inventory_detail.out_type = '1'
+							GROUP BY
+								inventory_detail.inventory_id
+						) t ON inventory_detail.inventory_id = t.inventory_id
+						LEFT JOIN inventory ON inventory_detail.inventory_id = inventory.inventory_id
+						LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id
+						where  1=1
+						<if test="beginDate != null and beginDate != ''" >
+	        				and Datediff(day, dbo.inventory_detail.inv_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, dbo.inventory_detail.inv_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+						GROUP BY
+							inventory_detail.inventory_id,
+							medicine.medicine_name,
+							t.num,
+							inventory.quantity,
+							inventory.inventory_id
+				) tm
+			where  1=1	
+			<if test="medicineName != null and medicineName != ''" >
+		        	and tm.medicine_name like '%${medicineName}%'
+		     </if>	 
+	      	) as u	   
+  </select>
+  
+  <select id="selectByPage4" resultMap="BaseResultMap" parameterType="com.cecep.model.Inventory" >
+   	select u.*
+   	from ( 	
+		   select row_number() over(order by dbo.inventory_detail.inv_record_id) as rowNumber,
+		   		inventory_detail.inv_record_id,
+					inventory_detail.number,
+					medicine.medicine_name,
+					CONVERT (
+						VARCHAR,
+						inventory_detail.inv_time,
+						120
+					) invTime
+				FROM
+					inventory_detail
+				LEFT JOIN inventory ON inventory_detail.inventory_id = inventory.inventory_id
+				LEFT JOIN medicine ON inventory.examiner_id = medicine.medicine_id
+				 where   medicine.medicine_id=#{medicineId,jdbcType=INTEGER}
+		    	<if test="medicineName != null and medicineName != ''" >
+		        	and dbo.medicine.medicine_name like '%${medicineName}%'
+		      	</if>
+		      	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, dbo.inventory_detail.inv_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, dbo.inventory_detail.inv_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+
+  </select>
+  
+  
+  <!-- 修改库存数量 -->
+    <update id="updateInventory" parameterType="com.cecep.model.Inventory" >
+    update dbo.inventory
+    set  quantity=#{quantity,jdbcType=NUMERIC}
+    where inventory_id =#{inventoryId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

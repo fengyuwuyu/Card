@@ -1,0 +1,1114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MedAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.MedAccount" >
+    <id column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="card_number" property="cardNumber" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="NUMERIC" />
+    <result column="acc_type" property="accType" jdbcType="VARCHAR" />
+    <result column="accType1" property="accType1" jdbcType="VARCHAR" />
+    
+    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
+    <result column="user_lname" property="userLname" jdbcType="VARCHAR" />
+    <result column="sexname" property="sexName" jdbcType="VARCHAR" />
+    <result column="tt_name" property="ttName" jdbcType="VARCHAR" />
+    <result column="user_depname" property="userDepname" jdbcType="VARCHAR" />
+    <result column="userType" property="userType" jdbcType="INTEGER" />
+    <result column="userType1" property="userType1" jdbcType="VARCHAR" />
+    <result column="user_serial" property="userSerial" jdbcType="INTEGER" />
+    <result column="user_duty" property="userDuty" jdbcType="VARCHAR" />
+     <result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+     <result column="record" property="record" jdbcType="INTEGER" />
+     <result column="create_time" property="createTime" jdbcType="DATE" />
+     <result column="amount1" property="amount1" jdbcType="NUMERIC" />
+     <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+     <result column="dep_serial" property="depSerial" jdbcType="INTEGER" />
+      <result column="amount2" property="amount2" jdbcType="NUMERIC" />
+      <result column="quantity" property="quantity" jdbcType="INTEGER" />
+      <result column="state" property="state" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    account_id, card_number, amount, acc_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.med_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.med_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertCardHao" parameterType="java.lang.Integer" >
+    <selectKey resultType="java.lang.Integer" keyProperty="accountId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.med_account ( card_number,amount, 
+      acc_type)
+    values ( #{userSerial,jdbcType=INTEGER}, 0, 
+      '0')
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MedAccount" >
+    <selectKey resultType="java.lang.Integer" keyProperty="accountId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.med_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      account_id,
+      <if test="cardNumber != null" >
+        card_number,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="accType != null" >
+        acc_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{accountId,jdbcType=INTEGER},
+      <if test="cardNumber != null" >
+        #{cardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=NUMERIC},
+      </if>
+      <if test="accType != null" >
+        #{accType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.MedAccount" >
+    update dbo.med_account
+    <set >
+      <if test="cardNumber != null" >
+        card_number = #{cardNumber,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=NUMERIC},
+      </if>
+      <if test="accType != null" >
+        acc_type = #{accType,jdbcType=CHAR},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MedAccount" >
+    update dbo.med_account
+    set 
+      amount = #{amount,jdbcType=NUMERIC},
+      acc_type = #{accType1,jdbcType=CHAR}
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+   <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+	   	select u.*
+	   	from ( 	
+		select row_number() over(order by dbo.dt_user.User_serial) as rowNumber,
+			med_account.card_number,
+			CONVERT (
+				DECIMAL (18, 2),
+				med_account.amount
+			) amount,
+			med_account.account_id,
+			(CASE  when  med_account.acc_type='1'  then '是'  else '否'  END) accType,
+			(CASE  when  med_account.acc_type='1'  then '1'  else '0'  END) accType1,  
+			dt_user.user_serial,
+			dt_user.user_no,
+			dt_user.user_lname,
+			dt_user.user_depname,
+			dt_user.user_duty,
+			dt_user.user_type userType,
+			dt_card.card_hao
+			from dt_user 
+			left  join  med_account   on dt_user.user_serial =  med_account.card_number  
+			left join  dt_card  on  dt_card.user_serial=dt_user.user_serial 
+			left join  dt_dep  on  dt_user.user_dep=dt_dep.dep_serial  
+			LEFT JOIN visitor_blacklist ON dt_user.user_serial = visitor_blacklist.user_serial
+			 where  dt_user.user_type&lt;51  and  dt_card.card_type=0
+				and  visitor_blacklist.id IS NULL
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		        	and dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER}
+		      	</if>
+		      	
+	      		<if test="cardHao != null and cardHao  != ''" >
+		        	and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      	</if>
+		      	<if test='accType1 == "1"' >
+		        	and dbo.med_account.acc_type =#{accType1,jdbcType=CHAR}
+		      	</if>
+		      	<if test='(accType1 == ""  and  accType1 == null)  or accType1 == "0"'   >
+		        	and dbo.med_account.acc_type !='1'
+		      	</if>		
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+  <select id="selectByPage4" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+  
+	 	 with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depParent,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+			select  t.*,
+			(case when tt.amount1 is null then 0 else tt.amount1 end )  amount1
+			 from  (SELECT
+					row_number () OVER (ORDER BY dbo.dt_dep.dep_serial) AS rowNumber,
+					dbo.dt_dep.dep_serial,
+					dbo.dt_dep.dep_parent,
+					dbo.dt_dep.dep_name,
+					<choose>
+		    		<when test="depName != null and depName != ''" >'open' as state</when>
+		    			<otherwise>'closed' as state</otherwise>
+		   			</choose>
+						FROM
+							dbo.dt_dep
+						LEFT JOIN dbo.dt_user ON dbo.dt_dep.dep_serial = dbo.dt_user.user_dep
+						LEFT JOIN dbo.dt_card ON dbo.dt_user.user_serial = dbo.dt_card.user_serial
+						WHERE
+							dbo.dt_dep.dep_parent =#{depParent,jdbcType=INTEGER}
+						OR dbo.dt_dep.dep_parent IS NULL
+						GROUP BY
+							dbo.dt_dep.dep_serial,
+							dbo.dt_dep.dep_parent,
+							dbo.dt_dep.dep_name)  t  left  join 
+						
+						(
+						SELECT
+								dt_dep.dep_serial,
+									SUM (
+										CASE	WHEN recharge_record.amount IS NULL THEN	0	ELSE	recharge_record.amount		END	) amount1
+								FROM
+									recharge_record
+								LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+									LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial  
+									WHERE (
+									dt_user.user_dep in(select dep_serial from cte)
+								  or dt_dep.dep_serial=#{depParent,jdbcType=INTEGER})
+								<if test="beginDate != null and beginDate != ''" >
+	        			and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>		  
+							group by  dt_dep.dep_serial
+						) tt  on  t.dep_serial=tt.dep_serial
+<where>
+   	<if test="depSerial != null and depSerial != ''" >
+		        	and tt.dep_serial=#{depSerial,jdbcType=INTEGER}
+	</if>
+
+</where>
+
+  </select>
+   <select id="selectCount4" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" > 
+	 	 with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depParent,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+   	select count(1)  from ( 	
+					select  t.*,tt.amount1 from  (SELECT
+						row_number () OVER (ORDER BY dbo.dt_dep.dep_serial) AS rowNumber,
+						dbo.dt_dep.dep_serial,
+						dbo.dt_dep.dep_parent,
+						dbo.dt_dep.dep_name,
+					<choose>
+		    		<when test="depName != null and depName != ''" >'open' as state</when>
+		    			<otherwise>'closed' as state</otherwise>
+		   			</choose>
+					FROM
+						dbo.dt_dep
+					LEFT JOIN dbo.dt_user ON dbo.dt_dep.dep_serial = dbo.dt_user.user_dep
+					LEFT JOIN dbo.dt_card ON dbo.dt_user.user_serial = dbo.dt_card.user_serial
+					WHERE
+						dbo.dt_dep.dep_parent =#{depParent,jdbcType=INTEGER}
+					OR dbo.dt_dep.dep_parent IS NULL
+					GROUP BY
+						dbo.dt_dep.dep_serial,
+						dbo.dt_dep.dep_parent,
+						dbo.dt_dep.dep_name)  t  left  join 
+					
+					(
+					SELECT
+							dt_dep.dep_serial,
+								SUM (
+									CASE	WHEN recharge_record.amount IS NULL THEN	0	ELSE	recharge_record.amount		END	) amount1
+							FROM
+								recharge_record
+							LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+								LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial 
+						 WHERE (dt_user.user_dep in(select dep_serial from cte)
+							  or dt_dep.dep_serial=#{depParent,jdbcType=INTEGER} )
+						<if test="beginDate != null and beginDate != ''" >
+	        		and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>			  
+						group by  dt_dep.dep_serial
+					) tt  on  t.dep_serial=tt.dep_serial
+		      	) as u	
+		      	
+		    <where>
+   	<if test="depSerial != null and depSerial != ''" >
+		        	and u.dep_serial=#{depSerial,jdbcType=INTEGER}
+	</if>
+</where>  	
+		      	
+   </select>
+  
+  
+   <select id="selectByPage5" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	with cte(dep_serial,dep_parent)
+		as
+		(
+		<!-- 父项 -->	
+		select dep_serial,dep_parent from dt_dep where dep_parent = 10000
+		union all
+		<!--递归结果集中的下级 -->	
+		select t.dep_serial,t.dep_parent from dt_dep as t
+		inner join cte as c on t.dep_parent = c.dep_serial
+		) 
+   
+   
+   	select u.*
+   	from ( 	
+		 select row_number() over(order by dbo.dt_dep.dep_serial) as rowNumber,
+				dt_user.user_lname,
+				SUM (recharge_record.amount) amount2,
+				dt_dep.dep_serial
+			FROM
+				recharge_record
+			LEFT JOIN dt_user ON dt_user.user_serial = recharge_record.card_number
+			LEFT JOIN dt_dep ON dt_dep.dep_serial = dt_user.user_dep
+		where  (dt_dep.dep_serial  =#{depSerial,jdbcType=INTEGER}  or  dt_dep.dep_serial 
+		in(select dep_serial from cte ))
+		      	<if test="beginDate != null and beginDate != ''" >
+	        	and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	    
+		      	GROUP BY
+				dt_user.user_lname,
+				dt_dep.dep_serial
+
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+			
+			
+	</where>	
+  </select>
+  
+  
+  
+   <select id="selectCount5" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" > 
+   with cte(dep_serial,dep_parent)
+		as
+		(
+		<!-- 父项 -->	
+		select dep_serial,dep_parent from dt_dep where dep_parent = 10000
+		union all
+		<!--递归结果集中的下级 -->	
+		select t.dep_serial,t.dep_parent from dt_dep as t
+		inner join cte as c on t.dep_parent = c.dep_serial
+		) 
+   select count(1)   FROM(
+   			 select row_number() over(order by dbo.dt_dep.dep_serial) as rowNumber,
+				dt_user.user_lname,
+				SUM (recharge_record.amount) amout,
+				dt_dep.dep_serial
+			FROM
+				recharge_record
+			LEFT JOIN dt_user ON dt_user.user_serial = recharge_record.card_number
+			LEFT JOIN dt_dep ON dt_dep.dep_serial = dt_user.user_dep
+		where  (dt_dep.dep_serial  =#{depSerial,jdbcType=INTEGER}  or  dt_dep.dep_serial 
+				in(select dep_serial from cte ))
+		      	<if test="beginDate != null and beginDate != ''" >
+	        	and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	    
+		      	GROUP BY
+				dt_user.user_lname,
+				dt_dep.dep_serial
+
+   )  u
+   </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   <select id="selectCardNum" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+    SELECT
+				dt_user.user_serial
+			FROM
+				dt_user
+			LEFT JOIN dt_card ON dt_user.user_serial = dt_card.user_serial
+			WHERE
+				dt_card.card_type = 0
+			AND dt_user.user_type &lt; 51
+			AND dt_user.user_serial NOT IN (
+				SELECT
+					card_number
+				FROM
+					med_account
+			)
+   </select>
+  
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >    
+		SELECT	COUNT (1)  FROM  (
+			select row_number() over(order by dbo.dt_user.User_serial) as rowNumber,
+			med_account.card_number,
+			CONVERT (
+				DECIMAL (18, 2),
+				med_account.amount
+			) amount,
+			med_account.account_id,
+			(CASE  when  med_account.acc_type='1'  then '是'  else '否'  END) accType,
+			(CASE  when  med_account.acc_type='1'  then '1'  else '0'  END) accType1,  
+			dt_user.user_serial,
+			dt_user.user_no,
+			dt_user.user_lname,
+			dt_user.user_depname,
+			dt_user.user_duty,
+			dt_user.user_type userType,
+			dt_card.card_hao
+			from dt_user 
+			left  join  med_account   on dt_user.user_serial =  med_account.card_number  
+			left join  dt_card  on  dt_card.user_serial=dt_user.user_serial 
+			left join  dt_dep  on  dt_user.user_dep=dt_dep.dep_serial  
+			LEFT JOIN visitor_blacklist ON dt_user.user_serial = visitor_blacklist.user_serial
+			 where  dt_user.user_type&lt;51  and  dt_card.card_type=0
+				and  visitor_blacklist.id IS NULL
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		        	and dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER}
+		      	</if>
+		      	<if test="cardHao != null and cardHao  != ''" >
+		        	and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      	</if>
+		      	<if test='accType1 == "1"' >
+		        	and dbo.med_account.acc_type =#{accType1,jdbcType=CHAR}
+		      	</if>
+		      	<if test='(accType1 == ""  and  accType1 == null)  or accType1 == "0"'   >
+		        	and dbo.med_account.acc_type !='1'
+		      	</if>		
+		)  u
+		      		  
+  </select>
+  
+	<select id="selectEmployeeByKey" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount">
+		 select row_number() over(order by dbo.dt_user.User_serial) as rowNumber,
+			med_account.card_number,med_account.amount,
+			med_account.account_id,
+			(CASE  when  med_account.acc_type='1'  then '是'  else '否'  END) accType, 
+			(CASE  when  med_account.acc_type='1'  then '1'  else '0'  END) accType1, 
+			dt_user.user_serial,
+			dt_user.user_no,
+			dt_user.user_lname,
+			dt_user.user_depname,
+			dt_user.user_sex sexname,
+			dt_user.user_duty,
+			dt_user.user_type userType,
+			dt_card.card_hao,
+			(CASE  when  dt_user.user_type>50  then '离职'  else '在职'  END)  userType1
+			from dt_user
+			left  join  med_account   on dt_user.user_serial =  med_account.card_number  
+			left join  dt_card  on  dt_card.user_serial=dt_user.user_serial   where 
+			dt_user.user_serial=#{userSerial,jdbcType=INTEGER}
+	
+	</select>
+  
+  	<!-- 查询出卡号是否建立医药账户 -->
+  	 <select id="getNum" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >
+ 		SELECT count(1) from med_account where card_number= #{userSerial,jdbcType=INTEGER}
+ 	 </select>
+  
+  
+  
+  
+  
+  
+  
+<!-- 充值记录  -->
+  
+  
+   <select id="selectByPage1" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	select u.*
+   	from ( 	 
+   		SELECT   row_number() over(order by dbo.med_account.account_id) as rowNumber,
+			med_account.card_number,
+			CONVERT (
+				DECIMAL (18, 2),
+				med_account.amount
+			) amount,
+			med_account.account_id,
+			(CASE  when  med_account.acc_type='1'  then '是'  else '否'  END) accType, 
+			(CASE  when  med_account.acc_type='1'  then '1'  else '0'  END) accType1, 
+			dt_user.user_serial,
+			dt_user.user_no,
+			dt_user.user_lname,
+			dt_user.user_depname,
+			dt_user.user_sex sexname,
+			dt_card.card_hao,
+			dt_user.user_duty,
+			dt_user.user_type userType
+		FROM
+			med_account
+		LEFT JOIN dt_user ON dt_user.user_serial = med_account.card_number
+		LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+		LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial
+		LEFT JOIN visitor_blacklist ON dt_user.user_serial = visitor_blacklist.user_serial
+		WHERE
+			med_account.acc_type != '1'  and  dt_card.card_type=0  and  dt_user.user_type&lt;51
+			and  visitor_blacklist.id IS NULL
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>	
+	      		<if test="depSerial != null and depSerial != ''" >
+		        	and dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER}
+		      	</if>	
+		      	<if test="cardHao != null and cardHao  != ''" >
+		        	and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      	</if>      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount1" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >    
+    select count(1)  from   med_account
+		LEFT JOIN dt_user ON dt_user.user_serial = med_account.card_number
+		LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+		LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial
+		LEFT JOIN visitor_blacklist ON dt_user.user_serial = visitor_blacklist.user_serial
+		WHERE
+			med_account.acc_type != '1'  and  dt_card.card_type=0  and  dt_user.user_type&lt;51
+			and  visitor_blacklist.id IS NULL
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>	
+	      		<if test="depSerial != null and depSerial != ''" >
+		        	and dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER}
+		      	</if>  
+		      	<if test="cardHao != null and cardHao  != ''" >
+		        	and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      	</if>
+  </select>
+  
+  <update id="rechargeMoney" parameterType="com.cecep.model.MedAccount" >
+	   update dbo.med_account
+	    set 
+	      amount=amount+ #{money,jdbcType=NUMERIC}
+	    where card_number = #{cardNumber,jdbcType=INTEGER}
+  </update>
+  
+ <!-- 查询出卡号是否建立医药账户 -->
+  	 <select id="cardnum" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >
+	    
+ 	 </select>
+  
+  <insert id="addMedicineRecord"  parameterType="com.cecep.model.MedAccount" >
+	  <selectKey resultType="java.lang.Integer" keyProperty="record" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+	    </selectKey>
+	    insert into dbo.recharge_record (card_number,amount, 
+	      type,create_time)
+	    values ( #{cardNumber,jdbcType=VARCHAR}, #{money,jdbcType=NUMERIC}, 
+	      '0',GETDATE())
+  </insert>
+  
+  
+  
+  
+  
+  
+  
+  
+   <select id="selectByPage2" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	select u.*
+   	from ( 	
+		 select row_number() over(order by dbo.dt_user.User_serial) as rowNumber,
+			med_account.card_number,
+			CONVERT (
+				DECIMAL (18, 2),
+				med_account.amount
+			) amount,
+			med_account.account_id,
+			(CASE  when  med_account.acc_type='1'  then '是'  else '否'  END) accType,
+			(CASE  when  med_account.acc_type='1'  then '1'  else '0'  END) accType1, 
+			dt_user.user_serial,
+			dt_user.user_no,
+			dt_user.user_lname,
+			dt_user.user_depname,
+			dt_user.user_sex sexname,
+			dt_card.card_hao,
+			dt_user.user_duty,
+			dt_user.user_type userType,
+			(CASE  when  dt_user.user_type>50  then '离职'  else '在职'  END)  userType1
+			from  med_account  
+			left join dt_user  ON  dt_user.User_serial=med_account.card_number
+			LEFT JOIN  dt_card on dt_card.User_serial =  dt_user.User_serial 
+			 where
+			dt_user.user_serial != #{userSerial,jdbcType=INTEGER}
+			 and  med_account.acc_type !='1'
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+  
+  
+  <select id="selectCount2" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >    
+    select count(1)  from  med_account  
+				left join dt_user  ON  dt_user.User_serial=med_account.card_number
+			LEFT JOIN  dt_card on dt_card.User_serial =  dt_user.User_serial 
+			where
+			dt_user.user_serial != #{userSerial,jdbcType=INTEGER}
+			 and  med_account.acc_type !='1'
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>	  
+  </select>
+  
+  
+  <update id="updateMoney1" parameterType="com.cecep.model.MedAccount" >
+    update dbo.med_account
+    set 
+      amount = amount-#{amountMoney,jdbcType=NUMERIC}
+    where card_number = #{cardNumber2,jdbcType=VARCHAR}
+  </update>
+  <update id="updateMoney2" parameterType="com.cecep.model.MedAccount" >
+    update dbo.med_account
+    set 
+       amount=amount+ #{amountMoney,jdbcType=NUMERIC}
+    where card_number = #{cardNumber1,jdbcType=VARCHAR}
+  </update>
+  <insert id="addrecord"  parameterType="com.cecep.model.MedAccount" >
+	  <selectKey resultType="java.lang.Integer" keyProperty="record" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+	    </selectKey>
+	    insert into dbo.recharge_record (card_number,amount, 
+	      type,create_time)
+	    values ( #{cardNumber1,jdbcType=VARCHAR}, #{amountMoney,jdbcType=NUMERIC}, 
+	      '0',GETDATE())
+  </insert>
+  
+  
+  
+  
+   <select id="selectByPage3" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	select u.*
+   	from ( 	
+		 select row_number() over(order by dbo.dt_user.User_serial) as rowNumber,
+				recharge_record.amount,
+				CONVERT (
+					VARCHAR,
+					recharge_record.create_time,
+					120
+				) createTime,
+			dt_user.user_Lname
+			FROM
+				recharge_record
+			LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+			LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+			WHERE
+				dt_user.user_serial  = #{userSerial,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, dbo.recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+    <select id="selectCount3" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >    
+    select count(1) 
+    		 FROM
+			recharge_record
+			LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+			LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+			WHERE
+				dt_user.user_serial  = #{userSerial,jdbcType=INTEGER}
+	    	<if test="beginDate != null and beginDate != ''" >
+	        	and Datediff(day, dbo.recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+	      	</if>
+	      	<if test="endDate != null and endDate != ''" >
+	        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+	        </if>	
+  </select>
+  
+  
+  
+  
+  	<select id="selectByPage6" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+			WITH cte (dep_serial, dep_parent) AS (
+						SELECT
+							dep_serial,
+							dep_parent
+						FROM
+							dt_dep
+						WHERE
+							dep_parent IN
+							 <foreach collection="result" item="item" open="(" close=")" separator=",">
+									#{item}
+							</foreach>
+						UNION ALL
+							SELECT
+								t.dep_serial,
+								t.dep_parent
+							FROM
+								dt_dep AS t
+							INNER JOIN cte AS c ON t.dep_parent = c.dep_serial
+					) SELECT
+						 dt_dep.dep_serial,
+						dt_dep.dep_name,
+						(
+							CASE
+							WHEN t.amount1 IS NULL THEN
+								0
+							ELSE
+								t.amount1
+							END
+						) amount1
+					FROM
+						dt_dep  LEFT JOIN
+					
+						(
+							SELECT
+								dt_dep.dep_serial,
+								SUM (
+									CASE
+									WHEN recharge_record.amount IS NULL THEN
+										0
+									ELSE
+										recharge_record.amount
+									END
+								) amount1
+							FROM
+								recharge_record
+							LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+							LEFT JOIN dt_dep ON dt_user.user_dep = dt_dep.dep_serial
+							WHERE
+							(	dt_user.user_dep IN (SELECT dep_serial FROM cte)
+								or  dt_dep.dep_serial  in  
+						 <foreach collection="result" item="item" open="(" close=")" separator=",">
+								#{item}
+							</foreach>
+							)
+						<if test="beginDate != null and beginDate != ''" >
+	        					and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+							GROUP BY
+								dt_dep.dep_serial
+						) t
+					   ON t.dep_serial = dt_dep.dep_serial
+			
+				<where>
+				       dt_dep.dep_serial in
+				   	 <foreach collection="result" item="item" open="(" close=")" separator=",">
+								#{item}
+					</foreach>
+				</where>
+  </select>
+  	
+   <select id="selectByPage7" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+			select u.*
+	   	from ( 	
+						SELECT
+						row_number () OVER (
+					
+							ORDER BY
+								dbo.dt_user.User_serial
+						) AS rowNumber,
+						ta.amount amount1,
+						dt_user.user_serial,
+						dt_user.user_no,
+						dt_user.user_lname,
+						dt_user.user_depname,
+						CONVERT (
+									DECIMAL (18, 2),
+									med_account.amount
+								) amount
+					FROM
+						(
+							SELECT
+								SUM (recharge_record.amount) amount,
+								recharge_record.card_number
+							FROM
+								recharge_record
+							WHERE  1=1
+							<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+					      	</if>
+					      	<if test="endDate != null and endDate != ''" >
+					        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+					        </if>
+							GROUP BY
+								recharge_record.card_number
+						) ta
+					LEFT JOIN dt_user ON ta.card_number = dt_user.user_serial
+					LEFT JOIN med_account ON dt_user.user_serial = med_account.card_number
+					left join   dt_dep  on dt_user.user_dep  =dt_dep.dep_serial
+				where 1=1	
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		        	and dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER}
+		      	</if>
+		      	) as u	
+		      
+  </select>
+  
+  
+  <select id="selectByPage8" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	select u.*
+   	from ( 	
+		 select row_number() over(order by dbo.dt_dep.dep_serial) as rowNumber,
+				dt_user.user_lname,
+				SUM (recharge_record.amount) amount2,
+				dt_dep.dep_serial,
+				dt_user.user_depname,
+				dt_user.user_no
+			FROM
+				recharge_record
+			LEFT JOIN dt_user ON dt_user.user_serial = recharge_record.card_number
+			LEFT JOIN dt_dep ON dt_dep.dep_serial = dt_user.user_dep
+		where  dt_dep.dep_serial=#{depSerialAccount,jdbcType=INTEGER}
+		      	<if test="beginDate != null and beginDate != ''" >
+	        	and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	    
+		      	GROUP BY
+				dt_user.user_lname,
+				dt_dep.dep_serial,
+				dt_user.user_depname,
+				dt_user.user_no
+		      	) as u		   
+  </select>
+  
+     <select id="selectByPage9" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+   	select u.*
+   	from ( 	
+		 select row_number() over(order by dbo.dt_user.User_serial) as rowNumber,
+				recharge_record.amount,
+				CONVERT (
+					VARCHAR,
+					recharge_record.create_time,
+					120
+				) createTime,
+			dt_user.user_Lname
+			FROM
+				recharge_record
+			LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+			LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+			WHERE
+				dt_user.user_serial  = #{userSerial,jdbcType=INTEGER}
+		    	<if test="beginDate != null and beginDate != ''" >
+		        	and Datediff(day, dbo.recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+		      	</if>
+		      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>	
+		      	) as u		   
+	
+  </select>
+  
+  
+  <select id="selectByUser" resultType="java.util.Map" parameterType="com.cecep.model.MedAccount" >
+		  SELECT
+		  top(1)
+			dt_user.user_lname,
+			dt_user.user_depname
+		FROM
+			dt_user
+		LEFT JOIN dt_dep  ON dt_user.user_dep = dt_dep.dep_serial
+  where  1=1
+  				<if test="userSerial != -1 and userSerial != '-1'" >
+		        	and dbo.dt_user.user_serial =#{userSerial,jdbcType=INTEGER}
+		      	</if>
+		      	<if test="depSerialAccount != 0 and depSerialAccount != '0'" >
+		        	and dbo. dt_dep.dep_serial=#{depSerialAccount,jdbcType=INTEGER}
+		      	</if>
+  </select>
+  
+  <select id="selectByPage10" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+	 <if test="depSerial != null and depSerial != ''" >
+	 	 with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerial,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+		</if>	
+			
+	   	select u.*
+	   	from ( 	
+						SELECT
+						row_number () OVER (
+					
+							ORDER BY
+								dbo.dt_user.User_serial
+						) AS rowNumber,
+						ta.amount amount1,
+						dt_user.user_serial,
+						dt_user.user_no,
+						dt_user.user_lname,
+						dt_user.user_depname,
+						CONVERT (
+									DECIMAL (18, 2),
+									med_account.amount
+								) amount
+					FROM
+						(
+							SELECT
+								SUM (recharge_record.amount) amount,
+								recharge_record.card_number
+							FROM
+								recharge_record
+							WHERE  1=1
+							<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+					      	</if>
+					      	<if test="endDate != null and endDate != ''" >
+					        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+					        </if>
+							GROUP BY
+								recharge_record.card_number
+						) ta
+					LEFT JOIN dt_user ON ta.card_number = dt_user.user_serial
+					LEFT JOIN med_account ON dt_user.user_serial = med_account.card_number
+					left join   dt_dep  on dt_user.user_dep  =dt_dep.dep_serial
+					LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial	
+				where 1=1	
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		        	and dbo. dt_dep.dep_serial  in(select dep_serial from cte )
+		        	or dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER}
+		      	</if>
+		      	<if test="cardHao != null and cardHao  != ''" >
+		        	and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      	</if>
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount10" resultType="java.lang.Integer" parameterType="com.cecep.model.MedAccount" >    
+     <if test="depSerial != null and depSerial != ''" >
+  	  with cte(dep_serial,dep_parent)
+			as
+			(
+			<!--父项-->
+			select dep_serial,dep_parent from dt_dep where dep_parent =#{depSerial,jdbcType=INTEGER}
+			union all
+			<!--递归结果集中的下级  -->
+			select t.dep_serial,t.dep_parent from dt_dep as t
+			inner join cte as c on t.dep_parent = c.dep_serial
+			) 
+		</if>	
+   
+   
+		SELECT	COUNT (1)  
+			from ( 	
+						SELECT
+						row_number () OVER (
+					
+							ORDER BY
+								dbo.dt_user.User_serial
+						) AS rowNumber,
+						ta.amount amount1,
+						dt_user.user_serial,
+						dt_user.user_no,
+						dt_user.user_lname,
+						dt_user.user_depname,
+						CONVERT (
+									DECIMAL (18, 2),
+									med_account.amount
+								) amount
+					FROM
+						(
+							SELECT
+								SUM (recharge_record.amount) amount,
+								recharge_record.card_number
+							FROM
+								recharge_record
+							WHERE  1=1
+							<if test="beginDate != null and beginDate != ''" >
+				        		and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+					      	</if>
+					      	<if test="endDate != null and endDate != ''" >
+					        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+					        </if>
+							GROUP BY
+								recharge_record.card_number
+						) ta
+					LEFT JOIN dt_user ON ta.card_number = dt_user.user_serial
+					LEFT JOIN med_account ON dt_user.user_serial = med_account.card_number
+					left join   dt_dep  on dt_user.user_dep  =dt_dep.dep_serial
+					LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial	
+					where 1=1	
+		    	<if test="userLname != null and userLname != ''" >
+		        	and dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="depSerial != null and depSerial != ''" >
+		        	and (dbo. dt_dep.dep_serial in(select dep_serial from cte )
+		        	or dbo. dt_dep.dep_serial=#{depSerial,jdbcType=INTEGER})
+		      	</if>
+		      	<if test="cardHao != null and cardHao  != ''" >
+		        	and dbo. dt_card.card_hao =#{cardHao,jdbcType=VARCHAR}
+		      	</if>
+		      	) as u	
+		      		  
+  </select>
+  
+  <!-- 个人充值记录 -->
+  
+  
+  
+   <select id="personalRecharge" resultMap="BaseResultMap" parameterType="com.cecep.model.MedAccount" >
+	   SELECT
+					u.*
+				FROM
+					(
+						SELECT
+							row_number () OVER (
+				
+								ORDER BY
+									dbo.dt_user.User_serial
+							) AS rowNumber,
+							recharge_record.amount,
+							CONVERT (
+								VARCHAR,
+								recharge_record.create_time,
+								120
+							) createTime,
+							dt_user.user_depname,
+							dbo.dt_user.user_serial,
+							dbo.dt_user.user_no,
+							dbo.dt_user.user_lname
+						FROM
+							recharge_record
+						LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+						LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+						WHERE
+							dt_user.user_serial = #{userSerial1,jdbcType=INTEGER}
+								<if test="beginDate != null and beginDate != ''" >
+	        			and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+				        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+				        </if>	
+					) AS u
+		<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+  
+  
+    <select id="personalRechargeCou" resultType="java.lang.Integer"  parameterType="com.cecep.model.MedAccount" >
+	   SELECT
+			count(1)	
+				FROM
+					(
+						SELECT
+							row_number () OVER (
+				
+								ORDER BY
+									dbo.dt_user.User_serial
+							) AS rowNumber,
+							recharge_record.amount,
+							CONVERT (
+								VARCHAR,
+								recharge_record.create_time,
+								120
+							) createTime,
+							dt_user.user_depname
+						FROM
+							recharge_record
+						LEFT JOIN dt_user ON recharge_record.card_number = dt_user.user_serial
+						LEFT JOIN dt_card ON dt_card.user_serial = dt_user.user_serial
+						WHERE
+							dt_user.user_serial = #{userSerial1,jdbcType=INTEGER}
+						<if test="beginDate != null and beginDate != ''" >
+			        	and Datediff(day, recharge_record.create_time,#{beginDate,jdbcType=DATE})&lt;=0
+				      	</if>
+				      	<if test="endDate != null and endDate != ''" >
+		        	and Datediff(day, recharge_record.create_time,#{endDate,jdbcType=DATE})&gt;=0
+		        </if>		
+							
+					) AS u
+		
+		
+  </select>
+  
+</mapper>

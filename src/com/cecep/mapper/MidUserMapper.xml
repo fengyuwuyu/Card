@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MidUserMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.MidUser" >
+    <result column="hrid" property="hrid" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="dm" property="dm" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="useedname" property="useedname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="minzu" property="minzu" jdbcType="VARCHAR" />
+    <result column="extends3" property="extends3" jdbcType="VARCHAR" />
+    <result column="csrq" property="csrq" jdbcType="VARCHAR" />
+    <result column="jiq" property="jiq" jdbcType="VARCHAR" />
+    <result column="countrycity" property="countrycity" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="unit_id" property="unit_id" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="zhij" property="zhij" jdbcType="VARCHAR" />
+    <result column="grsf" property="grsf" jdbcType="VARCHAR" />
+    <result column="rylb" property="rylb" jdbcType="VARCHAR" />
+    <result column="hire" property="hire" jdbcType="VARCHAR" />
+    <result column="yglx" property="yglx" jdbcType="VARCHAR" />
+    <result column="jkzk" property="jkzk" jdbcType="VARCHAR" />
+    <result column="hyzk" property="hyzk" jdbcType="VARCHAR" />
+    <result column="zzmm" property="zzmm" jdbcType="VARCHAR" />
+    <result column="zgxl" property="zgxl" jdbcType="VARCHAR" />
+    <result column="csd" property="csd" jdbcType="VARCHAR" />
+    <result column="hkszd" property="hkszd" jdbcType="VARCHAR" />
+    <result column="daszd" property="daszd" jdbcType="VARCHAR" />
+    <result column="hklx" property="hklx" jdbcType="VARCHAR" />
+    <result column="homeaddr" property="homeaddr" jdbcType="VARCHAR" />
+    <result column="homepost" property="homepost" jdbcType="VARCHAR" />
+    <result column="officetel" property="officetel" jdbcType="VARCHAR" />
+    <result column="hometel" property="hometel" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="sszzjgid" property="sszzjgid" jdbcType="VARCHAR" />
+    <result column="sszzjgbm" property="sszzjgbm" jdbcType="VARCHAR" />
+    <result column="u_state" property="u_state" jdbcType="VARCHAR" />
+    <result column="u_time" property="u_time" jdbcType="VARCHAR" />
+    <result column="zzjglongcode" property="zzjglongcode" jdbcType="VARCHAR" />
+    <result column="zzjglongname" property="zzjglongname" jdbcType="VARCHAR" />
+    <result column="is_synchronized" property="is_synchronized" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    hrid, status, dm, name, useedname, sex, minzu, extends3, csrq, jiq, countrycity, department, 
+    unit_id, job, zhij, grsf, rylb, hire, yglx, jkzk, hyzk, zzmm, zgxl, 
+    csd, hkszd, daszd, hklx, homeaddr, homepost, officetel, hometel, telephone, 
+    email, remark, sszzjgid, sszzjgbm, u_state, u_time, zzjglongcode, zzjglongname, is_synchronized
+  </sql>
+  <sql id="MidUser_Column_List" >
+    dbo.mid_user.hrid, dbo.mid_user.status, dbo.mid_user.dm, dbo.mid_user.name, dbo.mid_user.useedname, dbo.mid_user.sex, dbo.mid_user.minzu, dbo.mid_user.extends3, dbo.mid_user.csrq, dbo.mid_user.jiq, dbo.mid_user.countrycity, dbo.mid_user.department, 
+    dbo.mid_user.unit_id, dbo.mid_user.job, dbo.mid_user.zhij, dbo.mid_user.grsf, dbo.mid_user.rylb, dbo.mid_user.hire, dbo.mid_user.yglx, dbo.mid_user.jkzk, dbo.mid_user.hyzk, dbo.mid_user.zzmm, dbo.mid_user.zgxl, 
+    dbo.mid_user.csd, dbo.mid_user.hkszd, dbo.mid_user.daszd, dbo.mid_user.hklx, dbo.mid_user.homeaddr, dbo.mid_user.homepost, dbo.mid_user.officetel, dbo.mid_user.hometel, dbo.mid_user.telephone, 
+    dbo.mid_user.email, dbo.mid_user.remark, dbo.mid_user.sszzjgid, dbo.mid_user.sszzjgbm, dbo.mid_user.u_state, dbo.mid_user.u_time, dbo.mid_user.zzjglongcode, dbo.mid_user.zzjglongname, 
+ 	dbo.mid_user.is_synchronized
+  </sql>
+  <insert id="insert" parameterType="com.cecep.model.MidUser" >
+    insert into dbo.mid_user (hrid, status, dm, 
+      name, useedname, sex, 
+      minzu, extends3, csrq, 
+      jiq, countrycity, department, 
+      unit_id, job, zhij, 
+      grsf, rylb, hire, yglx, 
+      jkzk, hyzk, zzmm, zgxl, 
+      csd, hkszd, daszd, 
+      hklx, homeaddr, homepost, 
+      officetel, hometel, telephone, 
+      email, remark, sszzjgid, 
+      sszzjgbm, u_state, u_time, 
+      zzjglongcode, zzjglongname,  
+      is_synchronized
+      )
+    values (#{hrid,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{dm,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{useedname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{minzu,jdbcType=VARCHAR}, #{extends3,jdbcType=VARCHAR}, #{csrq,jdbcType=VARCHAR}, 
+      #{jiq,jdbcType=VARCHAR}, #{countrycity,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{unit_id,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{zhij,jdbcType=VARCHAR}, 
+      #{grsf,jdbcType=VARCHAR}, #{rylb,jdbcType=VARCHAR}, #{hire,jdbcType=VARCHAR}, #{yglx,jdbcType=VARCHAR}, 
+      #{jkzk,jdbcType=VARCHAR}, #{hyzk,jdbcType=VARCHAR}, #{zzmm,jdbcType=VARCHAR}, #{zgxl,jdbcType=VARCHAR}, 
+      #{csd,jdbcType=VARCHAR}, #{hkszd,jdbcType=VARCHAR}, #{daszd,jdbcType=VARCHAR}, 
+      #{hklx,jdbcType=VARCHAR}, #{homeaddr,jdbcType=VARCHAR}, #{homepost,jdbcType=VARCHAR}, 
+      #{officetel,jdbcType=VARCHAR}, #{hometel,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{sszzjgid,jdbcType=VARCHAR}, 
+      #{sszzjgbm,jdbcType=VARCHAR}, #{u_state,jdbcType=VARCHAR}, #{u_time,jdbcType=VARCHAR}, 
+      #{zzjglongcode,jdbcType=VARCHAR}, #{zzjglongname,jdbcType=VARCHAR}, 
+      #{is_synchronized,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MidUser" >
+    insert into dbo.mid_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hrid != null" >
+        hrid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="dm != null" >
+        dm,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="useedname != null" >
+        useedname,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="minzu != null" >
+        minzu,
+      </if>
+      <if test="extends3 != null" >
+        extends3,
+      </if>
+      <if test="csrq != null" >
+        csrq,
+      </if>
+      <if test="jiq != null" >
+        jiq,
+      </if>
+      <if test="countrycity != null" >
+        countrycity,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="job != null" >
+        job,
+      </if>
+      <if test="zhij != null" >
+        zhij,
+      </if>
+      <if test="grsf != null" >
+        grsf,
+      </if>
+      <if test="rylb != null" >
+        rylb,
+      </if>
+      <if test="hire != null" >
+        hire,
+      </if>
+      <if test="yglx != null" >
+        yglx,
+      </if>
+      <if test="jkzk != null" >
+        jkzk,
+      </if>
+      <if test="hyzk != null" >
+        hyzk,
+      </if>
+      <if test="zzmm != null" >
+        zzmm,
+      </if>
+      <if test="zgxl != null" >
+        zgxl,
+      </if>
+      <if test="csd != null" >
+        csd,
+      </if>
+      <if test="hkszd != null" >
+        hkszd,
+      </if>
+      <if test="daszd != null" >
+        daszd,
+      </if>
+      <if test="hklx != null" >
+        hklx,
+      </if>
+      <if test="homeaddr != null" >
+        homeaddr,
+      </if>
+      <if test="homepost != null" >
+        "homepost",
+      </if>
+      <if test="officetel != null" >
+        "officetel",
+      </if>
+      <if test="hometel != null" >
+        "hometel",
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="sszzjgid != null" >
+        sszzjgid,
+      </if>
+      <if test="sszzjgbm != null" >
+        sszzjgbm,
+      </if>
+      <if test="uState != null" >
+        u_state,
+      </if>
+      <if test="uTime != null" >
+        u_time,
+      </if>
+      <if test="zzjglongcode != null" >
+        zzjglongcode,
+      </if>
+      <if test="zzjglongname != null" >
+        zzjglongname,
+      </if>
+      <if test="isSynchronized != null" >
+        is_synchronized,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hrid != null" >
+        #{hrid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="dm != null" >
+        #{dm,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="useedname != null" >
+        #{useedname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="minzu != null" >
+        #{minzu,jdbcType=VARCHAR},
+      </if>
+      <if test="extends3 != null" >
+        #{extends3,jdbcType=VARCHAR},
+      </if>
+      <if test="csrq != null" >
+        #{csrq,jdbcType=VARCHAR},
+      </if>
+      <if test="jiq != null" >
+        #{jiq,jdbcType=VARCHAR},
+      </if>
+      <if test="countrycity != null" >
+        #{countrycity,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="unitId != null" >
+        #{unitId,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="zhij != null" >
+        #{zhij,jdbcType=VARCHAR},
+      </if>
+      <if test="grsf != null" >
+        #{grsf,jdbcType=VARCHAR},
+      </if>
+      <if test="rylb != null" >
+        #{rylb,jdbcType=VARCHAR},
+      </if>
+      <if test="hire != null" >
+        #{hire,jdbcType=VARCHAR},
+      </if>
+      <if test="yglx != null" >
+        #{yglx,jdbcType=VARCHAR},
+      </if>
+      <if test="jkzk != null" >
+        #{jkzk,jdbcType=VARCHAR},
+      </if>
+      <if test="hyzk != null" >
+        #{hyzk,jdbcType=VARCHAR},
+      </if>
+      <if test="zzmm != null" >
+        #{zzmm,jdbcType=VARCHAR},
+      </if>
+      <if test="zgxl != null" >
+        #{zgxl,jdbcType=VARCHAR},
+      </if>
+      <if test="csd != null" >
+        #{csd,jdbcType=VARCHAR},
+      </if>
+      <if test="hkszd != null" >
+        #{hkszd,jdbcType=VARCHAR},
+      </if>
+      <if test="daszd != null" >
+        #{daszd,jdbcType=VARCHAR},
+      </if>
+      <if test="hklx != null" >
+        #{hklx,jdbcType=VARCHAR},
+      </if>
+      <if test="homeaddr != null" >
+        #{homeaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="homepost != null" >
+        #{homepost,jdbcType=VARCHAR},
+      </if>
+      <if test="officetel != null" >
+        #{officetel,jdbcType=VARCHAR},
+      </if>
+      <if test="hometel != null" >
+        #{hometel,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="sszzjgid != null" >
+        #{sszzjgid,jdbcType=VARCHAR},
+      </if>
+      <if test="sszzjgbm != null" >
+        #{sszzjgbm,jdbcType=VARCHAR},
+      </if>
+      <if test="uState != null" >
+        #{uState,jdbcType=VARCHAR},
+      </if>
+      <if test="uTime != null" >
+        #{uTime,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjglongcode != null" >
+        #{zzjglongcode,jdbcType=VARCHAR},
+      </if>
+      <if test="zzjglongname != null" >
+        #{zzjglongname,jdbcType=VARCHAR},
+      </if>     
+      <if test="isSynchronized != null" >
+        #{isSynchronized,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectByPrimaryKey" resultType="java.lang.Integer" parameterType="com.cecep.model.MidUser" >
+    select count(1)
+    from dbo.mid_user
+    where dm = #{dm,jdbcType=VARCHAR}
+  </select>
+        
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MidUser" >
+    update dbo.mid_user
+    set hrid = #{hrid,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      useedname = #{useedname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      minzu = #{minzu,jdbcType=VARCHAR},
+      extends3 = #{extends3,jdbcType=VARCHAR},
+      csrq = #{csrq,jdbcType=VARCHAR},
+      jiq = #{jiq,jdbcType=VARCHAR},
+      countrycity = #{countrycity,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      unit_id = #{unit_id,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      zhij = #{zhij,jdbcType=VARCHAR},
+      grsf = #{grsf,jdbcType=VARCHAR},
+      rylb = #{rylb,jdbcType=VARCHAR},
+      hire = #{hire,jdbcType=VARCHAR},
+      yglx = #{yglx,jdbcType=VARCHAR},
+      jkzk = #{jkzk,jdbcType=VARCHAR},
+      hyzk = #{hyzk,jdbcType=VARCHAR},
+      zzmm = #{zzmm,jdbcType=VARCHAR},
+      zgxl = #{zgxl,jdbcType=VARCHAR},
+      csd = #{csd,jdbcType=VARCHAR},
+      hkszd = #{hkszd,jdbcType=VARCHAR},
+      daszd = #{daszd,jdbcType=VARCHAR},
+      hklx = #{hklx,jdbcType=VARCHAR},
+      homeaddr = #{homeaddr,jdbcType=VARCHAR},
+      homepost = #{homepost,jdbcType=VARCHAR},
+      officetel = #{officetel,jdbcType=VARCHAR},
+      hometel = #{hometel,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      sszzjgid = #{sszzjgid,jdbcType=VARCHAR},
+      sszzjgbm = #{sszzjgbm,jdbcType=VARCHAR},
+      u_state = #{u_state,jdbcType=VARCHAR},
+      u_time = #{u_time,jdbcType=VARCHAR},
+      zzjglongcode = #{zzjglongcode,jdbcType=VARCHAR},
+      zzjglongname = #{zzjglongname,jdbcType=VARCHAR},
+      is_synchronized = #{is_synchronized,jdbcType=VARCHAR}
+    where dm = #{dm,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectIsSynchronized" resultType="java.lang.Integer" >
+    select count(1)
+    from dbo.mid_user u	
+     left join dbo.dt_dep d on u.unit_id = d.dep_no   
+	where u.is_synchronized = 0 and d.dep_serial is not null
+  </select>
+  
+  <resultMap id="DtUserResultMap" type="com.cecep.model.DtUser" >
+    <id column="user_serial" property="userSerial" jdbcType="BIGINT" />
+    <result column="user_no" property="userNo" jdbcType="NVARCHAR" />
+    <result column="user_lname" property="userLname" jdbcType="NVARCHAR" />
+    <result column="user_fname" property="userFname" jdbcType="NVARCHAR" />
+    <result column="dep_no" property="depNo" jdbcType="VARCHAR" />
+    <result column="user_dep" property="userDep" jdbcType="INTEGER" />
+    <result column="user_depname" property="userDepname" jdbcType="NVARCHAR" />
+    <result column="user_workday" property="userWorkday" jdbcType="TIMESTAMP" />
+    <result column="user_duty" property="userDuty" jdbcType="NVARCHAR" />
+    <result column="user_card" property="userCard" jdbcType="NVARCHAR" />
+    <result column="user_finger" property="userFinger" jdbcType="NVARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="pwd_begin" property="pwdBegin" jdbcType="TIMESTAMP" />
+    <result column="pwd_end" property="pwdEnd" jdbcType="TIMESTAMP" />
+    <result column="user_type" property="userType" jdbcType="SMALLINT" />
+    <result column="pact_begin" property="pactBegin" jdbcType="TIMESTAMP" />
+    <result column="pact_end" property="pactEnd" jdbcType="TIMESTAMP" />
+    <result column="user_level" property="userLevel" jdbcType="INTEGER" />
+    <result column="user_photo" property="userPhoto" jdbcType="INTEGER" />
+    <result column="user_sex" property="userSex" jdbcType="NVARCHAR" />
+    <result column="user_nation" property="userNation" jdbcType="NVARCHAR" />
+    <result column="user_xueli" property="userXueli" jdbcType="NVARCHAR" />
+    <result column="user_native" property="userNative" jdbcType="NVARCHAR" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="NVARCHAR" />
+    <result column="user_post" property="userPost" jdbcType="NVARCHAR" />
+    <result column="user_linkman" property="userLinkman" jdbcType="NVARCHAR" />
+    <result column="user_telephone" property="userTelephone" jdbcType="NVARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="NVARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="NVARCHAR" />
+    <result column="user_1" property="user1" jdbcType="NVARCHAR" />
+    <result column="user_2" property="user2" jdbcType="NVARCHAR" />
+    <result column="user_bz" property="userBz" jdbcType="NVARCHAR" />
+    <result column="kq_rule" property="kqRule" jdbcType="VARCHAR" />
+    <result column="kq_taoban" property="kqTaoban" jdbcType="NVARCHAR" />
+    <result column="kq_tiaoxiu" property="kqTiaoxiu" jdbcType="INTEGER" />
+    <result column="xf_time" property="xfTime" jdbcType="TIMESTAMP" />
+    <result column="xf_jiange" property="xfJiange" jdbcType="INTEGER" />
+    <result column="xf_je" property="xfJe" jdbcType="INTEGER" />
+    <result column="user_sj" property="userSj" jdbcType="TIMESTAMP" />
+    <result column="user_rank" property="userRank" jdbcType="NVARCHAR" />
+    <result column="gly_img" property="glyImg" jdbcType="INTEGER" />
+    <result column="user_ac" property="userAc" jdbcType="INTEGER" />
+    <result column="user_gsbh" property="userGsbh" jdbcType="VARCHAR" />
+    <result column="user_yglx" property="userYglx" jdbcType="VARCHAR" />
+    <result column="user_zhbh" property="userZhbh" jdbcType="VARCHAR" />
+    <result column="user_zhlx" property="userZhlx" jdbcType="VARCHAR" />
+    <result column="user_txm" property="userTxm" jdbcType="VARCHAR" />
+    <result column="user_lx" property="userLx" jdbcType="INTEGER" />
+    <result column="user_mj" property="userMj" jdbcType="INTEGER" />
+    <result column="card_xh" property="cardXh" jdbcType="VARCHAR" />
+  	<result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+    <result column="card_serial" property="cardSerial" jdbcType="CHAR" />
+  	<result column="card_lx" property="cardLx" jdbcType="INTEGER" />
+  	<result column="tt_name" property="ttName" jdbcType="VARCHAR" />  	
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />   
+    <result column="card_sj" property="cardSj" jdbcType="TIMESTAMP" />
+    <result column="loss_count" property="cardLossCount" jdbcType="INTEGER" />
+    <result column="card_bz" property="cardBz" jdbcType="NVARCHAR" />  
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  	<result column="role_name" property="roleName" jdbcType="VARCHAR" />  
+    <result column="ac_bh" property="acBh" jdbcType="CHAR" />
+  	<result column="ac_name" property="acName" jdbcType="VARCHAR" />
+  	<result column="pass_max" property="passMax" jdbcType="INTEGER" />
+    <result column="ac_pass" property="acPass" jdbcType="VARCHAR" />
+  	<result column="ac_kssj" property="acBegin" jdbcType="TIMESTAMP" />
+  	<result column="ac_jssj" property="acEnd" jdbcType="TIMESTAMP" />  	
+    <result column="sj" property="acSj" jdbcType="TIMESTAMP" />   
+    <result column="ac_money" property="acMoney" jdbcType="INTEGER" />   
+    <result column="med_money" property="medMoney" jdbcType="INTEGER" /> 
+    <result column="user_type_name" property="userTypeName" jdbcType="VARCHAR" />    
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="company_serial" property="companySerial" jdbcType="INTEGER" />
+    <result column="company" property="company" jdbcType="VARCHAR" /> 
+    <result column="privilege1" property="privilege1" jdbcType="INTEGER" />
+    <result column="main_company" property="mainCompany" jdbcType="VARCHAR" />
+    <result column="main_depname" property="mainDepname" jdbcType="VARCHAR" />
+    <result column="user_order" property="userOrder" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="synchronizeByDnEn"  resultMap="DtUserResultMap" >
+ <!--  	select b.id,c.dm as user_no,
+							c.name as user_lname,
+							c.sex as user_sex,
+							c.extends3 as user_id,
+							c.job as user_duty,
+							c.department as user_depname,
+							c.unit_id as dep_no,
+							cast(c.csrq as datetime) as user_birthday,
+							c.zgxl as user_xueli,
+							c.telephone as user_telephone,
+							c.email as user_email,
+							c.jiq as user_native,
+							c.minzu as user_nation,
+							c.homepost as user_post,
+							c.homeaddr as user_address,
+							c.remark as user_bz,
+							c.hire,
+							e.dep_serial user_dep,
+							a.privilege1,
+							f.tt_order as user_type
+		 from  cecep_sync b 
+			LEFT JOIN mid_internal_dep a on a.id=b.id
+			LEFT JOIN mid_user c on b.user_no=c.dm  
+			left join dt_dep e on b.dep_no = e.dep_no
+			left join tt_lizhi f on b.hire = f.tt_name 
+			
+			 -->
+		select a.id,c.dm as user_no,
+							c.name as user_lname,
+							c.sex as user_sex,
+							c.extends3 as user_id,
+							c.job as user_duty,
+							c.department as user_depname,
+							c.unit_id as dep_no,
+							cast(c.csrq as datetime) as user_birthday,
+							c.zgxl as user_xueli,
+							c.telephone as user_telephone,
+							c.email as user_email,
+							c.jiq as user_native,
+							c.minzu as user_nation,
+							c.homepost as user_post,
+							c.homeaddr as user_address,
+							c.remark as user_bz,
+							e.dep_serial user_dep,
+							a.privilege1,
+							f.tt_order as user_type
+		 from cecep_leader a 
+			LEFT JOIN mid_user c on a.employee=c.name 
+			LEFT JOIN dt_dep e on a.department=e.dep_name
+			left join tt_lizhi f on c.hire = f.tt_name
+			WHERE a.employee not in ('张超','智慧','曾武') and c.dm is not null ORDER BY a.employee 
+  </select>
+  
+  <select id="synchronizeExternalUser" resultMap="DtUserResultMap">
+  	select a.id,a.employee user_lname,a.company,a.department user_depname,b.dep_serial company_serial,
+			a.privilege1,
+			67 as user_type
+		 from  mid_external_dep a
+	LEFT JOIN dt_dep b on a.company=b.dep_name
+	
+	
+  </select>
+  
+   <select id="selectInternalUsers1" resultMap="DtUserResultMap">
+  	select a.id,a.employee user_lname,a.company,a.department user_depname,b.dep_serial company_serial,
+			a.privilege1,
+			0 as user_type
+		 from  cecep_compare_not a
+	LEFT JOIN dt_dep b on a.company=b.dep_name
+  </select>
+  
+  <select id="selectZbDep"  resultType="java.util.Map">
+  	select DISTINCT a.department depName,b.dep_serial depSerial from mid_external_dep a
+		LEFT JOIN dt_dep b on a.department = b.dep_name
+		where company='中国节能环保集团公司总部' and b.dep_parent = '200001'
+  </select>
+  
+  <select id="selectZbDep1"  resultType="java.util.Map">
+  	select DISTINCT a.department depName,b.dep_serial depSerial from cecep_compare_not a
+		LEFT JOIN dt_dep b on a.department = b.dep_name
+		where company='中国节能环保集团公司总部' and b.dep_parent = '200001'
+  </select>
+  
+  <insert id="insertUserPrivilege" parameterType="map">
+   insert into cecep_user_privilege(
+   <trim suffixOverrides=",">
+	   <if test="userSerial!=null">
+	   	user_serial,
+	   </if>
+	   <if test="stm!=null">
+	   	stm,
+	   </if>
+	   <if test="mj!=null">
+	   	mj,
+	   </if>
+	   <if test="st">
+	   	st,
+	   </if>
+	   <if test="external!=null">
+	   	external,
+	   </if>
+   </trim>
+   ) 
+   values(
+   <trim suffixOverrides=",">
+	   <if test="userSerial!=null">
+	   	#{userSerial},
+	   </if>
+	   <if test="stm!=null">
+	   	#{stm},
+	   </if>
+	   <if test="mj!=null">
+	   	#{mj},
+	   </if>
+	   <if test="st">
+	   	#{st},
+	   </if>
+	   <if test="external!=null">
+	   	#{external},
+	   </if>
+   </trim>
+   )
+  </insert>
+  
+  <!--  -->
+  <select id="synchronize" resultMap="DtUserResultMap" parameterType="java.util.Map" >
+  	select u.*
+  	from ( 
+			select 	dbo.mid_user.dm as user_no,
+					dbo.mid_user.name as user_lname,
+					dbo.mid_user.sex as user_sex,
+					dbo.mid_user.extends3 as user_id,
+					dbo.mid_user.job as user_duty,
+					dbo.mid_user.department as user_depname,
+					dbo.mid_user.unit_id as dep_no,
+					cast(dbo.mid_user.csrq as datetime) as user_birthday,
+					dbo.mid_user.zgxl as user_xueli,
+					dbo.mid_user.telephone as user_telephone,
+					dbo.mid_user.email as user_email,
+					dbo.mid_user.jiq as user_native,
+					dbo.mid_user.minzu as user_nation,
+					dbo.mid_user.homepost as user_post,
+					dbo.mid_user.homeaddr as user_address,
+					dbo.mid_user.remark as user_bz,
+					dbo.dt_user.user_serial as user_serial,
+					dbo.dt_dep.dep_serial as user_dep,
+					dbo.tt_lizhi.tt_order as user_type,
+					dbo.mid_user.user_order
+			from dbo.mid_user
+			left join dbo.dt_user
+			on dbo.mid_user.dm = dbo.dt_user.user_no
+			left join dbo.dt_dep
+			on dbo.mid_user.unit_id = dbo.dt_dep.dep_no
+			left join dbo.tt_lizhi
+			on dbo.mid_user.hire = dbo.tt_lizhi.tt_name
+			left join cecep_not_synchronize_dep n on dbo.mid_user.unit_id=n.dep_no
+			where dbo.mid_user.is_synchronized = 0 and dbo.dt_dep.dep_serial is not NULL and n.id is null ) u
+	<where>
+		<if test="depNos != null" >
+	    	 u.dep_no in  
+	    	<foreach item="item" collection="depNos" separator="," open="(" close=")" index="index">  
+	      		#{item, jdbcType=VARCHAR}  
+	    	</foreach> 
+	    </if>
+	    <if test="depNos == null" >
+	    	u.dep_no in (select dep_no from dt_dep)
+	    </if>
+	</where>  
+  </select>
+		<!-- <if test=" and userTypes != null" >
+	    	and u.user_type in  
+	    	<foreach item="item" collection="userTypes" separator="," open="(" close=")" index="index">  
+	      		#{item, jdbcType=SMALLINT}  
+	    	</foreach>  -->
+  
+  <update id="updateIsSynchronized">
+  	update dbo.mid_user	    
+  	set is_synchronized = 1
+	<where>
+	    	dm in  
+	    	<foreach item="item" collection="list" separator="," open="(" close=")" index="index">  
+	      		#{item.userNo, jdbcType=NVARCHAR}  
+	    	</foreach> 
+	</where>
+  </update>
+  
+  <update id="updateIsSynchronized1">
+  	update mid_internal_dep   
+  	set is_synchronized = 1
+	<where>
+	    	id in  
+	    	<foreach item="item" collection="list" separator="," open="(" close=")" index="index">  
+	      		#{item.id}  
+	    	</foreach> 
+	</where>
+  </update>
+  
+  <update id="updateIsSynchronized2">
+  	update mid_external_dep   
+  	set is_synchronized = 1
+	<where>
+	    	id in  
+	    	<foreach item="item" collection="list" separator="," open="(" close=")" index="index">  
+	      		#{item.id}  
+	    	</foreach> 
+	</where>
+  </update>
+  
+  <insert id="saveUserTemp" parameterType="java.lang.Long">
+  	insert into cecep_user_temp(user_serial) values(#{userSerial})
+  </insert>
+  
+  <select id="selectAcDepSerials" parameterType="string" resultType="string">
+  	SELECT ac_dep_serial from dt_dep_acdep where dep_serial = #{depSerial}
+  </select>
+  
+  <update id="updateIsSynchronized3">
+  	update cecep_compare_not   
+  	set is_synchronized = 1
+	<where>
+	    	id in  
+	    	<foreach item="item" collection="list" separator="," open="(" close=")" index="index">  
+	      		#{item.id}  
+	    	</foreach> 
+	</where>
+  </update>
+  
+  <update id="updateUserPrivilege" parameterType="java.util.Map">
+  	update cecep_user_privilege set 
+  	<trim suffixOverrides=",">
+  		<if test="mj!=null">
+  			mj=#{mj}, 
+  		</if>
+  		<if test="external!=null">
+  			external=#{external}, 
+  		</if>
+  		<if test="yy!=null">
+  			yy=#{yy}, 
+  		</if>
+  		<if test="lf!=null">
+  			lf=#{lf}, 
+  		</if>
+  	</trim>
+  	where user_serial = #{userSerial}
+  </update>
+  
+  <insert id="insertMjJl" parameterType="java.util.Map">
+	insert into mj_jl_real([jl_sj], [Gate_bh], [fx], [dev_serial], [user_serial], [user_card], [dev_bh],
+ [dev_door], [jl_type], [sj], [state]) 
+ 	values (#{jl_sj}, #{gate_bh}, #{fx}, #{dev_serial}, #{user_serial}, #{user_card}, 1, 1,
+ 	 '45', #{sj}, '0')
+  </insert>
+  
+  <select id="midUserSynchronize" resultMap="DtUserResultMap">
+  	 select distinct dt_user.user_serial,dt_user.user_lname,b.dep_name company,dt_user.user_depname,dt_user.user_dep,isnull(dt_user.user_type,dbo.tt_lizhi.tt_order) as user_type,
+		(select iu_fullname+'('+iu_unit_level+'级)' from mid_dep where iu_code = ISNULL(p2.four_serial, ISNULL(p2.three_serial, p2.parent_serial))) as main_company,
+		u1.department main_depname,dbo.tt_lizhi.tt_name user_type_name,u1.dm as user_no,u1.job as user_duty
+		from dbo.dt_user
+		    left join cecep_dep_parentSerial a on dbo.dt_user.user_dep=a.dep_serial
+		    left join dt_dep b on a.parent_serial=b.dep_serial
+		    left join cecep_user_privilege p on dbo.dt_user.user_serial=p.user_serial
+		    left join visitor_blacklist vb on dbo.dt_user.user_serial=vb.user_serial
+				LEFT JOIN cecep_dep_parentSerial p1 on dt_user.user_dep=p1.dep_serial
+				LEFT JOIN dt_dep d1 on p1.parent_serial=d1.dep_serial
+				LEFT JOIN mid_user u1 on dt_user.user_lname = u1.name
+		   	 	left join dbo.tt_lizhi
+		    	on u1.hire = dbo.tt_lizhi.tt_name
+				LEFT JOIN cecep_mid_dep_parentId p2 on u1.unit_id=p2.iu_code
+				LEFT JOIN mid_dep d2 on p2.parent_serial=d2.iu_code
+	where dbo.dt_user.user_no='00000000' and dbo.tt_lizhi.tt_order &lt;30  and dt_user.user_type &lt; 30  and u1.dm is not null ORDER BY dt_user.user_lname
+  </select>
+  
+  <select id="midUserSynchronizeCount" resultType="int">
+  	<!--  select count(*)
+		from dbo.dt_user
+	where dt_user.user_no='00000000' and user_type=7 -->
+	
+	select count(distinct dbo.dt_user.user_serial)
+		from dbo.dt_user
+		    left join cecep_dep_parentSerial a on dbo.dt_user.user_dep=a.dep_serial
+		    left join dt_dep b on a.parent_serial=b.dep_serial
+		    left join cecep_user_privilege p on dbo.dt_user.user_serial=p.user_serial
+		    left join visitor_blacklist vb on dbo.dt_user.user_serial=vb.user_serial
+				LEFT JOIN cecep_dep_parentSerial p1 on dt_user.user_dep=p1.dep_serial
+				LEFT JOIN dt_dep d1 on p1.parent_serial=d1.dep_serial
+				LEFT JOIN mid_user u1 on dt_user.user_lname = u1.name
+		   	 	left join dbo.tt_lizhi
+		    	on u1.hire = dbo.tt_lizhi.tt_name
+				LEFT JOIN cecep_mid_dep_parentId p2 on u1.unit_id=p2.iu_code
+				LEFT JOIN mid_dep d2 on p2.parent_serial=d2.iu_code
+	where dbo.dt_user.user_no='00000000' and dbo.tt_lizhi.tt_order &lt; 30  and dt_user.user_type &lt; 30  and u1.dm is not null
+  </select>
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.MjRuleRealMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.MjRuleReal" >
+    <id column="rule_no" property="ruleNo" jdbcType="INTEGER" />
+    <result column="rule_name" property="ruleName" jdbcType="NVARCHAR" />
+    <result column="rule_count" property="ruleCount" jdbcType="INTEGER" />
+    <result column="sj" property="sj" jdbcType="TIMESTAMP" />
+    <result column="gly_no" property="glyNo" jdbcType="NVARCHAR" />
+    <result column="regserial" property="regserial" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    rule_no, rule_name, rule_count, sj, gly_no, regserial
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.mj_rule_real
+    where rule_no = #{ruleNo,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.mj_rule_real
+    where rule_no = #{ruleNo,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.MjRuleReal" >
+    <selectKey resultType="java.lang.Integer" keyProperty="ruleNo" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.mj_rule_real (rule_no, rule_name, rule_count, 
+      sj, gly_no, regserial
+      )
+    values (#{ruleNo,jdbcType=INTEGER}, #{ruleName,jdbcType=NVARCHAR}, #{ruleCount,jdbcType=INTEGER}, 
+      #{sj,jdbcType=TIMESTAMP}, #{glyNo,jdbcType=NVARCHAR}, #{regserial,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.MjRuleReal" >
+    <selectKey resultType="java.lang.Integer" keyProperty="ruleNo" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.mj_rule_real
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      rule_no,
+      <if test="ruleName != null" >
+        rule_name,
+      </if>
+      <if test="ruleCount != null" >
+        rule_count,
+      </if>
+      <if test="sj != null" >
+        sj,
+      </if>
+      <if test="glyNo != null" >
+        gly_no,
+      </if>
+      <if test="regserial != null" >
+        regserial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{ruleNo,jdbcType=INTEGER},
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=NVARCHAR},
+      </if>
+      <if test="ruleCount != null" >
+        #{ruleCount,jdbcType=INTEGER},
+      </if>
+      <if test="sj != null" >
+        #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="glyNo != null" >
+        #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="regserial != null" >
+        #{regserial,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.MjRuleReal" >
+    update dbo.mj_rule_real
+    <set >
+      <if test="ruleName != null" >
+        rule_name = #{ruleName,jdbcType=NVARCHAR},
+      </if>
+      <if test="ruleCount != null" >
+        rule_count = #{ruleCount,jdbcType=INTEGER},
+      </if>
+      <if test="sj != null" >
+        sj = #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="glyNo != null" >
+        gly_no = #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="regserial != null" >
+        regserial = #{regserial,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where rule_no = #{ruleNo,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.MjRuleReal" >
+    update dbo.mj_rule_real
+    set rule_name = #{ruleName,jdbcType=NVARCHAR},
+      rule_count = #{ruleCount,jdbcType=INTEGER},
+      sj = #{sj,jdbcType=TIMESTAMP},
+      gly_no = #{glyNo,jdbcType=NVARCHAR},
+      regserial = #{regserial,jdbcType=NVARCHAR}
+    where rule_no = #{ruleNo,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="load" resultType="java.util.Map" parameterType="com.cecep.model.MjRuleReal" >
+    select rule_no as value,rule_name as text
+    from dbo.mj_rule_real
+  </select>	
+</mapper>

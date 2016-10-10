@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.CecepWordsMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.CecepWords" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+    <result column="word" property="word" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pinyin, word
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.cecep_words
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.cecep_words
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.CecepWords" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.cecep_words (id, pinyin, word
+      )
+    values (#{id,jdbcType=INTEGER}, #{pinyin,jdbcType=VARCHAR}, #{word,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.CecepWords" >
+    insert into dbo.cecep_words
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pinyin != null" >
+        pinyin,
+      </if>
+      <if test="word != null" >
+        word,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pinyin != null" >
+        #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="word != null" >
+        #{word,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.CecepWords" >
+    update dbo.cecep_words
+    <set >
+      <if test="pinyin != null" >
+        pinyin = #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="word != null" >
+        word = #{word,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.CecepWords" >
+    update dbo.cecep_words
+    set pinyin = #{pinyin,jdbcType=VARCHAR},
+      word = #{word,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap type="com.cecep.model.DtUser" id="DtUser">
+  	<result column="user_lname" property="userLname"/>
+  	<result column="user_serial" property="userSerial"/>
+  </resultMap>
+  
+  <select id="selectAllUsersBySync" resultMap="DtUser">
+  	select a.user_serial, a.user_lname from dt_user a 
+  		left join cecep_user_privilege b on a.user_serial=b.user_serial
+  		where b.user_serial is not null and b.update_1=0 and a.user_type not in (67,68) 
+  </select>
+  
+  <select id="selectAllPinYin" resultMap="BaseResultMap">
+  	select word,pinyin from cecep_words
+  </select>
+  
+  <update id="updateCecepUserPrivilege" parameterType="com.cecep.model.DtUser">
+  	update cecep_user_privilege set pinyin=#{pinyin} where user_serial = #{userSerial}
+  </update>
+  
+  <update id="updateSynchronized" parameterType="java.util.Map">
+  	update cecep_user_privilege set update_1=1 where user_serial in 
+  	<foreach collection="users" open="(" close=")" separator="," item="item">
+  		#{item.userSerial}
+  	</foreach>
+  </update>
+  
+  <select id="selectDtUserByPinYin" parameterType="java.util.Map" resultType="java.lang.String">
+  	select pinyin from cecep_user_privilege where pinyin like '${pinyin}%'
+  </select>
+  
+  <insert id="insertList" parameterType="java.util.Map">
+  	insert into cecep_words(pinyin,word) values
+  		<foreach collection="words" separator="," item="item">
+  			(#{item.pinyin},#{item.word})
+  		</foreach>
+  </insert>
+</mapper>

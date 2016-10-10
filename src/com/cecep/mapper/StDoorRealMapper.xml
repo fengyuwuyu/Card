@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.StDoorRealMapper">
+	<resultMap id="BaseResultMap" type="com.cecep.model.StDoorReal">
+		<id column="xh" property="xh" jdbcType="INTEGER" />
+		<result column="door_name" property="doorName" jdbcType="NVARCHAR" />
+		<result column="bh" property="bh" jdbcType="CHAR" />
+		<result column="dev_name" property="devName" />
+		<!-- <result column="fx_flg" property="fxFlg" jdbcType="INTEGER" /> <result 
+			column="mjgz_1" property="mjgz1" jdbcType="INTEGER" /> <result column="mjgz_2" 
+			property="mjgz2" jdbcType="INTEGER" /> <result column="mjgz_3" property="mjgz3" 
+			jdbcType="INTEGER" /> <result column="mjgz_4" property="mjgz4" jdbcType="INTEGER" 
+			/> <result column="d_button" property="dButton" jdbcType="INTEGER" /> <result 
+			column="d_delay" property="dDelay" jdbcType="INTEGER" /> <result column="d_lock" 
+			property="dLock" jdbcType="INTEGER" /> <result column="d_dotime" property="dDotime" 
+			jdbcType="INTEGER" /> <result column="d_x_point" property="dXPoint" jdbcType="INTEGER" 
+			/> <result column="d_y_point" property="dYPoint" jdbcType="INTEGER" /> <result 
+			column="sj" property="sj" jdbcType="TIMESTAMP" /> <result column="c_first" 
+			property="cFirst" jdbcType="INTEGER" /> <result column="c_more" property="cMore" 
+			jdbcType="INTEGER" /> <result column="c_gly" property="cGly" jdbcType="INTEGER" 
+			/> <result column="mjgz_First" property="mjgzFirst" jdbcType="INTEGER" /> 
+			<result column="mjgz_more" property="mjgzMore" jdbcType="INTEGER" /> <result 
+			column="Group_First" property="groupFirst" jdbcType="INTEGER" /> <result 
+			column="Group_gly" property="groupGly" jdbcType="INTEGER" /> <result column="Group_more1" 
+			property="groupMore1" jdbcType="INTEGER" /> <result column="Group_more2" 
+			property="groupMore2" jdbcType="INTEGER" /> <result column="Group_more3" 
+			property="groupMore3" jdbcType="INTEGER" /> <result column="Group_more4" 
+			property="groupMore4" jdbcType="INTEGER" /> <result column="User_more1" property="userMore1" 
+			jdbcType="INTEGER" /> <result column="User_more2" property="userMore2" jdbcType="INTEGER" 
+			/> <result column="User_more3" property="userMore3" jdbcType="INTEGER" /> 
+			<result column="User_more4" property="userMore4" jdbcType="INTEGER" /> <result 
+			column="is_magnetism" property="isMagnetism" jdbcType="INTEGER" /> <result 
+			column="open_alarm" property="openAlarm" jdbcType="INTEGER" /> <result column="is_forcein" 
+			property="isForcein" jdbcType="INTEGER" /> <result column="c_glypass" property="cGlypass" 
+			jdbcType="INTEGER" /> <result column="always_open" property="alwaysOpen" 
+			jdbcType="INTEGER" /> -->
+	</resultMap>
+	<sql id="Base_Column_List">
+		xh, door_name, bh, fx_flg, mjgz_1, mjgz_2, mjgz_3, mjgz_4, d_button,
+		d_delay, d_lock,
+		d_dotime, d_x_point, d_y_point, sj, c_first, c_more, c_gly, mjgz_First,
+		mjgz_more,
+		Group_First, Group_gly, Group_more1, Group_more2, Group_more3, Group_more4,
+		User_more1,
+		User_more2, User_more3, User_more4, is_magnetism, open_alarm, is_forcein,
+		c_glypass,
+		always_open
+	</sql>
+
+	<sql id="StDoorReal_Column_List">
+		dbo.st_door_real.xh, dbo.st_door_real.door_name, dbo.st_door_real.bh,
+		dbo.st_door_real.fx_flg, dbo.st_door_real.mjgz_1,
+		dbo.st_door_real.mjgz_2, dbo.st_door_real.mjgz_3,
+		dbo.st_door_real.mjgz_4, dbo.st_door_real.d_button,
+		dbo.st_door_real.d_delay, dbo.st_door_real.d_lock,
+		dbo.st_door_real.d_dotime, dbo.st_door_real.d_x_point,
+		dbo.st_door_real.d_y_point, dbo.st_door_real.sj,
+		dbo.st_door_real.c_first, dbo.st_door_real.c_more,
+		dbo.st_door_real.c_gly, dbo.st_door_real.mjgz_First,
+		dbo.st_door_real.mjgz_more,
+		dbo.st_door_real.Group_First, dbo.st_door_real.Group_gly, dbo.st_door_real.Group_more1,
+		dbo.st_door_real.Group_more2, dbo.st_door_real.Group_more3,
+		dbo.st_door_real.Group_more4, dbo.st_door_real.User_more1,
+		dbo.st_door_real.User_more2, dbo.st_door_real.User_more3,
+		dbo.st_door_real.User_more4, dbo.st_door_real.is_magnetism,
+		dbo.st_door_real.open_alarm, dbo.st_door_real.is_forcein,
+		dbo.st_door_real.c_glypass,
+		dbo.st_door_real.always_open
+	</sql>
+
+	<resultMap id="StDoorRealResultMap" type="com.cecep.model.StDoorReal"
+		extends="BaseResultMap">
+		<result column="dep_serial" property="depSerial" jdbcType="INTEGER" />
+		<result column="dep_name" property="depName" jdbcType="VARCHAR" />
+		<result column="dev_bh" property="devBh" jdbcType="VARCHAR" />
+		<result column="dev_name" property="devName" jdbcType="VARCHAR" />
+		<result column="dev_serial" property="devSerial" />
+		<result column="ip" property="ip" />
+		<result column="dev_order" property="devOrder" />
+	</resultMap>
+
+	<select id="selectByPrimaryKey" resultMap="StDoorRealResultMap" parameterType="java.lang.String">
+		select distinct c.bh as dev_serial, c.mc+''+(case b.dev_order when 1 then ' 1号门锁接口' when 2 then ' 2号门锁接口' end) as dev_name, e.dep_serial,
+			e.dep_name,a.door_name,a.xh,a.bh,c.ip,b.dev_order
+			from dbo.st_door_real a
+			left join dbo.st_doorfx_real b
+			on a.bh = b.gate_bh
+			left join dbo.st_device c
+			on b.dev_serial = c.bh
+			left join dbo.dt_gate_real d
+			on a.bh = d.Gate_bh
+			left join dbo.dt_ac_dep e
+			on d.acdep_serial = e.dep_serial
+		where a.bh = #{bh}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from dbo.st_door_real
+		where bh = #{bh}
+	</delete>
+	<insert id="insert" parameterType="com.cecep.model.StDoorReal">
+		insert into
+		st_door_real(door_name,bh,fx_flg,mjgz_1,mjgz_2,mjgz_3,mjgz_4,sj,D_lock,D_delay,
+		is_magnetism,open_alarm,is_forcein)
+		VALUES (#{doorName},#{bh},0,1,'0','0','0',#{sj},'1','3','1','0',1)
+	</insert>
+	
+	<insert id="insertStDoorFxReal" parameterType="com.cecep.model.StDoorReal">
+		insert into ST_DOORFX_REAL(gate_bh,fx,dev_serial,dev_order,dev_head,Dev_head2,c_first,mjgz_sk,sj,c_type) 
+		VALUES (#{bh},#{fx},#{devSerial},#{devOrder},#{devHead},#{devHead2},'0','0',#{sj},'9')
+	</insert>
+	
+	<insert id="insertDtGateReal" parameterType="com.cecep.model.StDoorReal">
+		insert into DT_GATE_real(lx,Gate_bh,Acdep_serial,sj) 
+		VALUES (0,#{bh},#{depSerial},#{sj})
+	</insert>
+	
+	<insert id="insertWtMjVer" parameterType="com.cecep.model.StDoorReal">
+		insert into WT_mj_ver(Gate_bh,fx,type,log_lx,lx,log_bz,log_sj,log_ip,gly_no) 
+		VALUES (#{bh},#{fx},0,1,5,'9',#{sj},(select ip from st_device where bh=#{devSerial}),#{operator})
+	</insert>
+	
+	<insert id="insertWtMjVer1" parameterType="com.cecep.model.StDoorReal">
+		insert into WT_mj_ver(gate_bh,type,log_lx,lx,log_sj,log_ip,gly_no) 
+		VALUES (#{bh},#{fx},1,6,#{sj},(select ip from st_device where bh=#{devSerial}),#{operator})
+	</insert>
+	
+	<insert id="insertWtMjLogReal" parameterType="com.cecep.model.StDoorReal">
+		insert into wt_mj_log_real(lx,log_type,log_state,log_bz,log_sj,log_ip,gly_no,regserial) 
+		VALUES (#{lx},1,0,#{operateLog},#{sj},(select ip from st_device where bh=#{devSerial}),#{operator},'')
+	</insert>
+	
+	<delete id="deleteStDoorFxReal" parameterType="com.cecep.model.StDoorReal">
+		delete  from ST_DOORFX_REAL where gate_bh=#{bh}
+	</delete>
+	
+	<insert id="insertJrealNowcmd">
+		insert into jreal_nowcmd(jtype,jint,jstr) VALUES ('2','1','netcam')
+	</insert>
+	
+	<insert id="insertJrealUpdate0">
+		insert into jreal_update_0(jdev_bh,jdodata) VALUES (#{devSerial},1073741824)
+	</insert>
+	
+	<select id="selectDoorNameDevsSerial" >
+		select a.door_name,b.dev_serial,isnull(dev_order,0) 
+		from st_door_real a 
+		left join st_doorfx_real b on a.bh=b.gate_bh 
+		where a.bh=#{bh}
+	</select>
+	
+	<insert id="insertSelective" parameterType="com.cecep.model.StDoorReal">
+		<selectKey resultType="java.lang.Integer" keyProperty="xh"
+			order="BEFORE">
+			SELECT SCOPE_IDENTITY()
+		</selectKey>
+		insert into dbo.st_door_real
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			xh,
+			<if test="doorName != null">
+				door_name,
+			</if>
+			<if test="bh != null">
+				bh,
+			</if>
+<!-- 			<if test="fxFlg != null">
+				fx_flg,
+			</if>
+			<if test="mjgz1 != null">
+				mjgz_1,
+			</if>
+			<if test="mjgz2 != null">
+				mjgz_2,
+			</if>
+			<if test="mjgz3 != null">
+				mjgz_3,
+			</if>
+			<if test="mjgz4 != null">
+				mjgz_4,
+			</if>
+			<if test="dButton != null">
+				d_button,
+			</if>
+			<if test="dDelay != null">
+				d_delay,
+			</if>
+			<if test="dLock != null">
+				d_lock,
+			</if>
+			<if test="dDotime != null">
+				d_dotime,
+			</if>
+			<if test="dXPoint != null">
+				d_x_point,
+			</if>
+			<if test="dYPoint != null">
+				d_y_point,
+			</if>
+ -->		<if test="sj != null">
+				sj,
+			</if>
+			<!-- <if test="cFirst != null">
+				c_first,
+			</if>
+			<if test="cMore != null">
+				c_more,
+			</if>
+			<if test="cGly != null">
+				c_gly,
+			</if>
+			<if test="mjgzFirst != null">
+				mjgz_First,
+			</if>
+			<if test="mjgzMore != null">
+				mjgz_more,
+			</if>
+			<if test="groupFirst != null">
+				Group_First,
+			</if>
+			<if test="groupGly != null">
+				Group_gly,
+			</if>
+			<if test="groupMore1 != null">
+				Group_more1,
+			</if>
+			<if test="groupMore2 != null">
+				Group_more2,
+			</if>
+			<if test="groupMore3 != null">
+				Group_more3,
+			</if>
+			<if test="groupMore4 != null">
+				Group_more4,
+			</if>
+			<if test="userMore1 != null">
+				User_more1,
+			</if>
+			<if test="userMore2 != null">
+				User_more2,
+			</if>
+			<if test="userMore3 != null">
+				User_more3,
+			</if>
+			<if test="userMore4 != null">
+				User_more4,
+			</if>
+			<if test="isMagnetism != null">
+				is_magnetism,
+			</if>
+			<if test="openAlarm != null">
+				open_alarm,
+			</if>
+			<if test="isForcein != null">
+				is_forcein,
+			</if>
+			<if test="cGlypass != null">
+				c_glypass,
+			</if>
+			<if test="alwaysOpen != null">
+				always_open,
+			</if> -->
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{xh,jdbcType=INTEGER},
+			<if test="doorName != null">
+				#{doorName,jdbcType=NVARCHAR},
+			</if>
+			<if test="bh != null">
+				#{bh,jdbcType=CHAR},
+			</if>
+		<!-- 	<if test="fxFlg != null">
+				#{fxFlg,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz1 != null">
+				#{mjgz1,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz2 != null">
+				#{mjgz2,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz3 != null">
+				#{mjgz3,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz4 != null">
+				#{mjgz4,jdbcType=INTEGER},
+			</if>
+			<if test="dButton != null">
+				#{dButton,jdbcType=INTEGER},
+			</if>
+			<if test="dDelay != null">
+				#{dDelay,jdbcType=INTEGER},
+			</if>
+			<if test="dLock != null">
+				#{dLock,jdbcType=INTEGER},
+			</if>
+			<if test="dDotime != null">
+				#{dDotime,jdbcType=INTEGER},
+			</if>
+			<if test="dXPoint != null">
+				#{dXPoint,jdbcType=INTEGER},
+			</if>
+			<if test="dYPoint != null">
+				#{dYPoint,jdbcType=INTEGER},
+			</if> -->
+			<if test="sj != null">
+				#{sj,jdbcType=TIMESTAMP},
+			</if>
+			<!-- <if test="cFirst != null">
+				#{cFirst,jdbcType=INTEGER},
+			</if>
+			<if test="cMore != null">
+				#{cMore,jdbcType=INTEGER},
+			</if>
+			<if test="cGly != null">
+				#{cGly,jdbcType=INTEGER},
+			</if>
+			<if test="mjgzFirst != null">
+				#{mjgzFirst,jdbcType=INTEGER},
+			</if>
+			<if test="mjgzMore != null">
+				#{mjgzMore,jdbcType=INTEGER},
+			</if>
+			<if test="groupFirst != null">
+				#{groupFirst,jdbcType=INTEGER},
+			</if>
+			<if test="groupGly != null">
+				#{groupGly,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore1 != null">
+				#{groupMore1,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore2 != null">
+				#{groupMore2,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore3 != null">
+				#{groupMore3,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore4 != null">
+				#{groupMore4,jdbcType=INTEGER},
+			</if>
+			<if test="userMore1 != null">
+				#{userMore1,jdbcType=INTEGER},
+			</if>
+			<if test="userMore2 != null">
+				#{userMore2,jdbcType=INTEGER},
+			</if>
+			<if test="userMore3 != null">
+				#{userMore3,jdbcType=INTEGER},
+			</if>
+			<if test="userMore4 != null">
+				#{userMore4,jdbcType=INTEGER},
+			</if>
+			<if test="isMagnetism != null">
+				#{isMagnetism,jdbcType=INTEGER},
+			</if>
+			<if test="openAlarm != null">
+				#{openAlarm,jdbcType=INTEGER},
+			</if>
+			<if test="isForcein != null">
+				#{isForcein,jdbcType=INTEGER},
+			</if>
+			<if test="cGlypass != null">
+				#{cGlypass,jdbcType=INTEGER},
+			</if>
+			<if test="alwaysOpen != null">
+				#{alwaysOpen,jdbcType=INTEGER},
+			</if> -->
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.StDoorReal">
+		update dbo.st_door_real
+		<set>
+			<if test="doorName != null">
+				door_name = #{doorName,jdbcType=NVARCHAR},
+			</if>
+			<!-- <if test="bh != null">
+				bh = #{bh,jdbcType=CHAR},
+			</if>
+			<if test="fxFlg != null">
+				fx_flg = #{fxFlg,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz1 != null">
+				mjgz_1 = #{mjgz1,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz2 != null">
+				mjgz_2 = #{mjgz2,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz3 != null">
+				mjgz_3 = #{mjgz3,jdbcType=INTEGER},
+			</if>
+			<if test="mjgz4 != null">
+				mjgz_4 = #{mjgz4,jdbcType=INTEGER},
+			</if>
+			<if test="dButton != null">
+				d_button = #{dButton,jdbcType=INTEGER},
+			</if>
+			<if test="dDelay != null">
+				d_delay = #{dDelay,jdbcType=INTEGER},
+			</if>
+			<if test="dLock != null">
+				d_lock = #{dLock,jdbcType=INTEGER},
+			</if>
+			<if test="dDotime != null">
+				d_dotime = #{dDotime,jdbcType=INTEGER},
+			</if>
+			<if test="dXPoint != null">
+				d_x_point = #{dXPoint,jdbcType=INTEGER},
+			</if>
+			<if test="dYPoint != null">
+				d_y_point = #{dYPoint,jdbcType=INTEGER},
+			</if> -->
+			<if test="sj != null">
+				sj = #{sj,jdbcType=TIMESTAMP},
+			</if>
+		<!-- 	<if test="cFirst != null">
+				c_first = #{cFirst,jdbcType=INTEGER},
+			</if>
+			<if test="cMore != null">
+				c_more = #{cMore,jdbcType=INTEGER},
+			</if>
+			<if test="cGly != null">
+				c_gly = #{cGly,jdbcType=INTEGER},
+			</if>
+			<if test="mjgzFirst != null">
+				mjgz_First = #{mjgzFirst,jdbcType=INTEGER},
+			</if>
+			<if test="mjgzMore != null">
+				mjgz_more = #{mjgzMore,jdbcType=INTEGER},
+			</if>
+			<if test="groupFirst != null">
+				Group_First = #{groupFirst,jdbcType=INTEGER},
+			</if>
+			<if test="groupGly != null">
+				Group_gly = #{groupGly,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore1 != null">
+				Group_more1 = #{groupMore1,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore2 != null">
+				Group_more2 = #{groupMore2,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore3 != null">
+				Group_more3 = #{groupMore3,jdbcType=INTEGER},
+			</if>
+			<if test="groupMore4 != null">
+				Group_more4 = #{groupMore4,jdbcType=INTEGER},
+			</if>
+			<if test="userMore1 != null">
+				User_more1 = #{userMore1,jdbcType=INTEGER},
+			</if>
+			<if test="userMore2 != null">
+				User_more2 = #{userMore2,jdbcType=INTEGER},
+			</if>
+			<if test="userMore3 != null">
+				User_more3 = #{userMore3,jdbcType=INTEGER},
+			</if>
+			<if test="userMore4 != null">
+				User_more4 = #{userMore4,jdbcType=INTEGER},
+			</if>
+			<if test="isMagnetism != null">
+				is_magnetism = #{isMagnetism,jdbcType=INTEGER},
+			</if>
+			<if test="openAlarm != null">
+				open_alarm = #{openAlarm,jdbcType=INTEGER},
+			</if>
+			<if test="isForcein != null">
+				is_forcein = #{isForcein,jdbcType=INTEGER},
+			</if>
+			<if test="cGlypass != null">
+				c_glypass = #{cGlypass,jdbcType=INTEGER},
+			</if>
+			<if test="alwaysOpen != null">
+				always_open = #{alwaysOpen,jdbcType=INTEGER},
+			</if> -->
+		</set>
+		where bh = #{bh}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.cecep.model.StDoorReal">
+		update dbo.st_door_real
+		set door_name = #{doorName,jdbcType=NVARCHAR},
+		bh = #{bh,jdbcType=CHAR},
+		fx_flg = #{fxFlg,jdbcType=INTEGER},
+		mjgz_1 = #{mjgz1,jdbcType=INTEGER},
+		mjgz_2 = #{mjgz2,jdbcType=INTEGER},
+		mjgz_3 = #{mjgz3,jdbcType=INTEGER},
+		mjgz_4 = #{mjgz4,jdbcType=INTEGER},
+		d_button = #{dButton,jdbcType=INTEGER},
+		d_delay = #{dDelay,jdbcType=INTEGER},
+		d_lock = #{dLock,jdbcType=INTEGER},
+		d_dotime = #{dDotime,jdbcType=INTEGER},
+		d_x_point = #{dXPoint,jdbcType=INTEGER},
+		d_y_point = #{dYPoint,jdbcType=INTEGER},
+		sj = #{sj,jdbcType=TIMESTAMP},
+		c_first = #{cFirst,jdbcType=INTEGER},
+		c_more = #{cMore,jdbcType=INTEGER},
+		c_gly = #{cGly,jdbcType=INTEGER},
+		mjgz_First = #{mjgzFirst,jdbcType=INTEGER},
+		mjgz_more = #{mjgzMore,jdbcType=INTEGER},
+		Group_First = #{groupFirst,jdbcType=INTEGER},
+		Group_gly = #{groupGly,jdbcType=INTEGER},
+		Group_more1 = #{groupMore1,jdbcType=INTEGER},
+		Group_more2 = #{groupMore2,jdbcType=INTEGER},
+		Group_more3 = #{groupMore3,jdbcType=INTEGER},
+		Group_more4 = #{groupMore4,jdbcType=INTEGER},
+		User_more1 = #{userMore1,jdbcType=INTEGER},
+		User_more2 = #{userMore2,jdbcType=INTEGER},
+		User_more3 = #{userMore3,jdbcType=INTEGER},
+		User_more4 = #{userMore4,jdbcType=INTEGER},
+		is_magnetism = #{isMagnetism,jdbcType=INTEGER},
+		open_alarm = #{openAlarm,jdbcType=INTEGER},
+		is_forcein = #{isForcein,jdbcType=INTEGER},
+		c_glypass = #{cGlypass,jdbcType=INTEGER},
+		always_open = #{alwaysOpen,jdbcType=INTEGER}
+		where xh = #{xh,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="selectByPage" resultMap="StDoorRealResultMap"
+		parameterType="com.cecep.model.StDoorReal">
+		select n.*
+		from (
+		select row_number() over(order by u.xh) as rowNumber, u.*
+		from (
+		select distinct c.bh as dev_serial, c.mc+''+(case b.dev_order when 1 then ' 1号门锁接口' when 2 then ' 2号门锁接口' end) as dev_name, e.dep_serial,
+		e.dep_name,a.door_name,a.xh,a.bh,c.ip,b.dev_order
+		from dbo.st_door_real a
+		left join dbo.st_doorfx_real b
+		on a.bh = b.gate_bh
+		left join dbo.st_device c
+		on b.dev_serial = c.bh
+		left join dbo.dt_gate_real d
+		on a.bh = d.Gate_bh
+		left join dbo.dt_ac_dep e
+		on d.acdep_serial = e.dep_serial
+		<where>
+			<if test="doorName != null and doorName != ''">
+				a.door_name like '%${doorName}%' or c.mc like '%${doorName}%' or e.dep_name
+				like '%${doorName}%'
+			</if>
+		</where>
+		) as u ) as n
+		<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ n.rowNumber >= #{start} and n.rowNumber < (#{rows} + #{start})]]>
+			</if>
+		</where>
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer"
+		parameterType="com.cecep.model.StDoorReal">
+		select count(1)
+		from (
+		select distinct c.bh as dev_serial, c.mc as dev_name, e.dep_serial,
+		e.dep_name,a.door_name,a.xh,a.bh,c.ip
+		from dbo.st_door_real a
+		left join dbo.st_doorfx_real b
+		on a.bh = b.gate_bh
+		left join dbo.st_device c
+		on b.dev_serial = c.bh
+		left join dbo.dt_gate_real d
+		on a.bh = d.Gate_bh
+		left join dbo.dt_ac_dep e
+		on d.acdep_serial = e.dep_serial
+		<where>
+			<if test="doorName != null and doorName != ''">
+				a.door_name like '%${doorName}%' or c.mc like '%${doorName}%' or e.dep_name
+				like '%${doorName}%'
+			</if>
+		</where>
+		) as u
+	</select>
+
+	<select id="selectStDoor" resultType="java.util.Map">
+		select a.bh as id , a.mc as text, 'closed' as state from st_device a
+		left join dt_dev b on a.bh=b.dev_serial
+		LEFT JOIN dt_ac_dep c on
+		b.acdep_serial=c.dep_serial
+		LEFT JOIN st_doorfx_real d on a.bh=d.dev_serial
+		LEFT JOIN st_door_real e on
+		d.gate_bh=e.bh
+		where c.dep_serial is not null and e.bh is null and a.Dev_lb=2
+	</select>
+	
+	<parameterMap type="com.cecep.model.StDoorReal" id="deleteDoorParameterMap">
+	  	<parameter property="bh" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="operator" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	</parameterMap>
+	
+	<select id="callDelete"  parameterMap="deleteDoorParameterMap" statementType="CALLABLE">
+		{call ll_door_delete (?,?)}
+	</select>
+</mapper>

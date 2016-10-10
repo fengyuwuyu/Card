@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.VisitorRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.VisitorRecord" >
+    <id column="record_id" property="recordId" jdbcType="BIGINT" />
+    <result column="user_serial" property="userSerial" jdbcType="BIGINT" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="enter_time" property="enterTime" jdbcType="TIMESTAMP" />
+    <result column="exit_time" property="exitTime" jdbcType="TIMESTAMP" />
+    <result column="visitor_reason" property="visitorReason" jdbcType="VARCHAR" />
+    <result column="visitor_dep" property="visitorDep" jdbcType="VARCHAR" />
+    <result column="visitor_user" property="visitorUser" jdbcType="VARCHAR" />
+    <result column="visitor_phone" property="visitorPhone" jdbcType="VARCHAR" />
+    <result column="visitor_des" property="visitorDes" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    record_id, user_serial, time, enter_time, exit_time, visitor_reason, visitor_dep, 
+    visitor_user, visitor_phone, visitor_des
+  </sql>
+  <resultMap id="VisitorRecordResultMap" type="com.cecep.model.VisitorRecord" extends="BaseResultMap" >
+    <result column="user_lname" property="userLname" jdbcType="NVARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="NVARCHAR" />    
+    <result column="user_nation" property="userNation" jdbcType="NVARCHAR" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_address" property="userAddress" jdbcType="NVARCHAR" />    
+    <result column="user_id" property="userId" jdbcType="NVARCHAR" />
+    <result column="user_telephone" property="userTelephone" jdbcType="NVARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="NVARCHAR" />    
+    <result column="user_duty" property="userDuty" jdbcType="NVARCHAR" />
+    <result column="user_depname" property="userDepname" jdbcType="NVARCHAR" />
+    <result column="user_bz" property="userBz" jdbcType="NVARCHAR" />
+    <result column="user_sj" property="userSj" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="VisitorRecord_Column_List" >
+    dbo.visitor_record.record_id, dbo.visitor_record.user_serial, dbo.visitor_record.time, dbo.visitor_record.enter_time, dbo.visitor_record.exit_time, dbo.visitor_record.visitor_reason, dbo.visitor_record.visitor_dep, 
+    dbo.visitor_record.visitor_user, dbo.visitor_record.visitor_phone, dbo.visitor_record.visitor_des
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.visitor_record
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dbo.visitor_record
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.VisitorRecord" >
+    insert into dbo.visitor_record (user_serial, time, 
+      enter_time, exit_time, visitor_reason, 
+      visitor_dep, visitor_user, visitor_phone, 
+      visitor_des)
+    values (#{userSerial,jdbcType=BIGINT}, getdate(), 
+      #{enterTime,jdbcType=TIMESTAMP}, #{exitTime,jdbcType=TIMESTAMP}, #{visitorReason,jdbcType=VARCHAR}, 
+      #{visitorDep,jdbcType=VARCHAR}, #{visitorUser,jdbcType=VARCHAR}, #{visitorPhone,jdbcType=VARCHAR}, 
+      #{visitorDes,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.VisitorRecord" >
+    <selectKey resultType="java.lang.Long" keyProperty="recordId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.visitor_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      record_id,
+      <if test="userSerial != null" >
+        user_serial,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="enterTime != null" >
+        enter_time,
+      </if>
+      <if test="exitTime != null" >
+        exit_time,
+      </if>
+      <if test="visitorReason != null" >
+        visitor_reason,
+      </if>
+      <if test="visitorDep != null" >
+        visitor_dep,
+      </if>
+      <if test="visitorUser != null" >
+        visitor_user,
+      </if>
+      <if test="visitorPhone != null" >
+        visitor_phone,
+      </if>
+      <if test="visitorDes != null" >
+        visitor_des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{recordId,jdbcType=BIGINT},
+      <if test="userSerial != null" >
+        #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enterTime != null" >
+        #{enterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exitTime != null" >
+        #{exitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitorReason != null" >
+        #{visitorReason,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorDep != null" >
+        #{visitorDep,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorUser != null" >
+        #{visitorUser,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPhone != null" >
+        #{visitorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorDes != null" >
+        #{visitorDes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.VisitorRecord" >
+    update dbo.visitor_record
+    <set >
+      <if test="userSerial != null" >
+        user_serial = #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enterTime != null" >
+        enter_time = #{enterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exitTime != null" >
+        exit_time = #{exitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitorReason != null" >
+        visitor_reason = #{visitorReason,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorDep != null" >
+        visitor_dep = #{visitorDep,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorUser != null" >
+        visitor_user = #{visitorUser,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorPhone != null" >
+        visitor_phone = #{visitorPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="visitorDes != null" >
+        visitor_des = #{visitorDes,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.VisitorRecord" >
+    update dbo.visitor_record
+    set user_serial = #{userSerial,jdbcType=BIGINT},
+      time = #{time,jdbcType=TIMESTAMP},
+      enter_time = #{enterTime,jdbcType=TIMESTAMP},
+      exit_time = #{exitTime,jdbcType=TIMESTAMP},
+      visitor_reason = #{visitorReason,jdbcType=VARCHAR},
+      visitor_dep = #{visitorDep,jdbcType=VARCHAR},
+      visitor_user = #{visitorUser,jdbcType=VARCHAR},
+      visitor_phone = #{visitorPhone,jdbcType=VARCHAR},
+      visitor_des = #{visitorDes,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPage" resultMap="VisitorRecordResultMap" parameterType="com.cecep.model.VisitorRecord" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.visitor_record.record_id desc) as rowNumber,<include refid="VisitorRecord_Column_List" />, dbo.dt_user.user_lname as user_lname, dbo.dt_user.user_depname as user_depname, dbo.dt_user.user_duty as user_duty, dbo.dt_user.user_sex as user_sex, dbo.dt_user.user_nation as user_nation, dbo.dt_user.user_address as user_address, dbo.dt_user.user_id as user_id, dbo.dt_user.user_telephone as user_telephone,dbo.dt_user.user_birthday as user_birthday,dbo.dt_user.user_email as user_email,dbo.dt_user.user_bz as user_bz,dbo.dt_user.user_sj as user_sj
+		    from dbo.visitor_record
+		    left join dbo.dt_user
+		    on dbo.visitor_record.user_serial = dbo.dt_user.user_serial
+			<where>		      	
+		      	<if test="userLname != null and userLname != ''" >
+		      		and dbo.dt_user.user_lname like '%${userLname}%'		       	
+		      	</if>
+		      	<if test="userSex != null and userSex != ''" >
+		        	and dbo.dt_user.user_sex = #{userSex}
+		      	</if>		    
+		      	<if test="userTelephone != null and userTelephone != ''" >
+		       		and dbo.dt_user.user_telephone = #{userTelephone}
+		      	</if>
+		      	<if test="userId != null and userId != ''" >
+		       		and dbo.dt_user.user_id = #{userId}
+		      	</if>	 
+		      	<if test="userDepname != null and userDepname != ''" >
+		       		and dbo.dt_user.user_depname like '%${userDepname}%' 
+		      	</if>
+		      	<if test="time != null and enterTime == null" >
+		       		and <![CDATA[ dbo.visitor_record.time >= #{time} ]]> 
+		      	</if> 
+		      	<if test="time == null and enterTime != null" >
+		       		and <![CDATA[ dbo.visitor_record.time < dateadd(DD,01,#{enterTime}) ]]> 
+		      	</if>   
+		      	<if test="time != null and enterTime != null" >
+		       		and <![CDATA[ dbo.visitor_record.time >= #{time} and dbo.visitor_record.time < dateadd(DD,01,#{enterTime}) ]]> 
+		      	</if>   		     	
+		     </where>  ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.VisitorRecord" >         
+    select count(1)
+    from dbo.visitor_record
+    left join dbo.dt_user
+    on dbo.visitor_record.user_serial = dbo.dt_user.user_serial
+	<where>		      	
+      	<if test="userLname != null and userLname != ''" >
+      		and dbo.dt_user.user_lname like '%${userLname}%'		       	
+      	</if>
+      	<if test="userSex != null and userSex != ''" >
+        	and dbo.dt_user.user_sex = #{userSex}
+      	</if>		    
+      	<if test="userTelephone != null and userTelephone != ''" >
+       		and dbo.dt_user.user_telephone = #{userTelephone}
+      	</if>
+      	<if test="userId != null and userId != ''" >
+       		and dbo.dt_user.user_id = #{userId}
+      	</if>	 
+      	<if test="userDepname != null and userDepname != ''" >
+       		and dbo.dt_user.user_depname like '%${userDepname}%' 
+      	</if>
+      	<if test="time != null and enterTime == null" >
+       		and <![CDATA[ dbo.visitor_record.time >= #{time} ]]> 
+      	</if> 
+      	<if test="time == null and enterTime != null" >
+       		and <![CDATA[ dbo.visitor_record.time < dateadd(DD,01,#{enterTime}) ]]> 
+      	</if>   
+      	<if test="time != null and enterTime != null" >
+       		and <![CDATA[ dbo.visitor_record.time >= #{time} and dbo.visitor_record.time < dateadd(DD,01,#{enterTime}) ]]> 
+      	</if>   		     	
+     </where>  
+  </select>
+  
+  <select id="export" resultMap="VisitorRecordResultMap" parameterType="com.cecep.model.VisitorRecord" >
+	select row_number() over(order by dbo.visitor_record.record_id) as rowNumber,<include refid="VisitorRecord_Column_List" />, dbo.dt_user.user_lname as user_lname, dbo.dt_user.user_depname as user_depname, dbo.dt_user.user_duty as user_duty, dbo.dt_user.user_sex as user_sex, dbo.dt_user.user_nation as user_nation, dbo.dt_user.user_address as user_address, dbo.dt_user.user_id as user_id, dbo.dt_user.user_telephone as user_telephone,dbo.dt_user.user_birthday as user_birthday,dbo.dt_user.user_email as user_email,dbo.dt_user.user_bz as user_bz,dbo.dt_user.user_sj as user_sj
+    from dbo.visitor_record
+    left join dbo.dt_user
+    on dbo.visitor_record.user_serial = dbo.dt_user.user_serial
+	<where>		      	
+      	<if test="userLname != null and userLname != ''" >
+      		and dbo.dt_user.user_lname like '%${userLname}%'		       	
+      	</if>
+      	<if test="userSex != null and userSex != ''" >
+        	and dbo.dt_user.user_sex = #{userSex}
+      	</if>		    
+      	<if test="userTelephone != null and userTelephone != ''" >
+       		and dbo.dt_user.user_telephone = #{userTelephone}
+      	</if>
+      	<if test="userId != null and userId != ''" >
+       		and dbo.dt_user.user_id = #{userId}
+      	</if>	 
+      	<if test="userDepname != null and userDepname != ''" >
+       		and dbo.dt_user.user_depname like '%${userDepname}%' 
+      	</if>
+      	<if test="time != null and enterTime == null" >
+       		and <![CDATA[ dbo.visitor_record.time >= #{time} ]]> 
+      	</if> 
+      	<if test="time == null and enterTime != null" >
+       		and <![CDATA[ dbo.visitor_record.time < dateadd(DD,01,#{enterTime}) ]]> 
+      	</if>   
+      	<if test="time != null and enterTime != null" >
+       		and <![CDATA[ dbo.visitor_record.time >= #{time} and dbo.visitor_record.time < dateadd(DD,01,#{enterTime}) ]]> 
+      	</if>   		     	
+     </where>  	   
+  </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.TtNationMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.TtNation" >
+    <result column="tt_name" property="ttName" jdbcType="NVARCHAR" />
+    <result column="tt_order" property="ttOrder" jdbcType="SMALLINT" />
+  </resultMap>
+  <insert id="insert" parameterType="com.cecep.model.TtNation" >
+    insert into dbo.tt_nation (tt_name, tt_order)
+    values (#{ttName,jdbcType=NVARCHAR}, #{ttOrder,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.TtNation" >
+    insert into dbo.tt_nation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ttName != null" >
+        tt_name,
+      </if>
+      <if test="ttOrder != null" >
+        tt_order,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ttName != null" >
+        #{ttName,jdbcType=NVARCHAR},
+      </if>
+      <if test="ttOrder != null" >
+        #{ttOrder,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <select id="load" resultType="java.util.Map" parameterType="com.cecep.model.TtNation">
+    select tt_name as text, tt_name as value
+    from dbo.tt_nation
+    order by tt_order
+  </select>
+</mapper>

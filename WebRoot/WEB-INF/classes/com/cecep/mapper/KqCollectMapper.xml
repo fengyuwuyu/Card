@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.kq.KqCollectMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.kq.KqCollect" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_serial" property="userSerial" jdbcType="BIGINT" />
+    <result column="goOutTime" property="goouttime" jdbcType="VARCHAR" />
+    <result column="lateTime" property="latetime" jdbcType="VARCHAR" />
+    <result column="leaveEarlyTime" property="leaveearlytime" jdbcType="VARCHAR" />
+    <result column="allWork" property="allwork" jdbcType="INTEGER" />
+    <result column="amSj" property="amsj" jdbcType="TIMESTAMP" />
+    <result column="pmSj" property="pmsj" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_serial, goOutTime, lateTime, leaveEarlyTime, allWork, amSj, pmSj
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.kq_collect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.kq_collect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.kq.KqCollect" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.kq_collect (id, user_serial, goOutTime, 
+      lateTime, leaveEarlyTime, allWork, 
+      amSj, pmSj)
+    values (#{id,jdbcType=INTEGER}, #{userSerial,jdbcType=BIGINT}, #{goouttime,jdbcType=VARCHAR}, 
+      #{latetime,jdbcType=VARCHAR}, #{leaveearlytime,jdbcType=VARCHAR}, #{allwork,jdbcType=INTEGER}, 
+      #{amsj,jdbcType=TIMESTAMP}, #{pmsj,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.kq.KqCollect" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.kq_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userSerial != null" >
+        user_serial,
+      </if>
+      <if test="goouttime != null" >
+        goOutTime,
+      </if>
+      <if test="latetime != null" >
+        lateTime,
+      </if>
+      <if test="leaveearlytime != null" >
+        leaveEarlyTime,
+      </if>
+      <if test="allwork != null" >
+        allWork,
+      </if>
+      <if test="amsj != null" >
+        amSj,
+      </if>
+      <if test="pmsj != null" >
+        pmSj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="userSerial != null" >
+        #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="goouttime != null" >
+        #{goouttime,jdbcType=VARCHAR},
+      </if>
+      <if test="latetime != null" >
+        #{latetime,jdbcType=VARCHAR},
+      </if>
+      <if test="leaveearlytime != null" >
+        #{leaveearlytime,jdbcType=VARCHAR},
+      </if>
+      <if test="allwork != null" >
+        #{allwork,jdbcType=INTEGER},
+      </if>
+      <if test="amsj != null" >
+        #{amsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmsj != null" >
+        #{pmsj,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.kq.KqCollect" >
+    update dbo.kq_collect
+    <set >
+      <if test="userSerial != null" >
+        user_serial = #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="goouttime != null" >
+        goOutTime = #{goouttime,jdbcType=VARCHAR},
+      </if>
+      <if test="latetime != null" >
+        lateTime = #{latetime,jdbcType=VARCHAR},
+      </if>
+      <if test="leaveearlytime != null" >
+        leaveEarlyTime = #{leaveearlytime,jdbcType=VARCHAR},
+      </if>
+      <if test="allwork != null" >
+        allWork = #{allwork,jdbcType=INTEGER},
+      </if>
+      <if test="amsj != null" >
+        amSj = #{amsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmsj != null" >
+        pmSj = #{pmsj,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.kq.KqCollect" >
+    update dbo.kq_collect
+    set user_serial = #{userSerial,jdbcType=BIGINT},
+      goOutTime = #{goouttime,jdbcType=VARCHAR},
+      lateTime = #{latetime,jdbcType=VARCHAR},
+      leaveEarlyTime = #{leaveearlytime,jdbcType=VARCHAR},
+      allWork = #{allwork,jdbcType=INTEGER},
+      amSj = #{amsj,jdbcType=TIMESTAMP},
+      pmSj = #{pmsj,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.mess.RegionMapper">
+	<resultMap id="BaseResultMap" type="com.cecep.model.mess.Region">
+		<id column="dep_no" property="depNo" />
+		<result column="dep_name" property="depName" />
+	</resultMap>
+
+	<resultMap id="region" type="com.cecep.model.mess.Region">
+		<id column="dep_serial" property="depSerial" />
+		<result column="dep_name" property="depName" />
+		<result column="dep_parent" property="depParent" />
+		<result column="dep_no" property="depNo" />
+		<result column="dep_type" property="depType" />
+		<result column="module_id" property="moduleId" />
+		<result column="sj" property="sj" />
+		<result column="state" property="state" />
+		<result column="parent_name" property="parentName" />
+		<collection property="times" ofType="com.cecep.model.XfTime" >
+			 <id column="bh" property="bh" jdbcType="CHAR" />
+			 <result column="lname" property="lname" jdbcType="NVARCHAR" />
+		</collection>
+	</resultMap>
+
+	<select id="select" resultMap="BaseResultMap">
+		select distinct d.dep_no,d.dep_name 
+		from dbo.dt_ac_dep d
+		left join dbo.dt_dev a on d.dep_serial=a.acdep_serial
+		left join dbo.st_device b on a.dev_serial=b.bh
+		where b.dlx=2 or b.dev_lb=6
+	</select>
+	
+	<select id="selectAll" resultType="com.cecep.model.RegionTree" parameterType="com.cecep.model.mess.Region">
+	 select dep_serial as id,dep_name as text,'closed' as state
+		from dbo.dt_ac_dep
+		<where>
+			<if test="id!=null">
+				dep_parent = #{id}
+			</if>
+			<if test="id==null">
+				dep_parent = 0 
+			</if>
+		</where>
+	</select>
+
+	<select id="datalistXf" parameterType="com.cecep.model.mess.Region" resultMap="region" >
+		 select aa.* from (
+		select row_number() over(order by a.dep_no) as rowNumber ,a.*  from ( 
+		select 
+		d1.dep_serial,d1.dep_no,d1.dep_name,d2.dep_name parent_name,tt.bh,tt.lname 
+		from dbo.dt_ac_dep d1
+		left join dbo.dt_ac_dep d2 on d1.dep_parent=d2.dep_serial
+		left join dbo.dt_dev dev on d1.dep_serial=dev.acdep_serial
+		left join dbo.st_device b on dev.dev_serial=b.bh
+		left join dbo.xf_ac_time ta on d1.dep_serial=ta.acdep_serial
+		left join dbo.xf_time tt on ta.time_no=tt.bh
+		<where>
+			(b.dlx=2 or b.dev_lb=6) and ta.lx=2
+			<if test="depNo!=null and depNo!='00'">
+				and d1.dep_no = #{depNo}
+			</if>
+		</where>
+		 ) as a) as aa
+		<where> <if test="start != null and rows != null"> <![CDATA[ 
+			aa.rowNumber >= #{start} and aa.rowNumber < (#{rows} + #{start})]]> </if> 
+		</where> 
+		ORDER BY aa.dep_serial,aa.bh
+	</select>
+
+	<select id="totalXf" parameterType="com.cecep.model.mess.Region" resultType="int">
+		select count(distinct d1.dep_serial)
+		from dbo.dt_ac_dep d1
+		left join dbo.dt_ac_dep d2 on d1.dep_parent=d2.dep_serial
+		left join dbo.dt_dev dev on d1.dep_serial=dev.acdep_serial
+		left join dbo.st_device b on dev.dev_serial=b.bh
+		left join dbo.xf_ac_time ta on d1.dep_serial=ta.acdep_serial
+		left join dbo.xf_time tt on ta.time_no=tt.bh
+		<where>
+			b.dlx=2 or b.dev_lb=6 and ta.lx=0
+			<if test="depNo!=null and depNo!='00'">
+				and d1.dep_no = #{depNo}
+			</if>
+		</where>
+	</select>
+	
+	<select id="datalist" parameterType="com.cecep.model.mess.Region" resultMap="region" >
+			select 
+			d1.dep_serial,d1.dep_no,d1.dep_name,d2.dep_name parent_name,d1.dep_type,d1.module_id,d1.dep_parent,
+			<choose>
+		    	<when test="depName != null and depName != ''" >'open' as state</when>
+		    	<otherwise>'closed' as state</otherwise>
+		   	</choose>
+			from dbo.dt_ac_dep d1
+			left join dbo.dt_ac_dep d2 on d1.dep_parent=d2.dep_serial
+			 where 
+				<if test="depParent==null">
+					d1.dep_parent=0
+				</if>
+				<if test="depParent!=null">
+					d1.dep_parent=#{depParent}
+				</if>
+				<if test="depSerial!=null">
+					and d1.dep_serial=#{depSerial}
+				</if>
+				<if test="depNo!=null and depNo!='00'">
+					and d1.dep_no = #{depNo}
+				</if>
+				order by d1.module_id,d1.dep_no
+	</select>
+
+	<select id="total" parameterType="com.cecep.model.mess.Region" resultType="int">
+		select count(distinct d1.dep_serial)
+		from dbo.dt_ac_dep d1
+		left join dbo.dt_ac_dep d2 on d1.dep_parent=d2.dep_serial
+		<where>
+			<if test="depNo!=null and depNo!='00'">
+				and d1.dep_no = #{depNo}
+			</if>
+		</where>
+	</select>
+	
+ 	<select id="getById" parameterType="com.cecep.model.mess.Region" resultMap="region">
+		select 
+		d1.dep_serial,d1.dep_no,d1.dep_name,d2.dep_name parent_name,d1.dep_type,d1.module_id
+		from dbo.dt_ac_dep d1
+		left join dbo.dt_ac_dep d2 on d1.dep_parent=d2.dep_serial
+		where d1.dep_serial = #{depSerial}
+	</select>
+	<!-- insert into dt_ac_dep(dep_serial,dep_parent,dep_order,dep_name,dep_no,dep_rule,sj,module_id,Dep_type,dep_lx,
+	dep_place,dep_number,dep_sex,dep_floor,regserial) VALUES ('200022','500002','0','test','0010100','0',
+	'2016-07-19 13:42:34','0025',0,'-1','0','','0','6','')
+	说明：dep_order需根据dep_parent=#{dep_serial}查询dt_ac_dep表的最大dep_order+1得到
+		dep_no：查询select max(dep_serial) from dt_ac_dep where dep_parent=dep_serial ，若max为零，则dep_no为上级部门dep_no+00
+	 -->
+	<insert id="save" parameterType="com.cecep.model.mess.Region">
+		insert into 
+			dt_ac_dep(dep_serial,dep_parent,dep_order,dep_name,dep_no,dep_rule,sj,module_id,
+			Dep_type,dep_lx,dep_place,dep_number,dep_sex,dep_floor,regserial) 
+		VALUES (#{depSerial},#{depParent},#{depOrder},#{depName},#{depNo},'0',#{sj},#{moduleId},0,'-1','0','','0','6','')
+		
+	</insert>
+	
+	<select id="selectDepNo" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select dep_no from dt_ac_dep where dep_serial=#{depSerial}
+	</select>
+	
+	<select id="selectAcdepSerial" resultType="int">
+		select Module_place from WT_MODULE where Module_id='0025'
+	</select>
+	
+	 <update id="updateAcdepSerial" >
+	    update WT_MODULE
+	    set module_dep = Module_place + 1
+		where module_id = '0025'
+  	</update> 
+  	
+  	<select id="acdepType" resultType="java.util.Map">
+  		select module_id id ,name text from acdep_type
+  	</select>
+  	
+  	<update id="update" parameterType="com.cecep.model.mess.Region">
+  		update dt_ac_dep set dep_name = #{depName},dep_parent=#{depParent},module_id=#{moduleId}
+  			where dep_serial=#{depSerial}
+  	</update>
+  	
+  	<update id="updateModuleId" parameterType="java.lang.String">
+		update wt_module set module_place= module_place+1 where module_id=#{moduleId}
+  	</update>
+  	
+  	<select id="getDepSerial" parameterType="java.lang.String" resultType="java.lang.Integer">
+  		select module_place from wt_module where module_id=#{moduleId}
+  	</select>
+  	
+  	<select id="getDepOrder" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		select max(dep_order) from dt_ac_dep where dep_parent=#{depParent} and dep_serial!=100001
+  	</select>
+  	
+  	<select id="getChildrenCount" parameterType="com.cecep.model.mess.Region" resultType="int">
+  		select count(*) from dt_ac_dep where dep_parent=#{depSerial}
+  	</select>
+  	
+  	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from dt_ac_dep where dep_serial=#{depSerial}
+  	</delete>
+</mapper>

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cecep.dao.VisitorBlacklistMapper">
+  <resultMap id="BaseResultMap" type="com.cecep.model.VisitorBlacklist">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_serial" jdbcType="BIGINT" property="userSerial" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="auto_count" jdbcType="INTEGER" property="autoCount" />
+    <result column="manual_count" jdbcType="INTEGER" property="manualCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_serial, flag, count, auto_count, manual_count
+  </sql>
+  <resultMap id="VisitorBlacklistMap" type="com.cecep.model.VisitorBlacklist" extends="BaseResultMap">
+    <result column="user_lname" property="userLname" jdbcType="NVARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="NVARCHAR" />    
+    <result column="user_nation" property="userNation" jdbcType="NVARCHAR" />
+    <result column="user_birthday" property="userBirthday" jdbcType="TIMESTAMP" />
+    <result column="user_address" property="userAddress" jdbcType="NVARCHAR" />    
+    <result column="user_id" property="userId" jdbcType="NVARCHAR" />
+    <result column="user_telephone" property="userTelephone" jdbcType="NVARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="NVARCHAR" />    
+    <result column="user_duty" property="userDuty" jdbcType="NVARCHAR" />
+    <result column="user_depname" property="userDepname" jdbcType="NVARCHAR" />
+    <result column="user_bz" property="userBz" jdbcType="NVARCHAR" />
+    <result column="user_sj" property="userSj" jdbcType="TIMESTAMP" />
+    <result column="card_xh" property="cardXh" jdbcType="INTEGER" />
+    <result column="card_hao" property="cardHao" jdbcType="NVARCHAR" />
+    <result column="card_serial" property="cardSerial" jdbcType="NVARCHAR" />
+    <result column="card_lx" property="cardLx" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="VisitorBlacklist_Column_List">
+    dbo.visitor_blacklist.id, dbo.visitor_blacklist.user_serial, dbo.visitor_blacklist.flag, dbo.visitor_blacklist.count, dbo.visitor_blacklist.auto_count, dbo.visitor_blacklist.manual_count
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="VisitorBlacklistMap">
+    select <include refid="VisitorBlacklist_Column_List" />, dbo.dt_user.user_lname as user_lname, dbo.dt_user.user_depname as user_depname, dbo.dt_user.user_duty as user_duty, dbo.dt_user.user_sex as user_sex, dbo.dt_user.user_nation as user_nation, dbo.dt_user.user_address as user_address, dbo.dt_user.user_id as user_id, dbo.dt_user.user_telephone as user_telephone, dbo.dt_user.user_sj as user_sj, dbo.dt_card.xh as card_xh, dbo.dt_card.card_hao as card_hao, dbo.dt_card.card_serial as card_serial,dbo.dt_user.user_birthday as user_birthday,dbo.dt_user.user_email as user_email,dbo.dt_user.user_bz as user_bz,dbo.dt_card.card_lx as card_lx
+	from dbo.visitor_blacklist
+    left join dbo.dt_user
+    on dbo.visitor_blacklist.user_serial = dbo.dt_user.user_serial
+    left join dbo.dt_card
+    on dbo.visitor_blacklist.user_serial = dbo.dt_card.user_serial
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dbo.visitor_blacklist
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.VisitorBlacklist">
+    insert into dbo.visitor_blacklist (user_serial, flag, 
+      count, auto_count, manual_count
+      )
+    values (#{userSerial,jdbcType=BIGINT}, 0, 
+      0, 0, 0
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.VisitorBlacklist">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.visitor_blacklist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="userSerial != null">
+        user_serial,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="autoCount != null">
+        auto_count,
+      </if>
+      <if test="manualCount != null">
+        manual_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="userSerial != null">
+        #{userSerial,jdbcType=BIGINT},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="autoCount != null">
+        #{autoCount,jdbcType=INTEGER},
+      </if>
+      <if test="manualCount != null">
+        #{manualCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.VisitorBlacklist">
+    update dbo.visitor_blacklist
+    <set>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        count = count + 1,
+      </if>
+      <if test="autoCount != null">
+        auto_count = auto_count + 1,
+      </if>
+      <if test="manualCount != null">
+        manual_count = manual_count + 1,
+      </if>
+    </set>
+    where user_serial = #{userSerial,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.VisitorBlacklist">
+    update dbo.visitor_blacklist
+    set user_serial = #{userSerial,jdbcType=BIGINT},
+      flag = #{flag,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      auto_count = #{autoCount,jdbcType=INTEGER},
+      manual_count = #{manualCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  <select id="selectByPage" resultMap="VisitorBlacklistMap" parameterType="com.cecep.model.VisitorBlacklist" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.dt_user.user_sj desc) as rowNumber,<include refid="VisitorBlacklist_Column_List" />, dbo.dt_user.user_lname as user_lname, dbo.dt_user.user_depname as user_depname, dbo.dt_user.user_duty as user_duty, dbo.dt_user.user_sex as user_sex, dbo.dt_user.user_nation as user_nation, dbo.dt_user.user_address as user_address, dbo.dt_user.user_id as user_id, dbo.dt_user.user_telephone as user_telephone, dbo.dt_user.user_sj as user_sj, dbo.dt_card.xh as card_xh, dbo.dt_card.card_hao as card_hao, dbo.dt_card.card_serial as card_serial,dbo.dt_user.user_birthday as user_birthday,dbo.dt_user.user_email as user_email,dbo.dt_user.user_bz as user_bz,dbo.dt_card.card_lx as card_lx
+		    from dbo.visitor_blacklist
+		    left join dbo.dt_user
+		    on dbo.visitor_blacklist.user_serial = dbo.dt_user.user_serial
+		    left join dbo.dt_card
+		    on dbo.visitor_blacklist.user_serial = dbo.dt_card.user_serial
+			<where>	
+				<if test="flag != null" >
+		       		and dbo.visitor_blacklist.flag = #{flag}
+		      	</if>	
+		    	<if test="userLname != null and userLname != ''" >
+		        	dbo.dt_user.user_lname like '%${userLname}%'
+		      	</if>
+		      	<if test="userSex != null and userSex != ''" >
+		        	and dbo.dt_user.user_sex = #{userSex}
+		      	</if>		    
+		      	<if test="userTelephone != null and userTelephone != ''" >
+		       		and dbo.dt_user.user_telephone = #{userTelephone}
+		      	</if>
+		      	<if test="userId != null and userId != ''" >
+		       		and dbo.dt_user.user_id = #{userId}
+		      	</if>	
+		      	<if test="userDepname != null and userDepname != ''" >
+		       		and dbo.dt_user.user_depname like '%${userDepname}%' 
+		      	</if>
+		      	<if test="userSj != null" >
+		       		and convert(varchar(100), dbo.dt_user.user_sj, 23) = convert(varchar(100), #{userSj}, 23)
+		      	</if>  
+		      	<if test="cardXh == 0" >
+		       		and dbo.dt_card.xh is not null
+		      	</if> 
+		      	<if test="cardXh == 1" >
+		       		and dbo.dt_card.xh is null
+		      	</if>    		     	
+		     </where>  ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.VisitorBlacklist" >         
+    select count(1)
+    from dbo.visitor_blacklist
+    left join dbo.dt_user
+    on dbo.visitor_blacklist.user_serial = dbo.dt_user.user_serial
+    left join dbo.dt_card
+    on dbo.visitor_blacklist.user_serial = dbo.dt_card.user_serial
+	<where>	
+		<if test="flag != null" >
+       		and dbo.visitor_blacklist.flag = #{flag}
+      	</if>	
+    	<if test="userLname != null and userLname != ''" >
+        	dbo.dt_user.user_lname like '%${userLname}%'
+      	</if>
+      	<if test="userSex != null and userSex != ''" >
+        	and dbo.dt_user.user_sex = #{userSex}
+      	</if>		    
+      	<if test="userTelephone != null and userTelephone != ''" >
+       		and dbo.dt_user.user_telephone = #{userTelephone}
+      	</if>
+      	<if test="userId != null and userId != ''" >
+       		and dbo.dt_user.user_id = #{userId}
+      	</if>	
+      	<if test="userDepname != null and userDepname != ''" >
+       		and dbo.dt_user.user_depname like '%${userDepname}%' 
+      	</if>
+      	<if test="userSj != null" >
+       		and convert(varchar(100), dbo.dt_user.user_sj, 23) = convert(varchar(100), #{userSj}, 23)
+      	</if>  
+      	<if test="cardXh == 0" >
+       		and dbo.dt_card.xh is not null
+      	</if> 
+      	<if test="cardXh == 1" >
+       		and dbo.dt_card.xh is null
+      	</if>    		     	
+     </where>  
+  </select>
+  
+  <select id="export" resultMap="VisitorBlacklistMap" parameterType="com.cecep.model.VisitorBlacklist" >
+    select row_number() over(order by dbo.dt_user.user_sj desc) as rowNumber,<include refid="VisitorBlacklist_Column_List" />, dbo.dt_user.user_lname as user_lname, dbo.dt_user.user_depname as user_depname, dbo.dt_user.user_duty as user_duty, dbo.dt_user.user_sex as user_sex, dbo.dt_user.user_nation as user_nation, dbo.dt_user.user_address as user_address, dbo.dt_user.user_id as user_id, dbo.dt_user.user_telephone as user_telephone, dbo.dt_user.user_sj as user_sj, dbo.dt_card.xh as card_xh, dbo.dt_card.card_hao as card_hao, dbo.dt_card.card_serial as card_serial,dbo.dt_user.user_birthday as user_birthday,dbo.dt_user.user_email as user_email,dbo.dt_user.user_bz as user_bz,dbo.dt_card.card_lx as card_lx
+    from dbo.visitor_blacklist
+    left join dbo.dt_user
+    on dbo.visitor_blacklist.user_serial = dbo.dt_user.user_serial
+    left join dbo.dt_card
+    on dbo.visitor_blacklist.user_serial = dbo.dt_card.user_serial
+	<where>	
+		<if test="flag != null" >
+       		and dbo.visitor_blacklist.flag = #{flag}
+      	</if>	
+    	<if test="userLname != null and userLname != ''" >
+        	dbo.dt_user.user_lname like '%${userLname}%'
+      	</if>
+      	<if test="userSex != null and userSex != ''" >
+        	and dbo.dt_user.user_sex = #{userSex}
+      	</if>		    
+      	<if test="userTelephone != null and userTelephone != ''" >
+       		and dbo.dt_user.user_telephone = #{userTelephone}
+      	</if>
+      	<if test="userId != null and userId != ''" >
+       		and dbo.dt_user.user_id = #{userId}
+      	</if>	
+      	<if test="userDepname != null and userDepname != ''" >
+       		and dbo.dt_user.user_depname like '%${userDepname}%' 
+      	</if>
+      	<if test="userSj != null" >
+       		and convert(varchar(100), dbo.dt_user.user_sj, 23) = convert(varchar(100), #{userSj}, 23)
+      	</if>  
+      	<if test="cardXh == 0" >
+       		and dbo.dt_card.xh is not null
+      	</if> 
+      	<if test="cardXh == 1" >
+       		and dbo.dt_card.xh is null
+      	</if>    		     	
+     </where>  
+  </select>
+  
+  <select id="selectBySelective" resultType="java.lang.Integer" parameterType="com.cecep.model.VisitorBlacklist" >         
+    select count(1)
+    from dbo.visitor_blacklist
+    left join dbo.dt_user
+    on dbo.visitor_blacklist.user_serial = dbo.dt_user.user_serial
+	<where>	
+      	<if test="userId != null and userId != ''" >
+       		dbo.dt_user.user_id = #{userId}
+      	</if>		     	
+    </where>  
+  </select>
+  
+  <resultMap id="DtCardResultMap" type="com.cecep.model.DtCard" >
+    <id column="card_serial" property="cardSerial" jdbcType="CHAR" />
+    <result column="xh" property="xh" jdbcType="INTEGER" />
+    <result column="lx" property="lx" jdbcType="INTEGER" />
+    <result column="gly_no" property="glyNo" jdbcType="NVARCHAR" />
+    <result column="card_photo" property="cardPhoto" jdbcType="VARCHAR" />
+    <result column="sj" property="sj" jdbcType="TIMESTAMP" />
+    <result column="user_serial" property="userSerial" jdbcType="BIGINT" />
+    <result column="card_lx" property="cardLx" jdbcType="INTEGER" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_hao" property="cardHao" jdbcType="VARCHAR" />
+    <result column="card_order" property="cardOrder" jdbcType="INTEGER" />
+    <result column="card_bz" property="cardBz" jdbcType="NVARCHAR" />
+    <result column="card_verify" property="cardVerify" jdbcType="VARCHAR" />
+    <result column="readd_count" property="readdCount" jdbcType="INTEGER" />
+    <result column="loss_count" property="lossCount" jdbcType="INTEGER" />
+    <result column="Card_work" property="cardWork" jdbcType="INTEGER" />
+    <result column="card_form" property="cardForm" jdbcType="NVARCHAR" />
+    <result column="isCardReplace" property="iscardreplace" jdbcType="INTEGER" />
+    <result column="iscarddel" property="iscarddel" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="DtCard_Column_List" >
+    dbo.dt_card.card_serial, dbo.dt_card.xh, dbo.dt_card.lx, dbo.dt_card.gly_no, dbo.dt_card.card_photo, dbo.dt_card.sj, dbo.dt_card.user_serial, dbo.dt_card.card_lx, dbo.dt_card.card_type, dbo.dt_card.card_hao, 
+    dbo.dt_card.card_order, dbo.dt_card.card_bz, dbo.dt_card.card_verify, dbo.dt_card.readd_count, dbo.dt_card.loss_count, dbo.dt_card.Card_work, card_form, 
+    dbo.dt_card.isCardReplace, dbo.dt_card.iscarddel
+  </sql>
+  
+   <select id="selectDtCard" resultMap="DtCardResultMap" >
+   	select <include refid="DtCard_Column_List" />
+    from dbo.visitor_blacklist
+    left join dbo.dt_card
+    on dbo.visitor_blacklist.user_serial = dbo.dt_card.user_serial
+    where dbo.dt_card.xh is not null
+  </select>
+  
+  <select id="selectDtCardBySelective" resultType="java.lang.Integer" parameterType="com.cecep.model.DtCard" >
+    select count(1)
+    from dbo.dt_card
+    <where>	  
+	      <if test="cardHao != null and cardHao != ''" >
+	        card_hao = #{cardHao}
+	      </if>
+	</where>
+  </select>
+  
+  <select id="selectMaxCardSerial" resultType="java.lang.Integer" >
+    select module_card 
+    from wt_module
+	where module_id = '0009'
+  </select>
+  
+  <update id="updateCardSerial" >
+    update wt_module
+    set module_card = module_card + 1
+	where module_id = '0009'
+  </update>
+    
+  <parameterMap id="OpenCardParameterMap" type="com.cecep.model.DtCard">
+  	<parameter property="devSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="lx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="acType" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="BIGINT" mode="IN"/>
+	<parameter property="cardHao" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="jmkh" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="cardSerial" javaType="java.lang.String" jdbcType="CHAR" mode="IN"/>
+	<parameter property="cardLx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="cardWork" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="cardType" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="ip" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+	<parameter property="glyNo" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>	
+    <parameter property="regSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>   	
+  </parameterMap>
+  
+  <parameterMap id="ReturnCardParameterMap" type="com.cecep.model.DtCard">
+  	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="BIGINT" mode="IN"/>
+  	<parameter property="cardSerial" javaType="java.lang.String" jdbcType="CHAR" mode="IN"/>
+  	<parameter property="cardHao" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+	<parameter property="cardVerify" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>
+	<parameter property="cardForm" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>
+	<parameter property="cardLx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="cardType" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="lx" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	<parameter property="ip" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+	<parameter property="glyNo" javaType="java.lang.String" jdbcType="NVARCHAR" mode="IN"/>	
+    <parameter property="regSerial" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/> 
+    <parameter property="versionNo" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>   	
+  </parameterMap>  
+  
+  <insert id="openCard" parameterMap="OpenCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_add_v (?,?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="returnCard" parameterMap="ReturnCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_back_v (?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <insert id="returnCard2" parameterMap="ReturnCardParameterMap" statementType="CALLABLE">
+	{call clientpro_card_back_v2 (?,?,?,?,?,?,?,?,?,?,?,?)}
+  </insert>
+  
+  <select id="selectDtCardByDeadline" resultMap="DtCardResultMap"> 
+  	select a.user_Serial,b.card_serial,b.card_hao from dt_user a LEFT JOIN dt_card b on a.user_serial=b.user_serial where a.user_serial in
+(select a.user_serial from (select DATEDIFF(dd, deadline, GETDATE()) diff,user_serial from cecep_user_privilege ) a where a.diff&lt;=0)
+  </select>
+</mapper>

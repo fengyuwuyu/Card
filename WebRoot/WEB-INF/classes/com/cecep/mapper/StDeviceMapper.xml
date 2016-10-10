@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.StDeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.StDevice" >
+    <id column="bh" property="bh" jdbcType="CHAR" />
+    <result column="mc" property="mc" jdbcType="NVARCHAR" />
+    <result column="bz" property="bz" jdbcType="NVARCHAR" />
+    <result column="ip" property="ip" jdbcType="NVARCHAR" />
+    <result column="com" property="com" jdbcType="INTEGER" />
+    <result column="port" property="port" jdbcType="INTEGER" />
+    <result column="btl" property="btl" jdbcType="INTEGER" />
+    <result column="mm" property="mm" jdbcType="NVARCHAR" />
+    <result column="zt" property="zt" jdbcType="NVARCHAR" />
+    <result column="sj" property="sj" jdbcType="TIMESTAMP" />
+    <result column="xs" property="xs" jdbcType="NVARCHAR" />
+    <result column="mj" property="mj" jdbcType="NVARCHAR" />
+    <result column="pztj" property="pztj" jdbcType="NVARCHAR" />
+    <result column="pzlj" property="pzlj" jdbcType="NVARCHAR" />
+    <result column="lx" property="lx" jdbcType="TINYINT" />
+    <result column="yzfs" property="yzfs" jdbcType="INTEGER" />
+    <result column="gly_no" property="glyNo" jdbcType="NVARCHAR" />
+    <result column="gly_pass" property="glyPass" jdbcType="NVARCHAR" />
+    <result column="mac" property="mac" jdbcType="VARCHAR" />
+    <result column="dev_xs" property="devXs" jdbcType="VARCHAR" />
+    <result column="dev_lx" property="devLx" jdbcType="VARCHAR" />
+    <result column="kmry" property="kmry" jdbcType="VARCHAR" />
+    <result column="dyip" property="dyip" jdbcType="VARCHAR" />
+    <result column="jksz" property="jksz" jdbcType="INTEGER" />
+    <result column="tjkq" property="tjkq" jdbcType="TINYINT" />
+    <result column="on_line" property="onLine" jdbcType="TIMESTAMP" />
+    <result column="run_state" property="runState" jdbcType="TINYINT" />
+    <result column="dev_lb" property="devLb" jdbcType="TINYINT" />
+    <result column="dev_version" property="devVersion" jdbcType="VARCHAR" />
+    <result column="dev_up" property="devUp" jdbcType="TINYINT" />
+    <result column="max_flow_no" property="maxFlowNo" jdbcType="INTEGER" />
+    <result column="dev_lock" property="devLock" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
+    <result column="kssj" property="kssj" jdbcType="TIMESTAMP" />
+    <result column="jssj" property="jssj" jdbcType="TIMESTAMP" />
+    <result column="dev_id" property="devId" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="dev_type" property="devType" jdbcType="INTEGER" />
+    <result column="sub_type" property="subType" jdbcType="INTEGER" />
+    <result column="sub_del" property="subDel" jdbcType="INTEGER" />
+    <result column="user_version" property="userVersion" jdbcType="INTEGER" />
+    <result column="online_sj" property="onlineSj" jdbcType="TIMESTAMP" />
+    <result column="dev_search" property="devSearch" jdbcType="INTEGER" />
+    <result column="gateway" property="gateway" jdbcType="VARCHAR" />
+    <result column="mask" property="mask" jdbcType="VARCHAR" />
+    <result column="regserial" property="regserial" jdbcType="NVARCHAR" />
+    <result column="rate_enable" property="rateEnable" jdbcType="INTEGER" />
+    <result column="main_card" property="mainCard" jdbcType="INTEGER" />
+    <result column="bt_ver" property="btVer" jdbcType="INTEGER" />
+    <result column="fbt_ver" property="fbtVer" jdbcType="INTEGER" />
+    <result column="add_ver" property="addVer" jdbcType="INTEGER" />
+    <result column="ac_ver" property="acVer" jdbcType="INTEGER" />
+    <result column="ac_crc32" property="acCrc32" jdbcType="VARCHAR" />
+    <result column="sys_crc32" property="sysCrc32" jdbcType="VARCHAR" />
+    <result column="sys_ver" property="sysVer" jdbcType="INTEGER" />
+    <result column="more_card" property="moreCard" jdbcType="INTEGER" />
+    <result column="dev_xh" property="devXh" jdbcType="NVARCHAR" />
+    <result column="dev_sb_id" property="devSbId" jdbcType="BIGINT" />
+    <result column="dev_state" property="devState" jdbcType="INTEGER" />
+    <result column="dev_app_id" property="devAppId" jdbcType="BIGINT" />
+    <result column="dev_logic_bh" property="devLogicBh" jdbcType="INTEGER" />
+    <result column="dlx" property="dlx" jdbcType="INTEGER" />
+    <result column="module_id" property="moduleId" jdbcType="VARCHAR" />
+    <result column="isReal" property="isreal" jdbcType="INTEGER" />
+    <result column="kq_sys_ver" property="kqSysVer" jdbcType="INTEGER" />
+    <result column="kq_sys_crc32" property="kqSysCrc32" jdbcType="INTEGER" />
+    <result column="signal" property="signal" jdbcType="SMALLINT" />
+    <result column="notice" property="notice" jdbcType="NVARCHAR" />
+    <result column="once_add_max" property="onceAddMax" jdbcType="DECIMAL" />
+    <result column="day_add_count" property="dayAddCount" jdbcType="INTEGER" />
+    <result column="day_add_max" property="dayAddMax" jdbcType="DECIMAL" />
+    <result column="add_sj" property="addSj" jdbcType="TIMESTAMP" />
+    <result column="dev_dorm" property="devDorm" jdbcType="INTEGER" />
+    <collection property="devOrder" ofType="java.lang.Integer">
+    	<result column="dev_order" property="value" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bh, mc, bz, ip, com, port, btl, mm, zt, sj, xs, mj, pztj, pzlj, lx, yzfs, gly_no, 
+    gly_pass, mac, dev_xs, dev_lx, kmry, dyip, jksz, tjkq, on_line, run_state, dev_lb, 
+    dev_version, dev_up, max_flow_no, dev_lock, state, kssj, jssj, dev_id, pay_type, 
+    dev_type, sub_type, sub_del, user_version, online_sj, dev_search, gateway, mask, 
+    regserial, rate_enable, main_card, bt_ver, fbt_ver, add_ver, ac_ver, ac_crc32, sys_crc32, 
+    sys_ver, more_card, dev_xh, dev_sb_id, dev_state, dev_app_id, dev_logic_bh, dlx, 
+    module_id, isReal, kq_sys_ver, kq_sys_crc32, signal, notice, once_add_max, day_add_count, 
+    day_add_max, add_sj, dev_dorm
+  </sql>
+  
+  <select id="getByPage" parameterType="com.cecep.model.StDevice" resultMap="BaseResultMap">
+  	select uu.* from 
+  	(select row_number() over(order by u.bh) as rowNumber,u.* from (select distinct a.bh,a.mc,a.ip,b.dev_order from st_device a 
+		LEFT JOIN st_doorfx_real b on a.bh=b.dev_serial where a.dev_lb=2
+		<if test="mc!=null">
+			and a.mc like '%#{mc}%'
+		</if> ) as u ) as uu
+	<where>
+		<if test="start!=null and rows!=null">
+			uu.rowNumber &gt;= #{start} and uu.rowNumber &lt; (#{start}+#{rows})
+		</if>
+	</where>
+  </select>
+  
+   <select id="getTotal" parameterType="com.cecep.model.StDevice" resultType="java.lang.Integer">
+  	select count(u.bh) from (select DISTINCT a.bh,b.dev_order from st_device a 
+		LEFT JOIN st_doorfx_real b on a.bh=b.dev_serial where a.dev_lb=2
+		<if test="mc!=null">
+			and a.mc like '%#{mc}%'
+		</if>
+		) u
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.st_device
+    where bh = #{bh,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dbo.st_device
+    where bh = #{bh,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.StDevice" >
+    <selectKey resultType="java.lang.String" keyProperty="bh" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.st_device (bh, mc, bz, ip, 
+      com, port, btl, mm, 
+      zt, sj, xs, 
+      mj, pztj, pzlj, 
+      lx, yzfs, gly_no, gly_pass, 
+      mac, dev_xs, dev_lx, 
+      kmry, dyip, jksz, tjkq, 
+      on_line, run_state, dev_lb, 
+      dev_version, dev_up, max_flow_no, 
+      dev_lock, state, kssj, 
+      jssj, dev_id, pay_type, 
+      dev_type, sub_type, sub_del, 
+      user_version, online_sj, dev_search, 
+      gateway, mask, regserial, 
+      rate_enable, main_card, bt_ver, 
+      fbt_ver, add_ver, ac_ver, 
+      ac_crc32, sys_crc32, sys_ver, 
+      more_card, dev_xh, dev_sb_id, 
+      dev_state, dev_app_id, dev_logic_bh, 
+      dlx, module_id, isReal, 
+      kq_sys_ver, kq_sys_crc32, signal, 
+      notice, once_add_max, day_add_count, 
+      day_add_max, add_sj, dev_dorm
+      )
+    values (#{bh,jdbcType=CHAR}, #{mc,jdbcType=NVARCHAR}, #{bz,jdbcType=NVARCHAR}, #{ip,jdbcType=NVARCHAR}, 
+      #{com,jdbcType=INTEGER}, #{port,jdbcType=INTEGER}, #{btl,jdbcType=INTEGER}, #{mm,jdbcType=NVARCHAR}, 
+      #{zt,jdbcType=NVARCHAR}, #{sj,jdbcType=TIMESTAMP}, #{xs,jdbcType=NVARCHAR}, 
+      #{mj,jdbcType=NVARCHAR}, #{pztj,jdbcType=NVARCHAR}, #{pzlj,jdbcType=NVARCHAR}, 
+      #{lx,jdbcType=TINYINT}, #{yzfs,jdbcType=INTEGER}, #{glyNo,jdbcType=NVARCHAR}, #{glyPass,jdbcType=NVARCHAR}, 
+      #{mac,jdbcType=VARCHAR}, #{devXs,jdbcType=VARCHAR}, #{devLx,jdbcType=VARCHAR}, 
+      #{kmry,jdbcType=VARCHAR}, #{dyip,jdbcType=VARCHAR}, #{jksz,jdbcType=INTEGER}, #{tjkq,jdbcType=TINYINT}, 
+      #{onLine,jdbcType=TIMESTAMP}, #{runState,jdbcType=TINYINT}, #{devLb,jdbcType=TINYINT}, 
+      #{devVersion,jdbcType=VARCHAR}, #{devUp,jdbcType=TINYINT}, #{maxFlowNo,jdbcType=INTEGER}, 
+      #{devLock,jdbcType=INTEGER}, #{state,jdbcType=SMALLINT}, #{kssj,jdbcType=TIMESTAMP}, 
+      #{jssj,jdbcType=TIMESTAMP}, #{devId,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
+      #{devType,jdbcType=INTEGER}, #{subType,jdbcType=INTEGER}, #{subDel,jdbcType=INTEGER}, 
+      #{userVersion,jdbcType=INTEGER}, #{onlineSj,jdbcType=TIMESTAMP}, #{devSearch,jdbcType=INTEGER}, 
+      #{gateway,jdbcType=VARCHAR}, #{mask,jdbcType=VARCHAR}, #{regserial,jdbcType=NVARCHAR}, 
+      #{rateEnable,jdbcType=INTEGER}, #{mainCard,jdbcType=INTEGER}, #{btVer,jdbcType=INTEGER}, 
+      #{fbtVer,jdbcType=INTEGER}, #{addVer,jdbcType=INTEGER}, #{acVer,jdbcType=INTEGER}, 
+      #{acCrc32,jdbcType=VARCHAR}, #{sysCrc32,jdbcType=VARCHAR}, #{sysVer,jdbcType=INTEGER}, 
+      #{moreCard,jdbcType=INTEGER}, #{devXh,jdbcType=NVARCHAR}, #{devSbId,jdbcType=BIGINT}, 
+      #{devState,jdbcType=INTEGER}, #{devAppId,jdbcType=BIGINT}, #{devLogicBh,jdbcType=INTEGER}, 
+      #{dlx,jdbcType=INTEGER}, #{moduleId,jdbcType=VARCHAR}, #{isreal,jdbcType=INTEGER}, 
+      #{kqSysVer,jdbcType=INTEGER}, #{kqSysCrc32,jdbcType=INTEGER}, #{signal,jdbcType=SMALLINT}, 
+      #{notice,jdbcType=NVARCHAR}, #{onceAddMax,jdbcType=DECIMAL}, #{dayAddCount,jdbcType=INTEGER}, 
+      #{dayAddMax,jdbcType=DECIMAL}, #{addSj,jdbcType=TIMESTAMP}, #{devDorm,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.StDevice" >
+    <selectKey resultType="java.lang.String" keyProperty="bh" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.st_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      bh,
+      <if test="mc != null" >
+        mc,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="com != null" >
+        com,
+      </if>
+      <if test="port != null" >
+        port,
+      </if>
+      <if test="btl != null" >
+        btl,
+      </if>
+      <if test="mm != null" >
+        mm,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="sj != null" >
+        sj,
+      </if>
+      <if test="xs != null" >
+        xs,
+      </if>
+      <if test="mj != null" >
+        mj,
+      </if>
+      <if test="pztj != null" >
+        pztj,
+      </if>
+      <if test="pzlj != null" >
+        pzlj,
+      </if>
+      <if test="lx != null" >
+        lx,
+      </if>
+      <if test="yzfs != null" >
+        yzfs,
+      </if>
+      <if test="glyNo != null" >
+        gly_no,
+      </if>
+      <if test="glyPass != null" >
+        gly_pass,
+      </if>
+      <if test="mac != null" >
+        mac,
+      </if>
+      <if test="devXs != null" >
+        dev_xs,
+      </if>
+      <if test="devLx != null" >
+        dev_lx,
+      </if>
+      <if test="kmry != null" >
+        kmry,
+      </if>
+      <if test="dyip != null" >
+        dyip,
+      </if>
+      <if test="jksz != null" >
+        jksz,
+      </if>
+      <if test="tjkq != null" >
+        tjkq,
+      </if>
+      <if test="onLine != null" >
+        on_line,
+      </if>
+      <if test="runState != null" >
+        run_state,
+      </if>
+      <if test="devLb != null" >
+        dev_lb,
+      </if>
+      <if test="devVersion != null" >
+        dev_version,
+      </if>
+      <if test="devUp != null" >
+        dev_up,
+      </if>
+      <if test="maxFlowNo != null" >
+        max_flow_no,
+      </if>
+      <if test="devLock != null" >
+        dev_lock,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="kssj != null" >
+        kssj,
+      </if>
+      <if test="jssj != null" >
+        jssj,
+      </if>
+      <if test="devId != null" >
+        dev_id,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="devType != null" >
+        dev_type,
+      </if>
+      <if test="subType != null" >
+        sub_type,
+      </if>
+      <if test="subDel != null" >
+        sub_del,
+      </if>
+      <if test="userVersion != null" >
+        user_version,
+      </if>
+      <if test="onlineSj != null" >
+        online_sj,
+      </if>
+      <if test="devSearch != null" >
+        dev_search,
+      </if>
+      <if test="gateway != null" >
+        gateway,
+      </if>
+      <if test="mask != null" >
+        mask,
+      </if>
+      <if test="regserial != null" >
+        regserial,
+      </if>
+      <if test="rateEnable != null" >
+        rate_enable,
+      </if>
+      <if test="mainCard != null" >
+        main_card,
+      </if>
+      <if test="btVer != null" >
+        bt_ver,
+      </if>
+      <if test="fbtVer != null" >
+        fbt_ver,
+      </if>
+      <if test="addVer != null" >
+        add_ver,
+      </if>
+      <if test="acVer != null" >
+        ac_ver,
+      </if>
+      <if test="acCrc32 != null" >
+        ac_crc32,
+      </if>
+      <if test="sysCrc32 != null" >
+        sys_crc32,
+      </if>
+      <if test="sysVer != null" >
+        sys_ver,
+      </if>
+      <if test="moreCard != null" >
+        more_card,
+      </if>
+      <if test="devXh != null" >
+        dev_xh,
+      </if>
+      <if test="devSbId != null" >
+        dev_sb_id,
+      </if>
+      <if test="devState != null" >
+        dev_state,
+      </if>
+      <if test="devAppId != null" >
+        dev_app_id,
+      </if>
+      <if test="devLogicBh != null" >
+        dev_logic_bh,
+      </if>
+      <if test="dlx != null" >
+        dlx,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="isreal != null" >
+        isReal,
+      </if>
+      <if test="kqSysVer != null" >
+        kq_sys_ver,
+      </if>
+      <if test="kqSysCrc32 != null" >
+        kq_sys_crc32,
+      </if>
+      <if test="signal != null" >
+        signal,
+      </if>
+      <if test="notice != null" >
+        notice,
+      </if>
+      <if test="onceAddMax != null" >
+        once_add_max,
+      </if>
+      <if test="dayAddCount != null" >
+        day_add_count,
+      </if>
+      <if test="dayAddMax != null" >
+        day_add_max,
+      </if>
+      <if test="addSj != null" >
+        add_sj,
+      </if>
+      <if test="devDorm != null" >
+        dev_dorm,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{bh,jdbcType=CHAR},
+      <if test="mc != null" >
+        #{mc,jdbcType=NVARCHAR},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=NVARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=NVARCHAR},
+      </if>
+      <if test="com != null" >
+        #{com,jdbcType=INTEGER},
+      </if>
+      <if test="port != null" >
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="btl != null" >
+        #{btl,jdbcType=INTEGER},
+      </if>
+      <if test="mm != null" >
+        #{mm,jdbcType=NVARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=NVARCHAR},
+      </if>
+      <if test="sj != null" >
+        #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xs != null" >
+        #{xs,jdbcType=NVARCHAR},
+      </if>
+      <if test="mj != null" >
+        #{mj,jdbcType=NVARCHAR},
+      </if>
+      <if test="pztj != null" >
+        #{pztj,jdbcType=NVARCHAR},
+      </if>
+      <if test="pzlj != null" >
+        #{pzlj,jdbcType=NVARCHAR},
+      </if>
+      <if test="lx != null" >
+        #{lx,jdbcType=TINYINT},
+      </if>
+      <if test="yzfs != null" >
+        #{yzfs,jdbcType=INTEGER},
+      </if>
+      <if test="glyNo != null" >
+        #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="glyPass != null" >
+        #{glyPass,jdbcType=NVARCHAR},
+      </if>
+      <if test="mac != null" >
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="devXs != null" >
+        #{devXs,jdbcType=VARCHAR},
+      </if>
+      <if test="devLx != null" >
+        #{devLx,jdbcType=VARCHAR},
+      </if>
+      <if test="kmry != null" >
+        #{kmry,jdbcType=VARCHAR},
+      </if>
+      <if test="dyip != null" >
+        #{dyip,jdbcType=VARCHAR},
+      </if>
+      <if test="jksz != null" >
+        #{jksz,jdbcType=INTEGER},
+      </if>
+      <if test="tjkq != null" >
+        #{tjkq,jdbcType=TINYINT},
+      </if>
+      <if test="onLine != null" >
+        #{onLine,jdbcType=TIMESTAMP},
+      </if>
+      <if test="runState != null" >
+        #{runState,jdbcType=TINYINT},
+      </if>
+      <if test="devLb != null" >
+        #{devLb,jdbcType=TINYINT},
+      </if>
+      <if test="devVersion != null" >
+        #{devVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="devUp != null" >
+        #{devUp,jdbcType=TINYINT},
+      </if>
+      <if test="maxFlowNo != null" >
+        #{maxFlowNo,jdbcType=INTEGER},
+      </if>
+      <if test="devLock != null" >
+        #{devLock,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="kssj != null" >
+        #{kssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jssj != null" >
+        #{jssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devId != null" >
+        #{devId,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="devType != null" >
+        #{devType,jdbcType=INTEGER},
+      </if>
+      <if test="subType != null" >
+        #{subType,jdbcType=INTEGER},
+      </if>
+      <if test="subDel != null" >
+        #{subDel,jdbcType=INTEGER},
+      </if>
+      <if test="userVersion != null" >
+        #{userVersion,jdbcType=INTEGER},
+      </if>
+      <if test="onlineSj != null" >
+        #{onlineSj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devSearch != null" >
+        #{devSearch,jdbcType=INTEGER},
+      </if>
+      <if test="gateway != null" >
+        #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="mask != null" >
+        #{mask,jdbcType=VARCHAR},
+      </if>
+      <if test="regserial != null" >
+        #{regserial,jdbcType=NVARCHAR},
+      </if>
+      <if test="rateEnable != null" >
+        #{rateEnable,jdbcType=INTEGER},
+      </if>
+      <if test="mainCard != null" >
+        #{mainCard,jdbcType=INTEGER},
+      </if>
+      <if test="btVer != null" >
+        #{btVer,jdbcType=INTEGER},
+      </if>
+      <if test="fbtVer != null" >
+        #{fbtVer,jdbcType=INTEGER},
+      </if>
+      <if test="addVer != null" >
+        #{addVer,jdbcType=INTEGER},
+      </if>
+      <if test="acVer != null" >
+        #{acVer,jdbcType=INTEGER},
+      </if>
+      <if test="acCrc32 != null" >
+        #{acCrc32,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCrc32 != null" >
+        #{sysCrc32,jdbcType=VARCHAR},
+      </if>
+      <if test="sysVer != null" >
+        #{sysVer,jdbcType=INTEGER},
+      </if>
+      <if test="moreCard != null" >
+        #{moreCard,jdbcType=INTEGER},
+      </if>
+      <if test="devXh != null" >
+        #{devXh,jdbcType=NVARCHAR},
+      </if>
+      <if test="devSbId != null" >
+        #{devSbId,jdbcType=BIGINT},
+      </if>
+      <if test="devState != null" >
+        #{devState,jdbcType=INTEGER},
+      </if>
+      <if test="devAppId != null" >
+        #{devAppId,jdbcType=BIGINT},
+      </if>
+      <if test="devLogicBh != null" >
+        #{devLogicBh,jdbcType=INTEGER},
+      </if>
+      <if test="dlx != null" >
+        #{dlx,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="isreal != null" >
+        #{isreal,jdbcType=INTEGER},
+      </if>
+      <if test="kqSysVer != null" >
+        #{kqSysVer,jdbcType=INTEGER},
+      </if>
+      <if test="kqSysCrc32 != null" >
+        #{kqSysCrc32,jdbcType=INTEGER},
+      </if>
+      <if test="signal != null" >
+        #{signal,jdbcType=SMALLINT},
+      </if>
+      <if test="notice != null" >
+        #{notice,jdbcType=NVARCHAR},
+      </if>
+      <if test="onceAddMax != null" >
+        #{onceAddMax,jdbcType=DECIMAL},
+      </if>
+      <if test="dayAddCount != null" >
+        #{dayAddCount,jdbcType=INTEGER},
+      </if>
+      <if test="dayAddMax != null" >
+        #{dayAddMax,jdbcType=DECIMAL},
+      </if>
+      <if test="addSj != null" >
+        #{addSj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devDorm != null" >
+        #{devDorm,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.StDevice" >
+    update dbo.st_device
+    <set >
+      <if test="mc != null" >
+        mc = #{mc,jdbcType=NVARCHAR},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=NVARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=NVARCHAR},
+      </if>
+      <if test="com != null" >
+        com = #{com,jdbcType=INTEGER},
+      </if>
+      <if test="port != null" >
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="btl != null" >
+        btl = #{btl,jdbcType=INTEGER},
+      </if>
+      <if test="mm != null" >
+        mm = #{mm,jdbcType=NVARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=NVARCHAR},
+      </if>
+      <if test="sj != null" >
+        sj = #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xs != null" >
+        xs = #{xs,jdbcType=NVARCHAR},
+      </if>
+      <if test="mj != null" >
+        mj = #{mj,jdbcType=NVARCHAR},
+      </if>
+      <if test="pztj != null" >
+        pztj = #{pztj,jdbcType=NVARCHAR},
+      </if>
+      <if test="pzlj != null" >
+        pzlj = #{pzlj,jdbcType=NVARCHAR},
+      </if>
+      <if test="lx != null" >
+        lx = #{lx,jdbcType=TINYINT},
+      </if>
+      <if test="yzfs != null" >
+        yzfs = #{yzfs,jdbcType=INTEGER},
+      </if>
+      <if test="glyNo != null" >
+        gly_no = #{glyNo,jdbcType=NVARCHAR},
+      </if>
+      <if test="glyPass != null" >
+        gly_pass = #{glyPass,jdbcType=NVARCHAR},
+      </if>
+      <if test="mac != null" >
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="devXs != null" >
+        dev_xs = #{devXs,jdbcType=VARCHAR},
+      </if>
+      <if test="devLx != null" >
+        dev_lx = #{devLx,jdbcType=VARCHAR},
+      </if>
+      <if test="kmry != null" >
+        kmry = #{kmry,jdbcType=VARCHAR},
+      </if>
+      <if test="dyip != null" >
+        dyip = #{dyip,jdbcType=VARCHAR},
+      </if>
+      <if test="jksz != null" >
+        jksz = #{jksz,jdbcType=INTEGER},
+      </if>
+      <if test="tjkq != null" >
+        tjkq = #{tjkq,jdbcType=TINYINT},
+      </if>
+      <if test="onLine != null" >
+        on_line = #{onLine,jdbcType=TIMESTAMP},
+      </if>
+      <if test="runState != null" >
+        run_state = #{runState,jdbcType=TINYINT},
+      </if>
+      <if test="devLb != null" >
+        dev_lb = #{devLb,jdbcType=TINYINT},
+      </if>
+      <if test="devVersion != null" >
+        dev_version = #{devVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="devUp != null" >
+        dev_up = #{devUp,jdbcType=TINYINT},
+      </if>
+      <if test="maxFlowNo != null" >
+        max_flow_no = #{maxFlowNo,jdbcType=INTEGER},
+      </if>
+      <if test="devLock != null" >
+        dev_lock = #{devLock,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="kssj != null" >
+        kssj = #{kssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jssj != null" >
+        jssj = #{jssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devId != null" >
+        dev_id = #{devId,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="devType != null" >
+        dev_type = #{devType,jdbcType=INTEGER},
+      </if>
+      <if test="subType != null" >
+        sub_type = #{subType,jdbcType=INTEGER},
+      </if>
+      <if test="subDel != null" >
+        sub_del = #{subDel,jdbcType=INTEGER},
+      </if>
+      <if test="userVersion != null" >
+        user_version = #{userVersion,jdbcType=INTEGER},
+      </if>
+      <if test="onlineSj != null" >
+        online_sj = #{onlineSj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devSearch != null" >
+        dev_search = #{devSearch,jdbcType=INTEGER},
+      </if>
+      <if test="gateway != null" >
+        gateway = #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="mask != null" >
+        mask = #{mask,jdbcType=VARCHAR},
+      </if>
+      <if test="regserial != null" >
+        regserial = #{regserial,jdbcType=NVARCHAR},
+      </if>
+      <if test="rateEnable != null" >
+        rate_enable = #{rateEnable,jdbcType=INTEGER},
+      </if>
+      <if test="mainCard != null" >
+        main_card = #{mainCard,jdbcType=INTEGER},
+      </if>
+      <if test="btVer != null" >
+        bt_ver = #{btVer,jdbcType=INTEGER},
+      </if>
+      <if test="fbtVer != null" >
+        fbt_ver = #{fbtVer,jdbcType=INTEGER},
+      </if>
+      <if test="addVer != null" >
+        add_ver = #{addVer,jdbcType=INTEGER},
+      </if>
+      <if test="acVer != null" >
+        ac_ver = #{acVer,jdbcType=INTEGER},
+      </if>
+      <if test="acCrc32 != null" >
+        ac_crc32 = #{acCrc32,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCrc32 != null" >
+        sys_crc32 = #{sysCrc32,jdbcType=VARCHAR},
+      </if>
+      <if test="sysVer != null" >
+        sys_ver = #{sysVer,jdbcType=INTEGER},
+      </if>
+      <if test="moreCard != null" >
+        more_card = #{moreCard,jdbcType=INTEGER},
+      </if>
+      <if test="devXh != null" >
+        dev_xh = #{devXh,jdbcType=NVARCHAR},
+      </if>
+      <if test="devSbId != null" >
+        dev_sb_id = #{devSbId,jdbcType=BIGINT},
+      </if>
+      <if test="devState != null" >
+        dev_state = #{devState,jdbcType=INTEGER},
+      </if>
+      <if test="devAppId != null" >
+        dev_app_id = #{devAppId,jdbcType=BIGINT},
+      </if>
+      <if test="devLogicBh != null" >
+        dev_logic_bh = #{devLogicBh,jdbcType=INTEGER},
+      </if>
+      <if test="dlx != null" >
+        dlx = #{dlx,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null" >
+        module_id = #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="isreal != null" >
+        isReal = #{isreal,jdbcType=INTEGER},
+      </if>
+      <if test="kqSysVer != null" >
+        kq_sys_ver = #{kqSysVer,jdbcType=INTEGER},
+      </if>
+      <if test="kqSysCrc32 != null" >
+        kq_sys_crc32 = #{kqSysCrc32,jdbcType=INTEGER},
+      </if>
+      <if test="signal != null" >
+        signal = #{signal,jdbcType=SMALLINT},
+      </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=NVARCHAR},
+      </if>
+      <if test="onceAddMax != null" >
+        once_add_max = #{onceAddMax,jdbcType=DECIMAL},
+      </if>
+      <if test="dayAddCount != null" >
+        day_add_count = #{dayAddCount,jdbcType=INTEGER},
+      </if>
+      <if test="dayAddMax != null" >
+        day_add_max = #{dayAddMax,jdbcType=DECIMAL},
+      </if>
+      <if test="addSj != null" >
+        add_sj = #{addSj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="devDorm != null" >
+        dev_dorm = #{devDorm,jdbcType=INTEGER},
+      </if>
+    </set>
+    where bh = #{bh,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.StDevice" >
+    update dbo.st_device
+    set mc = #{mc,jdbcType=NVARCHAR},
+      bz = #{bz,jdbcType=NVARCHAR},
+      ip = #{ip,jdbcType=NVARCHAR},
+      com = #{com,jdbcType=INTEGER},
+      port = #{port,jdbcType=INTEGER},
+      btl = #{btl,jdbcType=INTEGER},
+      mm = #{mm,jdbcType=NVARCHAR},
+      zt = #{zt,jdbcType=NVARCHAR},
+      sj = #{sj,jdbcType=TIMESTAMP},
+      xs = #{xs,jdbcType=NVARCHAR},
+      mj = #{mj,jdbcType=NVARCHAR},
+      pztj = #{pztj,jdbcType=NVARCHAR},
+      pzlj = #{pzlj,jdbcType=NVARCHAR},
+      lx = #{lx,jdbcType=TINYINT},
+      yzfs = #{yzfs,jdbcType=INTEGER},
+      gly_no = #{glyNo,jdbcType=NVARCHAR},
+      gly_pass = #{glyPass,jdbcType=NVARCHAR},
+      mac = #{mac,jdbcType=VARCHAR},
+      dev_xs = #{devXs,jdbcType=VARCHAR},
+      dev_lx = #{devLx,jdbcType=VARCHAR},
+      kmry = #{kmry,jdbcType=VARCHAR},
+      dyip = #{dyip,jdbcType=VARCHAR},
+      jksz = #{jksz,jdbcType=INTEGER},
+      tjkq = #{tjkq,jdbcType=TINYINT},
+      on_line = #{onLine,jdbcType=TIMESTAMP},
+      run_state = #{runState,jdbcType=TINYINT},
+      dev_lb = #{devLb,jdbcType=TINYINT},
+      dev_version = #{devVersion,jdbcType=VARCHAR},
+      dev_up = #{devUp,jdbcType=TINYINT},
+      max_flow_no = #{maxFlowNo,jdbcType=INTEGER},
+      dev_lock = #{devLock,jdbcType=INTEGER},
+      state = #{state,jdbcType=SMALLINT},
+      kssj = #{kssj,jdbcType=TIMESTAMP},
+      jssj = #{jssj,jdbcType=TIMESTAMP},
+      dev_id = #{devId,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      dev_type = #{devType,jdbcType=INTEGER},
+      sub_type = #{subType,jdbcType=INTEGER},
+      sub_del = #{subDel,jdbcType=INTEGER},
+      user_version = #{userVersion,jdbcType=INTEGER},
+      online_sj = #{onlineSj,jdbcType=TIMESTAMP},
+      dev_search = #{devSearch,jdbcType=INTEGER},
+      gateway = #{gateway,jdbcType=VARCHAR},
+      mask = #{mask,jdbcType=VARCHAR},
+      regserial = #{regserial,jdbcType=NVARCHAR},
+      rate_enable = #{rateEnable,jdbcType=INTEGER},
+      main_card = #{mainCard,jdbcType=INTEGER},
+      bt_ver = #{btVer,jdbcType=INTEGER},
+      fbt_ver = #{fbtVer,jdbcType=INTEGER},
+      add_ver = #{addVer,jdbcType=INTEGER},
+      ac_ver = #{acVer,jdbcType=INTEGER},
+      ac_crc32 = #{acCrc32,jdbcType=VARCHAR},
+      sys_crc32 = #{sysCrc32,jdbcType=VARCHAR},
+      sys_ver = #{sysVer,jdbcType=INTEGER},
+      more_card = #{moreCard,jdbcType=INTEGER},
+      dev_xh = #{devXh,jdbcType=NVARCHAR},
+      dev_sb_id = #{devSbId,jdbcType=BIGINT},
+      dev_state = #{devState,jdbcType=INTEGER},
+      dev_app_id = #{devAppId,jdbcType=BIGINT},
+      dev_logic_bh = #{devLogicBh,jdbcType=INTEGER},
+      dlx = #{dlx,jdbcType=INTEGER},
+      module_id = #{moduleId,jdbcType=VARCHAR},
+      isReal = #{isreal,jdbcType=INTEGER},
+      kq_sys_ver = #{kqSysVer,jdbcType=INTEGER},
+      kq_sys_crc32 = #{kqSysCrc32,jdbcType=INTEGER},
+      signal = #{signal,jdbcType=SMALLINT},
+      notice = #{notice,jdbcType=NVARCHAR},
+      once_add_max = #{onceAddMax,jdbcType=DECIMAL},
+      day_add_count = #{dayAddCount,jdbcType=INTEGER},
+      day_add_max = #{dayAddMax,jdbcType=DECIMAL},
+      add_sj = #{addSj,jdbcType=TIMESTAMP},
+      dev_dorm = #{devDorm,jdbcType=INTEGER}
+    where bh = #{bh,jdbcType=CHAR}
+  </update>
+</mapper>

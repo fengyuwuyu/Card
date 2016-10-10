@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.DtAcDepMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.DtAcDep" >
+    <id column="dep_serial" property="depSerial" jdbcType="INTEGER" />
+    <result column="dep_parent" property="depParent" jdbcType="INTEGER" />
+    <result column="dep_order" property="depOrder" jdbcType="INTEGER" />
+    <result column="dep_name" property="depName" jdbcType="NVARCHAR" />
+    <result column="dep_no" property="depNo" jdbcType="VARCHAR" />
+    <result column="dep_rule" property="depRule" jdbcType="NVARCHAR" />
+    <result column="sj" property="sj" jdbcType="TIMESTAMP" />
+    <result column="module_id" property="moduleId" jdbcType="CHAR" />
+    <result column="Dep_type" property="depType" jdbcType="INTEGER" />
+    <result column="regserial" property="regserial" jdbcType="NVARCHAR" />
+    <result column="dep_state" property="depState" jdbcType="INTEGER" />
+    <result column="dep_lx" property="depLx" jdbcType="INTEGER" />
+    <result column="dep_place" property="depPlace" jdbcType="INTEGER" />
+    <result column="Dep_x_point" property="depXPoint" jdbcType="INTEGER" />
+    <result column="Dep_Y_point" property="depYPoint" jdbcType="INTEGER" />
+    <result column="Dep_lock" property="depLock" jdbcType="INTEGER" />
+    <result column="Dep_sex" property="depSex" jdbcType="INTEGER" />
+    <result column="Dep_floor" property="depFloor" jdbcType="INTEGER" />
+    <result column="dep_number" property="depNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dep_serial, dep_parent, dep_order, dep_name, dep_no, dep_rule, sj, module_id, Dep_type, 
+    regserial, dep_state, dep_lx, dep_place, Dep_x_point, Dep_Y_point, Dep_lock, Dep_sex, 
+    Dep_floor, dep_number
+  </sql>
+  <resultMap id="DtAcDepResultMap" type="com.cecep.model.DtAcDep" extends="BaseResultMap" >    
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="DtAcDep_Column_List" >
+    dbo.dt_ac_dep.dep_serial, dbo.dt_ac_dep.dep_parent, dbo.dt_ac_dep.dep_order, dbo.dt_ac_dep.dep_name, dbo.dt_ac_dep.dep_no, dbo.dt_ac_dep.dep_rule, dbo.dt_ac_dep.sj, dbo.dt_ac_dep.module_id, dbo.dt_ac_dep.Dep_type, 
+    dbo.dt_ac_dep.regserial, dbo.dt_ac_dep.dep_state, dbo.dt_ac_dep.dep_lx, dbo.dt_ac_dep.dep_place, dbo.dt_ac_dep.Dep_x_point, dbo.dt_ac_dep.Dep_Y_point, dbo.dt_ac_dep.Dep_lock, dbo.dt_ac_dep.Dep_sex, 
+    dbo.dt_ac_dep.Dep_floor, dbo.dt_ac_dep.dep_number
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.dt_ac_dep
+    where dep_serial = #{depSerial,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.dt_ac_dep
+    where dep_serial = #{depSerial,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.DtAcDep" >
+    <selectKey resultType="java.lang.Integer" keyProperty="depSerial" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.dt_ac_dep (dep_serial, dep_parent, dep_order, 
+      dep_name, dep_no, dep_rule, 
+      sj, module_id, Dep_type, 
+      regserial, dep_state, dep_lx, 
+      dep_place, Dep_x_point, Dep_Y_point, 
+      Dep_lock, Dep_sex, Dep_floor, 
+      dep_number)
+    values (#{depSerial,jdbcType=INTEGER}, #{depParent,jdbcType=INTEGER}, #{depOrder,jdbcType=INTEGER}, 
+      #{depName,jdbcType=NVARCHAR}, #{depNo,jdbcType=VARCHAR}, #{depRule,jdbcType=NVARCHAR}, 
+      #{sj,jdbcType=TIMESTAMP}, #{moduleId,jdbcType=CHAR}, #{depType,jdbcType=INTEGER}, 
+      #{regserial,jdbcType=NVARCHAR}, #{depState,jdbcType=INTEGER}, #{depLx,jdbcType=INTEGER}, 
+      #{depPlace,jdbcType=INTEGER}, #{depXPoint,jdbcType=INTEGER}, #{depYPoint,jdbcType=INTEGER}, 
+      #{depLock,jdbcType=INTEGER}, #{depSex,jdbcType=INTEGER}, #{depFloor,jdbcType=INTEGER}, 
+      #{depNumber,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.DtAcDep" >
+    <selectKey resultType="java.lang.Integer" keyProperty="depSerial" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.dt_ac_dep
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      dep_serial,
+      <if test="depParent != null" >
+        dep_parent,
+      </if>
+      <if test="depOrder != null" >
+        dep_order,
+      </if>
+      <if test="depName != null" >
+        dep_name,
+      </if>
+      <if test="depNo != null" >
+        dep_no,
+      </if>
+      <if test="depRule != null" >
+        dep_rule,
+      </if>
+      <if test="sj != null" >
+        sj,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="depType != null" >
+        Dep_type,
+      </if>
+      <if test="regserial != null" >
+        regserial,
+      </if>
+      <if test="depState != null" >
+        dep_state,
+      </if>
+      <if test="depLx != null" >
+        dep_lx,
+      </if>
+      <if test="depPlace != null" >
+        dep_place,
+      </if>
+      <if test="depXPoint != null" >
+        Dep_x_point,
+      </if>
+      <if test="depYPoint != null" >
+        Dep_Y_point,
+      </if>
+      <if test="depLock != null" >
+        Dep_lock,
+      </if>
+      <if test="depSex != null" >
+        Dep_sex,
+      </if>
+      <if test="depFloor != null" >
+        Dep_floor,
+      </if>
+      <if test="depNumber != null" >
+        dep_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{depSerial,jdbcType=INTEGER},
+      <if test="depParent != null" >
+        #{depParent,jdbcType=INTEGER},
+      </if>
+      <if test="depOrder != null" >
+        #{depOrder,jdbcType=INTEGER},
+      </if>
+      <if test="depName != null" >
+        #{depName,jdbcType=NVARCHAR},
+      </if>
+      <if test="depNo != null" >
+        #{depNo,jdbcType=VARCHAR},
+      </if>
+      <if test="depRule != null" >
+        #{depRule,jdbcType=NVARCHAR},
+      </if>
+      <if test="sj != null" >
+        #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=CHAR},
+      </if>
+      <if test="depType != null" >
+        #{depType,jdbcType=INTEGER},
+      </if>
+      <if test="regserial != null" >
+        #{regserial,jdbcType=NVARCHAR},
+      </if>
+      <if test="depState != null" >
+        #{depState,jdbcType=INTEGER},
+      </if>
+      <if test="depLx != null" >
+        #{depLx,jdbcType=INTEGER},
+      </if>
+      <if test="depPlace != null" >
+        #{depPlace,jdbcType=INTEGER},
+      </if>
+      <if test="depXPoint != null" >
+        #{depXPoint,jdbcType=INTEGER},
+      </if>
+      <if test="depYPoint != null" >
+        #{depYPoint,jdbcType=INTEGER},
+      </if>
+      <if test="depLock != null" >
+        #{depLock,jdbcType=INTEGER},
+      </if>
+      <if test="depSex != null" >
+        #{depSex,jdbcType=INTEGER},
+      </if>
+      <if test="depFloor != null" >
+        #{depFloor,jdbcType=INTEGER},
+      </if>
+      <if test="depNumber != null" >
+        #{depNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.DtAcDep" >
+    update dbo.dt_ac_dep
+    <set >
+      <if test="depParent != null" >
+        dep_parent = #{depParent,jdbcType=INTEGER},
+      </if>
+      <if test="depOrder != null" >
+        dep_order = #{depOrder,jdbcType=INTEGER},
+      </if>
+      <if test="depName != null" >
+        dep_name = #{depName,jdbcType=NVARCHAR},
+      </if>
+      <if test="depNo != null" >
+        dep_no = #{depNo,jdbcType=VARCHAR},
+      </if>
+      <if test="depRule != null" >
+        dep_rule = #{depRule,jdbcType=NVARCHAR},
+      </if>
+      <if test="sj != null" >
+        sj = #{sj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="moduleId != null" >
+        module_id = #{moduleId,jdbcType=CHAR},
+      </if>
+      <if test="depType != null" >
+        Dep_type = #{depType,jdbcType=INTEGER},
+      </if>
+      <if test="regserial != null" >
+        regserial = #{regserial,jdbcType=NVARCHAR},
+      </if>
+      <if test="depState != null" >
+        dep_state = #{depState,jdbcType=INTEGER},
+      </if>
+      <if test="depLx != null" >
+        dep_lx = #{depLx,jdbcType=INTEGER},
+      </if>
+      <if test="depPlace != null" >
+        dep_place = #{depPlace,jdbcType=INTEGER},
+      </if>
+      <if test="depXPoint != null" >
+        Dep_x_point = #{depXPoint,jdbcType=INTEGER},
+      </if>
+      <if test="depYPoint != null" >
+        Dep_Y_point = #{depYPoint,jdbcType=INTEGER},
+      </if>
+      <if test="depLock != null" >
+        Dep_lock = #{depLock,jdbcType=INTEGER},
+      </if>
+      <if test="depSex != null" >
+        Dep_sex = #{depSex,jdbcType=INTEGER},
+      </if>
+      <if test="depFloor != null" >
+        Dep_floor = #{depFloor,jdbcType=INTEGER},
+      </if>
+      <if test="depNumber != null" >
+        dep_number = #{depNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dep_serial = #{depSerial,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.DtAcDep" >
+    update dbo.dt_ac_dep
+    set dep_parent = #{depParent,jdbcType=INTEGER},
+      dep_order = #{depOrder,jdbcType=INTEGER},
+      dep_name = #{depName,jdbcType=NVARCHAR},
+      dep_no = #{depNo,jdbcType=VARCHAR},
+      dep_rule = #{depRule,jdbcType=NVARCHAR},
+      sj = #{sj,jdbcType=TIMESTAMP},
+      module_id = #{moduleId,jdbcType=CHAR},
+      Dep_type = #{depType,jdbcType=INTEGER},
+      regserial = #{regserial,jdbcType=NVARCHAR},
+      dep_state = #{depState,jdbcType=INTEGER},
+      dep_lx = #{depLx,jdbcType=INTEGER},
+      dep_place = #{depPlace,jdbcType=INTEGER},
+      Dep_x_point = #{depXPoint,jdbcType=INTEGER},
+      Dep_Y_point = #{depYPoint,jdbcType=INTEGER},
+      Dep_lock = #{depLock,jdbcType=INTEGER},
+      Dep_sex = #{depSex,jdbcType=INTEGER},
+      Dep_floor = #{depFloor,jdbcType=INTEGER},
+      dep_number = #{depNumber,jdbcType=VARCHAR}
+    where dep_serial = #{depSerial,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPage" resultMap="DtAcDepResultMap" parameterType="com.cecep.model.DtAcDep" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.dt_ac_dep.dep_order) as rowNumber, <include refid="DtAcDep_Column_List" />,
+		   <choose>
+		    	<when test="depName != null and depName != ''" >'open' as state</when>
+		    	<otherwise>'closed' as state</otherwise>
+		   	</choose>
+		   	, count(dbo.dt_gate_real.gate_bh) as count
+		   	from dbo.dt_ac_dep
+		   	left join dbo.dt_gate_real
+			on dbo.dt_ac_dep.dep_serial = dbo.dt_gate_real.acdep_serial
+			<where>	 
+				<choose>
+					<when test="depName != null and depName != ''">
+						dbo.dt_ac_dep.dep_name like '%${depName}%'
+					</when>
+					<when test="depParent != null" >
+						dbo.dt_ac_dep.dep_parent = #{depParent}
+					</when>
+					<when test="depParent == null" >
+						dbo.dt_ac_dep.dep_parent = 0
+					</when>
+				</choose>
+			</where> 
+			group by <include refid="DtAcDep_Column_List" /> ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.DtAcDep" >     
+    select count(1)
+    from dbo.dt_ac_dep
+	<where>	 
+		<choose>
+			<when test="depName != null and depName != ''">
+				dep_name like '%${depName}%'
+			</when>
+			<when test="depParent != null" >
+				dep_parent = #{depParent}
+			</when>
+			<when test="depParent == null" >
+				dep_parent = 0
+			</when>
+		</choose>
+	</where> 
+  </select>
+  
+  <select id="load" resultType="java.util.Map" parameterType="java.lang.Integer" >
+    select dep_serial as id,dep_name as text,'closed' as state
+    from dbo.dt_ac_dep
+    <where> 
+    	<if test="value != null" >
+        	dep_parent = #{value}
+      	</if>
+      	<if test="value == null" >
+        	dep_parent = 0
+      	</if>	
+    </where>   	
+  </select>
+  
+  <!-- 查询与门禁关联的场所 -->
+  <select id="selectAcDepByDoor" resultType="java.util.Map">
+  	  select a.dep_serial as id,a.dep_name text
+  	  	from dt_ac_dep a
+  	  	left join DT_GATE_REAL b on a.dep_serial = b.acdep_serial
+  	  	left join st_door_real c on b.gate_bh=c.bh
+  	  	where c.bh is not null
+  </select>
+  
+  <insert id="insertDtDev" parameterType="map">
+  	insert into dt_dep_acdep(dep_serial,ac_dep_serial) values
+  	<foreach collection="ids" item="item" separator=",">
+  		(#{depSerial},#{item})
+  	</foreach>
+  </insert>
+  
+  <select id="selectAcDepSerials" parameterType="string" resultType="string">
+  	select b.dep_name
+  	from dt_dep_acdep a
+  	left join dt_ac_dep b on a.ac_dep_serial=b.dep_serial
+  	where a.dep_serial = #{depSerial}
+  </select>
+  
+  <delete id="deleteAcdepAndDep1" parameterType="java.util.Map" >
+  	delete from dt_dep_acdep where dep_serial in 
+		<foreach collection="depSerials" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+  </delete>
+  <delete id="deleteAcdepAndDep" parameterType="java.lang.String" >
+  	delete from dt_dep_acdep where dep_serial =#{depSerial}
+  </delete>
+</mapper>

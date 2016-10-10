@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.mess.WhiteListMapper">
+	<resultMap id="BaseResultMap" type="com.cecep.model.mess.WhiteList">
+		<id column="xh" property="xh" />
+		<result column="user_serial" property="userSerial" />
+		<result column="dep_serial" property="depSerial" />
+		<result column="user_lname" property="userLname" />
+		<result column="user_no" property="userNo" />
+		<result column="user_type" property="userType" />
+		<result column="company_name" property="companyName" />
+		<result column="department" property="department" />
+		<result column="user_type_name" property="userTypeName" />
+		<result column="acdep_name" property="acdepName" />
+		<result column="acdep_serial" property="acdepSerial" />
+	</resultMap>
+	
+	<parameterMap id="WhiteListParameterMap" type="com.cecep.model.mess.WhiteList">
+	  	<parameter property="acdepSerial" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	  	<parameter property="out" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+  	</parameterMap>
+  	
+  	<parameterMap id="WhiteListParameterMap1" type="com.cecep.model.mess.WhiteList">
+	  	<parameter property="param" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+	  	<parameter property="userSerial" javaType="java.lang.Long" jdbcType="INTEGER" mode="IN"/>
+	  	<parameter property="acdepSerial" javaType="java.lang.Integer" jdbcType="INTEGER" mode="IN"/>
+  	</parameterMap>
+
+	<select id="dataList" resultMap="BaseResultMap" parameterType="com.cecep.model.mess.WhiteList">
+		select u.* from (
+			select  row_number() over(order by c.dep_serial,b.user_level) as rowNumber,b.user_lname,b.user_no,b.user_depname department,(select dep_name from dt_dep where dep_serial=(ISNULL(d.three_serial, d.parent_serial))) company_name,a.dep_lname acdep_name,a.xh,a.dep_serial,b.user_type,e.tt_name user_type_name 
+			from dt_ac_dep_user a
+				LEFT JOIN dt_user b on a.user_serial=b.user_serial
+				LEFT JOIN dt_dep c on b.user_dep=c.dep_serial
+				LEFT JOIN cecep_dep_parentSerial d on c.dep_serial=d.dep_serial
+				left join tt_lizhi e on b.user_type=e.tt_order
+			<where>
+				<trim prefixOverrides="and">
+					<if test="userTypes!=null">
+						b.user_type in 
+						<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+					<if test="acdepSerial!=null">
+						and a.dep_serial = #{acdepSerial}
+					</if>
+					<if test="depSerialss!=null">
+						and c.dep_serial in 
+						<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+			</where>
+		) as u
+		<where>
+			<if test="start!=null and rows!=null">
+				u.rowNumber&gt;=#{start} and u.rowNumber&lt; (#{start}+#{rows})
+			</if>
+		</where>
+	</select>
+
+	<select id="getTotal" resultType="int" parameterType="com.cecep.model.mess.WhiteList">
+			select  count(*)
+			 from dt_ac_dep_user a
+				LEFT JOIN dt_user b on a.user_serial=b.user_serial
+				LEFT JOIN dt_dep c on b.user_dep=c.dep_serial
+				LEFT JOIN cecep_dep_parentSerial d on c.dep_serial=d.dep_serial
+			<where>
+				<trim prefixOverrides="and">
+					<if test="userTypes!=null">
+						b.user_type in 
+						<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+					<if test="acdepSerial!=null">
+						and a.dep_serial = #{acdepSerial}
+					</if>
+					<if test="depSerialss!=null">
+						and c.dep_serial in 
+						<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+			</where>
+	</select>
+	
+	<delete id="deteleDtAcDepUser" parameterType="com.cecep.model.mess.WhiteList">
+		delete  from dt_ac_dep_user where user_serial in (
+			select user_serial from dt_user where (dep_no is not null) and 
+			user_serial in 
+				<foreach collection="userSerials" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+		) and dep_serial=#{acdepSerial}
+	</delete>
+	
+	<delete id="deteleDtAcDepUserByDep" parameterType="com.cecep.model.mess.WhiteList">
+		delete  from dt_ac_dep_user where user_serial in (
+			select user_serial from dt_user where (dep_no is not null) 
+		<if test="depSerialss!=null">
+			and	user_dep in 
+			<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test="userTypes!=null">
+			and user_type in 
+			<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		) and dep_serial=#{acdepSerial}
+	</delete>
+	
+	<insert id="insertDtAcDepUser" parameterType="com.cecep.model.mess.WhiteList">
+		insert into dt_ac_dep_user(user_serial,dep_serial,sj,dep_lname,module_id) 
+		select user_serial as user_serial,#{acdepSerial} as dep_serial,#{sj} as sj,'窗口1' as dep_lname,'0010' as module_id from dt_user where (dep_no is not null) and  
+		user_serial in 
+			<foreach collection="userSerials" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+	</insert>
+	
+	<insert id="insertDtAcDepUserByDep" parameterType="com.cecep.model.mess.WhiteList">
+		insert into dt_ac_dep_user(user_serial,dep_serial,sj,dep_lname,module_id) 
+		select user_serial as user_serial,#{acdepSerial} as dep_serial,#{sj} as sj,'窗口1' as dep_lname,'0010' as module_id from dt_user where (dep_no is not null) 
+		<if test="depSerialss!=null">
+			and	user_dep in 
+			<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test="userTypes!=null">
+			and user_type in 
+			<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</insert>
+	
+	<select id="execWhiteListAll" parameterMap="WhiteListParameterMap"  statementType="CALLABLE" resultType="int">
+		{call client_link_xfupdate_all (?,?)}
+	</select>
+	
+	<select id="execWhiteListInfo" parameterMap="WhiteListParameterMap1"  statementType="CALLABLE" resultType="int">
+		{call client_link_xfupdate_info (?,?,?)}
+	</select>
+	
+	<update id="updateDtUSerSj" parameterType="com.cecep.model.mess.WhiteList"  >
+		update dt_user set user_sj=#{sj} where (dep_no is not null) and 
+		user_serial in 
+			<foreach collection="userSerials" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+	</update>
+	
+	<update id="updateDtUSerSjByDep" parameterType="com.cecep.model.mess.WhiteList"  >
+		update dt_user set user_sj=#{sj} where (dep_no is not null) 
+		<if test="depSerialss!=null">
+			and	user_dep in 
+			<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test="userTypes!=null">
+			and user_type in 
+			<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</update>
+	
+	<insert id="insertWtXfLog" parameterType="com.cecep.model.mess.WhiteList">
+		insert into wt_xf_log(lx,log_type,log_state,log_bz,log_sj,log_ip,gly_no) select 8,15,0,
+		a.dep_name+'|||'+d.user_lname as log_bz,#{sj} as log_sj,
+		c.ip as log_ip ,user_lname as gly_no from dt_user d,dt_ac_dep a,dt_dev b,st_device c where (d.dep_no is not null) and 
+		 d.user_serial in 
+		<foreach collection="userSerials" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>	
+		 and  a.dep_serial=b.acdep_Serial and b.dev_serial=c.bh and a.dep_serial=#{acdepSerial}
+	</insert>
+	
+	<insert id="insertWtXfLogByDep" parameterType="com.cecep.model.mess.WhiteList">
+		insert into wt_xf_log(lx,log_type,log_state,log_bz,log_sj,log_ip,gly_no) select 8,15,0,
+		a.dep_name+'|||'+d.user_lname as log_bz,#{sj} as log_sj,
+		c.ip as log_ip ,user_lname as gly_no from dt_user d,dt_ac_dep a,dt_dev b,st_device c where (d.dep_no is not null) 
+		 and  a.dep_serial=b.acdep_Serial and b.dev_serial=c.bh and a.dep_serial=#{acdepSerial}
+		 <if test="depSerialss!=null">
+			and	user_dep in 
+			<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test="userTypes!=null">
+			and user_type in 
+			<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</insert>
+	
+	<select id="selectByXh" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select a.user_serial,a.dep_lname acdep_name,a.dep_serial acdep_serial,b.user_lname from dt_ac_dep_user a 
+			left join dt_user b on a.user_serial=b.user_serial 
+		where a.xh=#{xh} 
+	</select>
+	
+	<delete id="deleteByQuery" parameterType="com.cecep.model.mess.WhiteList">
+		delete from dt_ac_dep_user where 
+		<if test="depSerialss!=null or userTypes!=null">
+			user_serial in (
+			select user_serial from dt_user a left join dt_dep b on a.user_dep = b.dep_serial
+				<where>
+				<trim prefixOverrides="and">
+					<if test="depSerialss!=null">
+						user_dep in 
+						<foreach collection="depSerialss" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+					<if test="userTypes!=null">
+						and user_type in 
+						<foreach collection="userTypes" item="item" open="(" close=")" separator=",">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+				</where>
+				
+		) and
+		</if>
+		 dep_serial = #{acdepSerial}
+	</delete>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.HaircutTermsMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.HaircutTerms" >
+    <id column="terms_id" property="termsId" jdbcType="INTEGER" />
+    <result column="terms_name" property="termsName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    terms_id, terms_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.haircut_terms
+    where terms_id = #{termsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.haircut_terms
+    where terms_id = #{termsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.HaircutTerms" >
+    <selectKey resultType="java.lang.Integer" keyProperty="termsId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_terms ( terms_name)
+    values ( #{termsName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.HaircutTerms" >
+    <selectKey resultType="java.lang.Integer" keyProperty="termsId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_terms
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      terms_id,
+      <if test="termsName != null" >
+        terms_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{termsId,jdbcType=INTEGER},
+      <if test="termsName != null" >
+        #{termsName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.HaircutTerms" >
+    update dbo.haircut_terms
+    <set >
+      <if test="termsName != null" >
+        terms_name = #{termsName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where terms_id = #{termsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.HaircutTerms" >
+    update dbo.haircut_terms
+    set terms_name = #{termsName,jdbcType=VARCHAR}
+    where terms_id = #{termsId,jdbcType=INTEGER}
+  </update>
+  
+  
+   <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.HaircutTerms" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.haircut_terms.terms_id) as rowNumber,
+		    <include refid="Base_Column_List" />
+		    from dbo.haircut_terms  
+			where	1 = 1
+		    	<if test="termsName != null and termsName != ''" >
+		        	 and dbo.haircut_terms.terms_name like '%${termsName}%'
+		      	</if>	
+	      		      	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.HaircutTerms" >    
+    select count(1)
+    from dbo.haircut_terms  
+	where	0 = 0
+    	<if test="termsName != null and termsName != ''" >
+		        	and dbo.haircut_terms.terms_name like '%${termsName}%'
+      	</if>	
+  </select>
+  
+    <select id="selectCount1" resultType="java.lang.Integer" parameterType="com.cecep.model.HaircutTerms" >    
+    select count(1)
+    from dbo.haircut_terms  
+	where	0 = 0
+    	<if test="termsName != null and termsName != ''" >
+		        	and dbo.haircut_terms.terms_name=#{termsName,jdbcType=VARCHAR}
+      	</if>	
+  </select>
+  
+  
+  
+  
+  
+</mapper>

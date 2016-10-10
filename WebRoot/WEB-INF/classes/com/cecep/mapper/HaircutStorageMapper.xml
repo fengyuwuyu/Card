@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.HaircutStorageMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.HaircutStorage" >
+    <id column="storage_id" property="storageId" jdbcType="INTEGER" />
+    <result column="storage_num" property="storageNum" jdbcType="INTEGER" />
+    <result column="storage_date" property="storageDate" jdbcType="TIMESTAMP" />
+    <result column="articles_id" property="articlesId" jdbcType="INTEGER" />
+   <!-- 用品基本信息 --> 
+    <result column="articles_name" property="articlesName" jdbcType="VARCHAR" />
+    <result column="articles_price" property="articlesPrice" jdbcType="DECIMAL" />
+    <result column="articles_desc" property="articlesDesc" jdbcType="VARCHAR" />
+    <result column="articles_address" property="articlesAddress" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    storage_id, storage_num, storage_date, articles_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.haircut_storage
+    where storage_id = #{storageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.haircut_storage
+    where storage_id = #{storageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.HaircutStorage" >
+    <selectKey resultType="java.lang.Integer" keyProperty="storageId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_storage (storage_id, storage_num, storage_date, 
+      articles_id)
+    values (#{storageId,jdbcType=INTEGER}, #{storageNum,jdbcType=INTEGER}, #{storageDate,jdbcType=TIMESTAMP}, 
+      #{articlesId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.HaircutStorage" >
+    <selectKey resultType="java.lang.Integer" keyProperty="storageId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.haircut_storage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      storage_id,
+      <if test="storageNum != null" >
+        storage_num,
+      </if>
+      <if test="storageDate != null" >
+        storage_date,
+      </if>
+      <if test="articlesId != null" >
+        articles_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{storageId,jdbcType=INTEGER},
+      <if test="storageNum != null" >
+        #{storageNum,jdbcType=INTEGER},
+      </if>
+      <if test="storageDate != null" >
+        #{storageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articlesId != null" >
+        #{articlesId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.HaircutStorage" >
+    update dbo.haircut_storage
+    <set >
+      <if test="storageNum != null" >
+        storage_num = #{storageNum,jdbcType=INTEGER},
+      </if>
+      <if test="storageDate != null" >
+        storage_date = #{storageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articlesId != null" >
+        articles_id = #{articlesId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where storage_id = #{storageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.HaircutStorage" >
+    update dbo.haircut_storage
+    set storage_num = #{storageNum,jdbcType=INTEGER},
+      storage_date = #{storageDate,jdbcType=TIMESTAMP},
+      articles_id = #{articlesId,jdbcType=INTEGER}
+    where storage_id = #{storageId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.HaircutStorage" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.haircut_storage.storage_id) as rowNumber,
+		    haircut_storage.storage_id,
+			haircut_storage.storage_num,
+			haircut_storage.storage_date,
+		    haircut_articles.articles_name, 
+		    haircut_articles.articles_price, 
+		    haircut_articles.articles_desc,
+		    haircut_articles.articles_address
+		    from  haircut_storage  
+		    left join  haircut_articles  on  haircut_articles.articles_id=haircut_storage.articles_id
+			where	1 = 1
+		    	<if test="articlesName != null and articlesName != ''" >
+		        	 and dbo.haircut_articles.articles_name like '%${articlesName}%'
+		      	</if>	
+		      	) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  
+   <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.HaircutStorage" >    
+    select count(1) from  haircut_storage  
+	left join  haircut_articles  on  haircut_articles.articles_id=haircut_storage.articles_id
+	where 1=1
+    	<if test="articlesName != null and articlesName != ''" >
+		        and dbo.haircut_articles.articles_name like '%${articlesName}%'
+      	</if>	
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

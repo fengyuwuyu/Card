@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.UserAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.UserAccount" >
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="cn" property="cn" jdbcType="VARCHAR" />
+    <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+    <result column="uugender" property="uugender" jdbcType="VARCHAR" />
+    <result column="minzu" property="minzu" jdbcType="VARCHAR" />
+    <result column="uuidentitynumber" property="uuidentitynumber" jdbcType="VARCHAR" />
+    <result column="uubirthday" property="uubirthday" jdbcType="VARCHAR" />
+    <result column="countrycity" property="countrycity" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="nbdwcode" property="nbdwcode" jdbcType="VARCHAR" />
+    <result column="nbdwname" property="nbdwname" jdbcType="VARCHAR" />
+    <result column="uuposition" property="uuposition" jdbcType="VARCHAR" />
+    <result column="uuemployeelevel" property="uuemployeelevel" jdbcType="VARCHAR" />
+    <result column="grsf" property="grsf" jdbcType="VARCHAR" />
+    <result column="rylb" property="rylb" jdbcType="VARCHAR" />
+    <result column="uuaccountstatus" property="uuaccountstatus" jdbcType="VARCHAR" />
+    <result column="uuusersigntype" property="uuusersigntype" jdbcType="VARCHAR" />
+    <result column="officetel" property="officetel" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+     <result column="is_synchronized" property="is_synchronized" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uid, sn, cn, pwd, uugender, minzu, uuidentitynumber, uubirthday, countrycity, department, 
+    nbdwcode, nbdwname, uuposition, uuemployeelevel, grsf, rylb, uuaccountstatus, uuusersigntype, 
+    officetel, telephone, email
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.user_account
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dbo.user_account
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.UserAccount" >
+    insert into dbo.user_account (uid, sn, cn, 
+      pwd,is_synchronized
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{cn,jdbcType=VARCHAR}, 
+      #{pwd,jdbcType=VARCHAR},'0'
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.UserAccount" >
+    <selectKey resultType="java.lang.String" keyProperty="uid" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.user_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      uid,
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="cn != null" >
+        cn,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="uugender != null" >
+        uugender,
+      </if>
+      <if test="minzu != null" >
+        minzu,
+      </if>
+      <if test="uuidentitynumber != null" >
+        uuidentitynumber,
+      </if>
+      <if test="uubirthday != null" >
+        uubirthday,
+      </if>
+      <if test="countrycity != null" >
+        countrycity,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="nbdwcode != null" >
+        nbdwcode,
+      </if>
+      <if test="nbdwname != null" >
+        nbdwname,
+      </if>
+      <if test="uuposition != null" >
+        uuposition,
+      </if>
+      <if test="uuemployeelevel != null" >
+        uuemployeelevel,
+      </if>
+      <if test="grsf != null" >
+        grsf,
+      </if>
+      <if test="rylb != null" >
+        rylb,
+      </if>
+      <if test="uuaccountstatus != null" >
+        uuaccountstatus,
+      </if>
+      <if test="uuusersigntype != null" >
+        uuusersigntype,
+      </if>
+      <if test="officetel != null" >
+        officetel,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{uid,jdbcType=VARCHAR},
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="cn != null" >
+        #{cn,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="uugender != null" >
+        #{uugender,jdbcType=VARCHAR},
+      </if>
+      <if test="minzu != null" >
+        #{minzu,jdbcType=VARCHAR},
+      </if>
+      <if test="uuidentitynumber != null" >
+        #{uuidentitynumber,jdbcType=VARCHAR},
+      </if>
+      <if test="uubirthday != null" >
+        #{uubirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="countrycity != null" >
+        #{countrycity,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="nbdwcode != null" >
+        #{nbdwcode,jdbcType=VARCHAR},
+      </if>
+      <if test="nbdwname != null" >
+        #{nbdwname,jdbcType=VARCHAR},
+      </if>
+      <if test="uuposition != null" >
+        #{uuposition,jdbcType=VARCHAR},
+      </if>
+      <if test="uuemployeelevel != null" >
+        #{uuemployeelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="grsf != null" >
+        #{grsf,jdbcType=VARCHAR},
+      </if>
+      <if test="rylb != null" >
+        #{rylb,jdbcType=VARCHAR},
+      </if>
+      <if test="uuaccountstatus != null" >
+        #{uuaccountstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="uuusersigntype != null" >
+        #{uuusersigntype,jdbcType=VARCHAR},
+      </if>
+      <if test="officetel != null" >
+        #{officetel,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.UserAccount" >
+    update dbo.user_account
+    <set >
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="cn != null" >
+        cn = #{cn,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="uugender != null" >
+        uugender = #{uugender,jdbcType=VARCHAR},
+      </if>
+      <if test="minzu != null" >
+        minzu = #{minzu,jdbcType=VARCHAR},
+      </if>
+      <if test="uuidentitynumber != null" >
+        uuidentitynumber = #{uuidentitynumber,jdbcType=VARCHAR},
+      </if>
+      <if test="uubirthday != null" >
+        uubirthday = #{uubirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="countrycity != null" >
+        countrycity = #{countrycity,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="nbdwcode != null" >
+        nbdwcode = #{nbdwcode,jdbcType=VARCHAR},
+      </if>
+      <if test="nbdwname != null" >
+        nbdwname = #{nbdwname,jdbcType=VARCHAR},
+      </if>
+      <if test="uuposition != null" >
+        uuposition = #{uuposition,jdbcType=VARCHAR},
+      </if>
+      <if test="uuemployeelevel != null" >
+        uuemployeelevel = #{uuemployeelevel,jdbcType=VARCHAR},
+      </if>
+      <if test="grsf != null" >
+        grsf = #{grsf,jdbcType=VARCHAR},
+      </if>
+      <if test="rylb != null" >
+        rylb = #{rylb,jdbcType=VARCHAR},
+      </if>
+      <if test="uuaccountstatus != null" >
+        uuaccountstatus = #{uuaccountstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="uuusersigntype != null" >
+        uuusersigntype = #{uuusersigntype,jdbcType=VARCHAR},
+      </if>
+      <if test="officetel != null" >
+        officetel = #{officetel,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.UserAccount" >
+    update dbo.user_account
+    set sn = #{sn,jdbcType=VARCHAR},
+      cn = #{cn,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      uugender = #{uugender,jdbcType=VARCHAR},
+      minzu = #{minzu,jdbcType=VARCHAR},
+      uuidentitynumber = #{uuidentitynumber,jdbcType=VARCHAR},
+      uubirthday = #{uubirthday,jdbcType=VARCHAR},
+      countrycity = #{countrycity,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      nbdwcode = #{nbdwcode,jdbcType=VARCHAR},
+      nbdwname = #{nbdwname,jdbcType=VARCHAR},
+      uuposition = #{uuposition,jdbcType=VARCHAR},
+      uuemployeelevel = #{uuemployeelevel,jdbcType=VARCHAR},
+      grsf = #{grsf,jdbcType=VARCHAR},
+      rylb = #{rylb,jdbcType=VARCHAR},
+      uuaccountstatus = #{uuaccountstatus,jdbcType=VARCHAR},
+      uuusersigntype = #{uuusersigntype,jdbcType=VARCHAR},
+      officetel = #{officetel,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      is_synchronized='0'
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectUserCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(1)
+    	from dbo.user_account
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <select id="query" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(1)
+    	from dbo.user_account
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="selectValidateCount" resultType="java.lang.Integer" parameterType="com.cecep.model.UserAccount">
+    select count(1)
+    	from dbo.user_account
+    where uid = #{uid,jdbcType=VARCHAR}  and pwd = #{pwd,jdbcType=VARCHAR}
+  </select>
+  <update id="updateHang" parameterType="com.cecep.model.UserAccount" >
+  	update  dbo.user_account  set uuaccountstatus='1'  where   uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  
+   <update id="ReplyAccount" parameterType="com.cecep.model.UserAccount" >
+  	update  dbo.user_account  set uuaccountstatus='0'  where   uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  
+  
+    <select id="selectSn" resultType="java.lang.Integer" parameterType="com.cecep.model.UserAccount">
+    	select count(1) FROM user_account  where  #{sn,jdbcType=VARCHAR} in (select sn FROM  user_account  where #{uid,jdbcType=VARCHAR}!=user_account.uid)
+  </select>
+</mapper>

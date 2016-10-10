@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.kq.KqRecordMapper">
+	<resultMap id="BaseResultMap" type="com.cecep.model.kq.KqRecord">
+		<id column="xh" property="bh" />
+		<result column="user_serial" property="userSerial"/>
+		<result column="user_lname" property="username"/>
+		<result column="dep_name" property="depName"/>
+		<result column="company" property="company"/>
+		<result column="fx" property="fx" />
+		<result column="sj" property="sj"  />
+	</resultMap>
+	
+	<resultMap id="StatisticsRecord" type="com.cecep.model.kq.StatisticsRecord">
+		<!-- <result column="user_lname" property="username"/>
+		<result column="user_no" property="userNo"/> -->
+		<result column="user_serial" property="userSerial"/>
+		<result column="card_serial" property="cardSerial"/>
+		<!-- <result column="dep_name" property="depName"/> -->
+		<collection property="kqRecords" ofType="com.cecep.model.kq.KqRecord">
+			<result column="sj" property="sj" />
+			<result column="fx" property="fx" />
+		</collection>
+	</resultMap>
+	
+	<resultMap id="StatisticsRecordJiaban" type="com.cecep.model.kq.StatisticsRecordJiaban">
+		<result column="user_lname" property="username"/>
+		<result column="user_no" property="userNo"/>
+		<result column="user_serial" property="userSerial"/>
+		<result column="card_serial" property="cardSerial"/>
+		<result column="dep_name" property="depName"/>
+		<collection property="kqRecords" ofType="com.cecep.model.kq.KqRecord">
+			<result column="sj" property="sj" />
+			<result column="fx" property="fx" />
+		</collection>
+	</resultMap>
+	
+	<resultMap id="WorkTime" type="com.cecep.model.kq.WorkTime">
+		<id column="id" property="id" />
+		<result column="kq_time" property="time" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.cecep.model.kq.KqRecord">
+		insert into dbo.mj_jl_real(sj,user_serial,fx,lx,yich) values(#{sj},#{userSerial},#{fx},#{lx},#{yich})
+	</insert>
+	
+	<resultMap id="KqCollect" type="com.cecep.model.kq.KqCollect" >
+	    <result column="user_serial" property="userSerial" jdbcType="BIGINT" />
+	    <result column="user_lname" property="username" jdbcType="VARCHAR" />
+	    <result column="user_depname" property="depName" jdbcType="VARCHAR" />
+	    <collection property="goOutTime" ofType="java.lang.String" javaType="com.cecep.model.kq.KqArrayList">
+		    <result column="goOutTime" property="goOutTime" jdbcType="VARCHAR" />
+	    </collection>
+	    <collection property="lateTime" ofType="java.lang.String" javaType="com.cecep.model.kq.KqArrayList">
+		    <result column="lateTime" property="lateTime" jdbcType="VARCHAR" />
+	    </collection>
+	    <collection property="leaveEarlyTime" ofType="java.lang.String" javaType="com.cecep.model.kq.KqArrayList">
+		    <result column="leaveEarlyTime" property="leaveEarlyTime" jdbcType="VARCHAR" />
+	    </collection>
+	    <collection property="jbTime" ofType="java.lang.String" javaType="com.cecep.model.kq.KqArrayList">
+		    <result column="jbTime" property="leaveEarlyTime" jdbcType="VARCHAR" />
+	    </collection>
+    </resultMap>
+	
+	<!-- 统计迟到早退外出 -->
+	<select id="selectByCondition1" parameterType="com.cecep.model.kq.KqQuery" resultMap="KqCollect" >
+		select u.user_lname,u.user_serial,j.goOutTime,j.jbTime,convert(varchar(10),j.lateTime,120) lateTime,
+		convert(varchar(10),j.leaveEarlyTime,120) leaveEarlyTime
+			<if test="serial!=null" >
+		    	,(select top 1 dep_name from dt_dep where dep_serial=#{serial}) as user_depname
+		    </if>
+		    <if test="serial==null" >
+		    	,u.user_depname
+		    </if>
+			from dt_user u 
+			left join kq_collect j on u.user_serial=j.user_serial
+		where 
+		<if test="type == 1">
+			j.allWork=1
+		</if>
+		<if test="type == 2">
+			j.allWork=0 and j.jbTime is not null
+		</if>
+		 and u.user_serial in (
+			select DISTINCT b.user_serial from (
+				select A.USER_SERIAL ,sum(a.allWork) sum
+					from  (SELECT * FROM kq_collect WHERE CONVERT(VARCHAR(10),amSj,120) 
+					BETWEEN #{kssj} AND #{jssj}
+					<if test="depSerials!=null">
+						and u.user_dep in
+						<foreach collection="depSerials" item="item" close=")" open="(" separator="," >
+							#{item}
+						</foreach>
+					</if>
+				<if test="username!=null">
+					and u.user_lname like '%${username}%'
+				</if>
+				<if test="userNo!=null">
+					and u.user_no = #{userNo}
+				</if>
+					) A 
+					GROUP BY A.user_serial) b where 
+					<if test="type == 1">
+						b.sum>0
+					</if>
+			) and CONVERT(varchar(10),j.amSj,120) between #{kssj} AND #{jssj}
+			order by u.user_dep,u.user_serial,j.amSj
+	</select>
+	
+	<!-- 统计加班 -->
+	<select id="selectByCondition2" resultMap="StatisticsRecordJiaban"
+		parameterType="com.cecep.model.kq.KqQuery">
+		select  u.user_lname as user_lname,u.user_serial as user_serial, 
+		 u.user_card as card_serial,
+ 		<if test="serial!=null" >
+		    (select top 1 dep_name from dt_dep where dep_serial=#{serial}) as dep_name,
+		</if>
+		<if test="serial==null" >
+		    u.user_depname as dep_name,
+		    </if>
+		j.sj as sj,j.fx as fx
+			from dt_user u
+			left join mj_jl_real j on u.user_serial=j.user_serial
+		<where>
+			 u.user_type &lt; 30 and j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') and jl_type=45
+				<if test="depSerials!=null">
+					and u.user_dep in
+					<foreach collection="depSerials" item="item" close=")" open="(" separator="," >
+						#{item}
+					</foreach>
+				</if>
+				<if test="username!=null">
+					and u.user_lname like '%${username}%'
+				</if>
+				<if test="userNo!=null">
+					and u.user_no = #{userNo}
+				</if>
+					and (CONVERT(varchar(10),j.sj,120) in (select holiday_time from holiday where holiday_time between #{kssj} and #{jssj}))
+					order by u.user_dep,u.user_serial,j.sj 
+		</where>
+	</select>
+	
+	<!-- 个人统计迟到早退外出 -->
+	<select id="getPersonStatistics" resultMap="StatisticsRecord"
+		parameterType="com.cecep.model.kq.KqQuery">
+		    select u.user_lname as user_lname,
+			    u.user_serial as user_serial, u.user_card as card_serial,d.dep_name as dep_name,
+				j.sj as sj,j.fx as fx
+				from dt_user u
+				left join dt_dep d on u.dep_no=d.dep_no
+				left join mj_jl_real j on u.user_serial=j.user_serial
+			where u.user_serial = #{userSerial} and j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') and jl_type=45 and 
+				and (j.sj is null or ( CONVERT(varchar(10),j.sj,120) between #{kssj} and #{jssj} 
+				and CONVERT(varchar(10),j.sj,120) not in (select holiday_time from holiday where holiday_time between #{kssj} and #{jssj})))
+				order by j.sj 
+	</select>
+	
+	<!-- 个人统计加班 -->
+	<select id="getPersonStatisticsJb" resultMap="StatisticsRecordJiaban"
+		parameterType="com.cecep.model.kq.KqQuery">
+		select  u.user_lname as user_lname,u.user_serial as user_serial, 
+		u.user_card as card_serial,d.dep_name as dep_name,
+		j.sj as sj,j.fx as fx
+			from dt_user u
+			left join dt_dep d on u.dep_no=d.dep_no
+			left join mj_jl_real j on u.user_serial=j.user_serial
+			where u.user_serial = #{userSerial} and j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') and jl_type=45 and (j.sj is null or (
+					CONVERT(varchar(10),j.sj,120) in (select holiday_time from holiday where holiday_time between #{kssj} and #{jssj})))
+					order by j.sj 
+	</select>
+	
+	<!-- 查询某个员工工作日考勤记录 -->
+	<select id="getRecordDataListByKq" resultMap="BaseResultMap"
+		parameterType="com.cecep.model.kq.PersonalQuery">
+		select  u.user_lname as user_lname, c.card_serial as card_serial,
+		d.dep_name as dep_name,j.sj as sj
+			from dt_user u
+			left join dt_dep d on u.dep_no=d.dep_no
+			left join mj_jl_real j on u.user_serial=j.user_serial
+			left join dt_card c on u.user_serial=c.user_serial
+		where u.user_serial = #{userSerial} and   j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') 
+		and jl_type=45 and  CONVERT(varchar(10),j.sj,120) between #{kssj} and #{jssj} 
+		 and CONVERT(varchar(10),j.sj,120) not in (select holiday_time from holiday where holiday_time between #{kssj} and #{jssj})
+		order by j.sj 
+	</select>
+	<!-- 查询某个员工加班考勤记录 -->
+	<select id="getRecordDataListByJb" resultType="string"
+		parameterType="com.cecep.model.kq.PersonalQuery">
+		select j.sj as sj
+			from dt_user u
+			left join dt_dep d on u.dep_no=d.dep_no
+			left join mj_jl_real j on u.user_serial=j.user_serial
+			left join dt_card c on u.user_serial=c.user_serial
+		where 
+			u.user_serial = #{userSerial} and  j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617')
+			 and jl_type=45 and
+		CONVERT(varchar(10),j.sj,120) in (select holiday_time from holiday where holiday_time between #{kssj} and #{jssj})
+		order by j.sj 
+	</select>
+	
+	<!-- 查询某个员工早退考勤记录 -->
+	<select id="getRecordDataListKq" resultType="string"
+		parameterType="com.cecep.model.kq.PersonalQuery">
+		select sj  from mj_jl_real where
+		<if test="dates==null">
+			 CONVERT(varchar(10),sj,120) BETWEEN #{kssj} and #{jssj} 
+		</if>
+		<if test="dates!=null">
+			CONVERT(varchar(10),sj,120) in 
+			<foreach collection="timeArray" open="(" close=")" separator="," item="item">
+				#{item}
+			</foreach>
+				and user_serial = #{userSerial} and gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617')  and jl_type=45
+		</if>
+	</select>
+	
+	<select id="getBeginWorkTime" resultMap="WorkTime">
+		select id,kq_time from kq_work_time where type=1
+	</select>
+	
+	<select id="getEndWorkTime" resultMap="WorkTime">
+		select id,kq_time from kq_work_time where type=2
+	</select>
+	<!-- 根据部门编号查询部门名称 -->
+	<select id="getDtDepByDepno" parameterType="java.lang.reflect.Array" resultType="string">
+		select dep_name from dbo.dt_dep where dep_no in 
+		<foreach collection="depNos" open="(" close=")" separator="," item="item">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="kqQuery" parameterType="com.cecep.model.kq.KqQuery" resultMap="BaseResultMap">
+		select a.xh,a.user_lname,a.user_serial,a.dep_name,a.company,a.sj,a.fx from 
+		(select row_number() over(order by CONVERT(varchar(10),j.sj,120),u.user_dep ) as rowNumber, u.user_lname, u.user_serial,
+		    u.user_depname as dep_name,isnull(d2.dep_name,u.user_depname) company,
+			j.sj as sj,j.fx as fx,j.xh
+			from mj_jl_real j 
+			left join dt_user u on u.user_serial=j.user_serial
+			left join dt_dep d on u.user_dep=d.dep_serial
+			left join cecep_dep_parentSerial d1 on d.dep_serial=d1.dep_serial
+			left join dt_dep d2 on d1.parent_serial=d2.dep_serial
+		where
+			j.jl_type=45 and j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') 
+				<if test="depSerials!=null">
+					and u.user_dep in
+					<foreach collection="depSerials" item="item" close=")" open="(" separator="," >
+					#{item}
+				</foreach>
+				</if>
+				<if test="username!=null">
+					and u.user_lname like '%${username}%'
+				</if>
+				<if test="userSerial!=null">
+					and u.user_serial =#{userSerial}
+				</if>
+				<if test="userNo!=null">
+					and u.user_no = #{userNo}
+				</if>
+				and CONVERT(varchar(10),j.sj,120) between '${kssj}' and '${jssj}' 
+				and right(CONVERT(varchar(19),j.sj,120),8) between '${sbsj}' and '${xbsj}' ) as a
+		<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ a.rowNumber >= #{start} and a.rowNumber < (#{rows} + #{start})]]>
+			</if>
+		</where>
+	</select>
+	
+	<select id="getkqQueryTotal" parameterType="com.cecep.model.kq.KqQuery" resultType="int">
+		select  count(*)
+			from mj_jl_real j 
+			left join dt_user u on u.user_serial=j.user_serial
+			left join dt_dep d on u.user_dep=d.dep_serial
+			left join cecep_dep_parentSerial d1 on d.dep_serial=d1.dep_serial
+			left join dt_dep d2 on d1.parent_serial=d2.dep_serial
+		where
+			j.jl_type=45 and j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') 
+				<if test="depSerials!=null">
+					and u.user_dep in
+					<foreach collection="depSerials" item="item" close=")" open="(" separator="," >
+					#{item}
+				</foreach>
+				</if>
+				<if test="username!=null">
+					and u.user_lname like '%${username}%'
+				</if>
+				<if test="userSerial!=null">
+					and u.user_serial =#{userSerial}
+				</if>
+				<if test="userNo!=null">
+					and u.user_no = #{userNo}
+				</if>
+				and CONVERT(varchar(10),j.sj,120) between '${kssj}' and '${jssj}' 
+				and right(CONVERT(varchar(19),j.sj,120),8) between '${sbsj}' and '${xbsj}'  
+	</select>
+	
+	<select id="kqRecordAnalyse" parameterType="com.cecep.model.kq.KqQuery" resultMap="StatisticsRecord" >
+		    select u.user_serial, u.user_card,
+			j.sj,j.fx
+			from dt_user u 
+			left join mj_jl_real j on u.user_serial=j.user_serial
+		where
+			u.user_type &lt; 31 and ((j.gate_bh in ('2016063009471551','2016072810560836','2016072810583777','2016072811073617') and j.jl_type=45
+				and CONVERT(varchar(10),j.sj,120) = #{kssj}) or j.sj is null)
+		order by u.user_dep,u.user_serial,j.sj
+	</select>
+	
+	<insert id="insertKqAnalyse" parameterType="java.util.Map">
+		insert into kq_collect(user_serial,goOutTime,lateTime,leaveEarlyTime,allWork,amSj,pmSj,jbTime) values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.userSerial},#{item.goOutTime},#{item.lateTime},#{item.leaveEarlyTime},#{item.allWork},#{item.amSj},#{item.pmSj},#{item.jbTime})
+		</foreach>
+	</insert>
+	
+	<select id="selectAllDate" resultType="java.sql.Date">
+		select distinct convert(varchar(10),sj,120) sj from mj_jl_real ORDER BY sj
+	</select>
+</mapper>

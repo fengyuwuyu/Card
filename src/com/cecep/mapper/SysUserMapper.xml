@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.SysUserMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.SysUser" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="org_id" property="orgId" jdbcType="INTEGER" />
+    <result column="dep_id" property="depId" jdbcType="INTEGER" />
+    <result column="post_id" property="postId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="user_status" property="userStatus" jdbcType="INTEGER" />
+    <result column="user_deleted" property="userDeleted" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="user_des" property="userDes" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_status" property="roleStatus" jdbcType="INTEGER" />
+    <result column="role_deleted" property="roleDeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name, login_name, password, sex, email, org_id, dep_id, post_id, role_id, 
+    user_status, user_deleted, create_time, delete_time, user_des
+  </sql>
+  <sql id="SysUser_Column_List" >
+    sys_user.user_id, sys_user.user_name, sys_user.login_name, sys_user.password, sys_user.sex, sys_user.email, sys_user.org_id, sys_user.dep_id, sys_user.post_id, sys_user.role_id, 
+    sys_user.user_status, sys_user.user_deleted, sys_user.create_time, sys_user.delete_time, sys_user.user_des
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dbo.sys_user
+    where user_id = #{value,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dbo.sys_user
+    where user_id = #{value,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.SysUser" >
+    insert into dbo.sys_user (user_name, login_name, 
+      password, sex, email, 
+      org_id, dep_id, post_id, 
+      role_id, user_status, user_deleted, 
+      create_time, user_des
+      )
+    values (#{userName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=INTEGER}, #{depId,jdbcType=INTEGER}, #{postId,jdbcType=INTEGER}, 
+      #{roleId,jdbcType=INTEGER}, #{userStatus,jdbcType=INTEGER}, 0, 
+      getDate(), #{userDes,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.SysUser" >
+    <selectKey resultType="java.lang.Integer" keyProperty="userId" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      user_id,
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="depId != null" >
+        dep_id,
+      </if>
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
+      <if test="userDeleted != null" >
+        user_deleted,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="userDes != null" >
+        user_des,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{userId,jdbcType=INTEGER},
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="depId != null" >
+        #{depId,jdbcType=INTEGER},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userDeleted != null" >
+        #{userDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userDes != null" >
+        #{userDes,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.SysUser" >
+    update dbo.sys_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName},
+      </if>
+      <if test="loginName != null" >
+        login_name = #{loginName},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex},
+      </if>
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="orgId != null" >
+        org_id = #{orgId},
+      </if>
+      <if test="depId != null" >
+        dep_id = #{depId},
+      </if>
+      <if test="postId != null" >
+        post_id = #{postId},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus},
+      </if>
+      <if test="userDeleted != null" >
+        user_deleted = #{userDeleted},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime},
+      </if>
+      <if test="userDes != null" >
+        user_des = #{userDes},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.SysUser" >
+    update dbo.sys_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=INTEGER},
+      dep_id = #{depId,jdbcType=INTEGER},
+      post_id = #{postId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_des = #{userDes,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.SysUser" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by dbo.sys_user.user_id) as rowNumber,<include refid="SysUser_Column_List" />,dbo.org.org_name,dbo.dep.dep_name,dbo.post.post_name,dbo.sys_role.role_name
+		    from dbo.sys_user
+		    left join dbo.org
+		    on dbo.sys_user.org_id = dbo.org.org_id
+		    left join dbo.dep
+		    on dbo.sys_user.dep_id = dbo.dep.dep_id
+		    left join dbo.post
+		    on dbo.sys_user.post_id = dbo.post.post_id
+		    left join dbo.sys_role
+		    on dbo.sys_user.role_id = dbo.sys_role.role_id
+			where	dbo.sys_user.user_deleted = 0
+		    	<if test="userName != null and userName != ''" >
+		        	and dbo.sys_user.user_name like '%${userName}%'
+		      	</if>
+		      	<if test="sex != null and sex != ''" >
+		       		and dbo.sys_user.sex = #{sex}
+		      	</if>
+		      	<if test="orgId != null and orgId != 0" >
+		        	and dbo.sys_user.org_id = #{orgId}
+		      	</if>
+		      	<if test="depId != null and depId != 0" >
+		        	and dbo.sys_user.dep_id = #{depId}
+		      	</if>
+		      	<if test="postId != null and postId != 0" >
+		        	and dbo.sys_user.post_id = #{postId}
+		      	</if>
+		      	<if test="userStatus != null" >
+		        	and dbo.sys_user.user_status = #{userStatus}
+		      	</if> ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.SysUser" >
+    select count(1)
+    from dbo.sys_user
+    left join dbo.org
+    on dbo.sys_user.org_id = dbo.org.org_id
+    left join dbo.dep
+    on dbo.sys_user.dep_id = dbo.dep.dep_id
+    left join dbo.post
+    on dbo.sys_user.post_id = dbo.post.post_id
+    left join dbo.sys_role
+    on dbo.sys_user.role_id = dbo.sys_role.role_id
+	where	dbo.sys_user.user_deleted = 0
+    	<if test="userName != null and userName != ''" >
+        	and dbo.sys_user.user_name like '%${userName}%'
+      	</if>
+      	<if test="sex != null and sex != ''" >
+       		and dbo.sys_user.sex = #{sex}
+      	</if>
+      	<if test="orgId != null and orgId != 0" >
+        	and dbo.sys_user.org_id = #{orgId}
+      	</if>
+      	<if test="depId != null and depId != 0" >
+        	and dbo.sys_user.dep_id = #{depId}
+      	</if>
+      	<if test="postId != null and postId != 0" >
+        	and dbo.sys_user.post_id = #{postId}
+      	</if>
+      	<if test="userStatus != null" >
+        	and dbo.sys_user.user_status = #{userStatus}
+      	</if>	   	
+  </select>
+  <select id="selectSelective" resultMap="BaseResultMap" parameterType="com.cecep.model.SysUser" >
+    select top(1) <include refid="SysUser_Column_List" />,dbo.org.org_name,dbo.dep.dep_name,dbo.post.post_name,dbo.sys_role.role_name,dbo.sys_role.role_status,dbo.sys_role.role_deleted
+    from dbo.sys_user
+    left join dbo.org
+    on dbo.sys_user.org_id = dbo.org.org_id
+    left join dbo.dep
+    on dbo.sys_user.dep_id = dbo.dep.dep_id
+    left join dbo.post
+    on dbo.sys_user.post_id = dbo.post.post_id
+    left join dbo.sys_role
+    on dbo.sys_user.role_id = dbo.sys_role.role_id
+    <where>
+      <if test="userId != null" >
+        dbo.sys_user.user_id = #{userId}
+      </if>
+      <if test="userName != null" >
+        and dbo.sys_user.user_name = #{userName}
+      </if>
+      <if test="loginName != null" >
+        and dbo.sys_user.login_name = #{loginName}
+      </if>
+      <if test="password != null" >
+        and dbo.sys_user.password = #{password}
+      </if>
+      <if test="sex != null" >
+        and dbo.sys_user.sex = #{sex}
+      </if>
+      <if test="email != null" >
+        and dbo.sys_user.email = #{email}
+      </if>
+      <if test="orgId != null" >
+        and dbo.sys_user.org_id = #{orgId}
+      </if>
+      <if test="depId != null" >
+        and dbo.sys_user.dep_id = #{depId}
+      </if>
+      <if test="postId != null" >
+        and dbo.sys_user.post_id = #{postId}
+      </if>
+      <if test="roleId != null" >
+        and dbo.sys_user.role_id = #{roleId}
+      </if>
+      <if test="userStatus != null" >
+        and dbo.sys_user.user_status = #{userStatus}
+      </if>
+      <if test="userDeleted != null" >
+        and dbo.sys_user.user_deleted = #{userDeleted}
+      </if>
+      <if test="createTime != null" >
+        and dbo.sys_user.create_time = #{createTime}
+      </if>
+      <if test="deleteTime != null" >
+        and dbo.sys_user.delete_time = #{deleteTime}
+      </if>
+      <if test="userDes != null" >
+        and dbo.sys_user.user_des = #{userDes}
+      </if>
+    </where>
+  </select>
+  
+  <resultMap id="SysMenuResultMap" type="com.cecep.model.SysMenu">
+	<id column="menu_id" property="menuId" jdbcType="INTEGER" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="menu_deleted" property="menuDeleted" jdbcType="INTEGER" />
+    <result column="menu_des" property="menuDes" jdbcType="VARCHAR" />
+	<collection property="children" ofType="com.cecep.model.SysMenu" javaType="java.util.List" >
+		<id column="menu_id2" property="menuId" jdbcType="INTEGER" />
+	    <result column="menu_name2" property="menuName" jdbcType="VARCHAR" />
+	    <result column="url2" property="url" jdbcType="VARCHAR" />
+	    <result column="sequence2" property="sequence" jdbcType="INTEGER" />
+	    <result column="parent_id2" property="parentId" jdbcType="INTEGER" />
+	    <result column="menu_deleted2" property="menuDeleted" jdbcType="INTEGER" />
+	    <result column="menu_des2" property="menuDes" jdbcType="VARCHAR" />	
+	</collection>
+  </resultMap>
+ 
+  <select id="getMenuTree" resultMap="SysMenuResultMap" parameterType="java.lang.Integer" > 
+  	select menu.*,menu2.menu_id as menu_id2,menu2.menu_name as menu_name2,menu2.url as url2,menu2.sequence as sequence2,menu2.parent_id as parent_id2,menu2.menu_deleted as menu_deleted2,menu2.menu_des as menu_des2
+    from dbo.sys_menu menu
+    left join dbo.sys_menu menu2
+    on menu.menu_id = menu2.parent_id
+    where menu.menu_deleted = 0 and menu2.menu_deleted = 0 and menu2.menu_id is not null and menu2.menu_id in ( select menu_id from dbo.menu_role where role_id = #{value,jdbcType=INTEGER} )    
+    order by menu.sequence asc,menu2.sequence asc
+  </select>
+  
+</mapper>

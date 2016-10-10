@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.JrealUpdateMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.JrealUpdate" >
+    <id column="jsig" property="jsig" jdbcType="INTEGER" />
+    <result column="jdev_id" property="jdevId" jdbcType="INTEGER" />
+    <result column="jdev_bh" property="jdevBh" jdbcType="CHAR" />
+    <result column="jdodata" property="jdodata" jdbcType="INTEGER" />
+    <result column="juser_id" property="juserId" jdbcType="INTEGER" />
+    <result column="jdata_str" property="jdataStr" jdbcType="VARCHAR" />
+    <result column="jext_type" property="jextType" jdbcType="INTEGER" />
+    <result column="jtime" property="jtime" jdbcType="TIMESTAMP" />
+    <result column="joperator" property="joperator" jdbcType="NVARCHAR" />
+    <result column="jip_addr" property="jipAddr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    jsig, jdev_id, jdev_bh, jdodata, juser_id, jdata_str, jext_type, jtime, joperator, 
+    jip_addr
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dbo.jreal_update_1
+    where jsig = #{jsig,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" >
+    insert into dbo.jreal_update_1 (jdev_id, jdev_bh, jdodata, juser_id, jdata_str, jext_type, jtime, joperator, jip_addr)
+			select 0,dbo.st_doorfx_real.dev_serial,0,0,'101,3,0,'+dbo.dt_card.card_hao+',,2,'+convert(varchar(1),dbo.mj_user_rule_real.fx),0,getdate(),null,null
+			from dbo.mj_user_rule_real
+			left join dbo.st_doorfx_real
+			on dbo.mj_user_rule_real.gate_bh = dbo.st_doorfx_real.gate_bh and dbo.mj_user_rule_real.fx = dbo.st_doorfx_real.fx
+			left join dbo.dt_card
+			on dbo.mj_user_rule_real.user_serial = dbo.dt_card.user_serial
+			<where>  dbo.mj_user_rule_real.xh in  
+	    			<foreach item="item" collection="array" separator="," open="(" close=")" index="index">  
+	      				#{item, jdbcType=INTEGER}  
+	    			</foreach>  
+	  		</where>   
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.JrealUpdate" >
+    insert into dbo.jreal_update_1 (jsig, jdev_id, jdev_bh, 
+      jdodata, juser_id, jdata_str, 
+      jext_type, jtime, joperator, 
+      jip_addr)
+    values (#{jsig,jdbcType=INTEGER}, #{jdevId,jdbcType=INTEGER}, #{jdevBh,jdbcType=CHAR}, 
+      #{jdodata,jdbcType=INTEGER}, #{juserId,jdbcType=INTEGER}, #{jdataStr,jdbcType=VARCHAR}, 
+      #{jextType,jdbcType=INTEGER}, #{jtime,jdbcType=TIMESTAMP}, #{joperator,jdbcType=NVARCHAR}, 
+      #{jipAddr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.JrealUpdate" >
+    insert into dbo.jreal_update_1
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jsig != null" >
+        jsig,
+      </if>
+      <if test="jdevId != null" >
+        jdev_id,
+      </if>
+      <if test="jdevBh != null" >
+        jdev_bh,
+      </if>
+      <if test="jdodata != null" >
+        jdodata,
+      </if>
+      <if test="juserId != null" >
+        juser_id,
+      </if>
+      <if test="jdataStr != null" >
+        jdata_str,
+      </if>
+      <if test="jextType != null" >
+        jext_type,
+      </if>
+      <if test="jtime != null" >
+        jtime,
+      </if>
+      <if test="joperator != null" >
+        joperator,
+      </if>
+      <if test="jipAddr != null" >
+        jip_addr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jsig != null" >
+        #{jsig,jdbcType=INTEGER},
+      </if>
+      <if test="jdevId != null" >
+        #{jdevId,jdbcType=INTEGER},
+      </if>
+      <if test="jdevBh != null" >
+        #{jdevBh,jdbcType=CHAR},
+      </if>
+      <if test="jdodata != null" >
+        #{jdodata,jdbcType=INTEGER},
+      </if>
+      <if test="juserId != null" >
+        #{juserId,jdbcType=INTEGER},
+      </if>
+      <if test="jdataStr != null" >
+        #{jdataStr,jdbcType=VARCHAR},
+      </if>
+      <if test="jextType != null" >
+        #{jextType,jdbcType=INTEGER},
+      </if>
+      <if test="jtime != null" >
+        #{jtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="joperator != null" >
+        #{joperator,jdbcType=NVARCHAR},
+      </if>
+      <if test="jipAddr != null" >
+        #{jipAddr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.JrealUpdate" >
+    update dbo.jreal_update_1
+    <set >
+      <if test="jdevId != null" >
+        jdev_id = #{jdevId,jdbcType=INTEGER},
+      </if>
+      <if test="jdevBh != null" >
+        jdev_bh = #{jdevBh,jdbcType=CHAR},
+      </if>
+      <if test="jdodata != null" >
+        jdodata = #{jdodata,jdbcType=INTEGER},
+      </if>
+      <if test="juserId != null" >
+        juser_id = #{juserId,jdbcType=INTEGER},
+      </if>
+      <if test="jdataStr != null" >
+        jdata_str = #{jdataStr,jdbcType=VARCHAR},
+      </if>
+      <if test="jextType != null" >
+        jext_type = #{jextType,jdbcType=INTEGER},
+      </if>
+      <if test="jtime != null" >
+        jtime = #{jtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="joperator != null" >
+        joperator = #{joperator,jdbcType=NVARCHAR},
+      </if>
+      <if test="jipAddr != null" >
+        jip_addr = #{jipAddr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where jsig = #{jsig,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.JrealUpdate" >
+    update dbo.jreal_update_1
+    set jdev_id = #{jdevId,jdbcType=INTEGER},
+      jdev_bh = #{jdevBh,jdbcType=CHAR},
+      jdodata = #{jdodata,jdbcType=INTEGER},
+      juser_id = #{juserId,jdbcType=INTEGER},
+      jdata_str = #{jdataStr,jdbcType=VARCHAR},
+      jext_type = #{jextType,jdbcType=INTEGER},
+      jtime = #{jtime,jdbcType=TIMESTAMP},
+      joperator = #{joperator,jdbcType=NVARCHAR},
+      jip_addr = #{jipAddr,jdbcType=VARCHAR}
+    where jsig = #{jsig,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByUser" resultMap="BaseResultMap"> 		
+		select card_hao as jdata_str
+		from dbo.dt_card
+	  	<where>  
+	    	user_serial in  
+	    	<foreach item="item" collection="array" separator="," open="(" close=")" index="index">  
+	      		#{item, jdbcType=BIGINT}  
+	    	</foreach>  
+	  	</where> 	
+	</select>
+  
+  <select id="selectByDep" resultMap="BaseResultMap"> 
+		select dbo.dt_card.card_hao as jdata_str
+		from (
+				select user_serial
+				from dbo.dt_user
+			  	<where>  
+			    	user_dep in  
+			    	<foreach item="item" collection="array" separator="," open="(" close=")" index="index">  
+			      		#{item, jdbcType=BIGINT}  
+			    	</foreach>  
+			  	</where> ) u
+		left join dbo.dt_card
+		on u.user_serial = dbo.dt_card.user_serial
+		where dbo.dt_card.xh is not null
+	</select>
+	
+	<select id="selectByDoor" resultMap="BaseResultMap"> 
+		select distinct dev_serial as jdev_bh,fx as jdata_str
+		from dbo.st_doorfx_real
+	  	<where>  
+	    	gate_bh in  
+	    	<foreach item="item" collection="array" separator="," open="(" close=")" index="index">  
+	      		#{item, jdbcType=CHAR}  
+	    	</foreach>  
+	  	</where> 
+	</select>
+	
+	<select id="selectBySite" resultMap="BaseResultMap"> 
+		select distinct dev_serial as jdev_bh,fx as jdata_str
+		from dbo.st_doorfx_real
+	  	<where>  
+	    	gate_bh in  (
+	    	select gate_bh
+	    	from dbo.dt_gate_real
+	    	<where>  
+	    		acdep_serial in
+		    	<foreach item="item" collection="array" separator="," open="(" close=")" index="index">  
+		      		#{item, jdbcType=INTEGER}  
+		    	</foreach>  
+	    	</where> )
+	  	</where> 
+	</select>
+	
+	<insert id="deleteByMap" parameterType="java.util.Map" >
+    	insert into dbo.jreal_update_1 (jdev_id, jdev_bh, jdodata, juser_id, jdata_str, 
+		jext_type, jtime, joperator, jip_addr)
+		<foreach item="item" collection="list" separator="union all" index="index">  
+			<foreach item="item2" collection="list2" separator="union all" index="index2">  
+			select 0,#{item2.jdevBh,jdbcType=CHAR},0,0,'101,3,0,'+#{item.jdataStr,jdbcType=VARCHAR}+',,2,'+#{item2.jdataStr,jdbcType=VARCHAR},
+						0,getdate(),#{joperator,jdbcType=NVARCHAR},#{jipAddr,jdbcType=VARCHAR}
+			</foreach> 
+		</foreach>  
+  	</insert>
+  	
+  	<delete id="insertByMap" parameterType="java.util.Map" >
+		insert into dbo.jreal_update_1 (jdev_id, jdev_bh, jdodata, juser_id, jdata_str, 
+		jext_type, jtime, joperator, jip_addr)
+		<foreach item="item" collection="list" separator="union all" index="index">  
+			<foreach item="item2" collection="list2" separator="union all" index="index2">  
+				select 0,#{item2.jdevBh,jdbcType=CHAR},0,0,'101,1,0,'+#{item.jdataStr,jdbcType=VARCHAR}+',1,2,'+#{item2.jdataStr,jdbcType=VARCHAR},
+						0,getdate(),#{joperator,jdbcType=NVARCHAR},#{jipAddr,jdbcType=VARCHAR}
+			</foreach> 
+		</foreach>  
+  	</delete>
+	
+</mapper>

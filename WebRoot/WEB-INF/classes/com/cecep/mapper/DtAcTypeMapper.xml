@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cecep.dao.DtAcTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.cecep.model.DtAcType" >
+    <id column="ac_bh" property="acBh" jdbcType="CHAR" />
+    <result column="ac_name" property="acName" jdbcType="NVARCHAR" />
+    <result column="money_type" property="moneyType" jdbcType="INTEGER" />
+    <result column="reg_money" property="regMoney" jdbcType="DECIMAL" />
+    <result column="reg_manage" property="regManage" jdbcType="INTEGER" />
+    <result column="reg_ratio" property="regRatio" jdbcType="INTEGER" />
+    <result column="ac_limit" property="acLimit" jdbcType="INTEGER" />
+    <result column="ac_jssj" property="acJssj" jdbcType="TIMESTAMP" />
+    <result column="ac_pass" property="acPass" jdbcType="VARCHAR" />
+    <result column="ac_pass_rule" property="acPassRule" jdbcType="VARCHAR" />
+    <result column="ac_subsidy" property="acSubsidy" jdbcType="INTEGER" />
+    <result column="ac_sub_rule" property="acSubRule" jdbcType="INTEGER" />
+    <result column="ac_sub_limit" property="acSubLimit" jdbcType="INTEGER" />
+    <result column="discount_rate" property="discountRate" jdbcType="VARCHAR" />
+    <result column="money_max" property="moneyMax" jdbcType="DECIMAL" />
+    <result column="money_min" property="moneyMin" jdbcType="DECIMAL" />
+    <result column="day_max_m" property="dayMaxM" jdbcType="DECIMAL" />
+    <result column="day_max_t" property="dayMaxT" jdbcType="INTEGER" />
+    <result column="meal_max_m" property="mealMaxM" jdbcType="INTEGER" />
+    <result column="meal_max_t" property="mealMaxT" jdbcType="INTEGER" />
+    <result column="time_max_m" property="timeMaxM" jdbcType="DECIMAL" />
+    <result column="ac_unit" property="acUnit" jdbcType="INTEGER" />
+    <result column="ac_sub_unit" property="acSubUnit" jdbcType="INTEGER" />
+    <result column="ac_earmark" property="acEarmark" jdbcType="INTEGER" />
+    <result column="ac_sub_auto" property="acSubAuto" jdbcType="INTEGER" />
+    <result column="sub_money" property="subMoney" jdbcType="DECIMAL" />
+    <result column="ac_overdraw" property="acOverdraw" jdbcType="DECIMAL" />
+    <result column="sub_max_m" property="subMaxM" jdbcType="DECIMAL" />
+    <result column="make_max_m" property="makeMaxM" jdbcType="DECIMAL" />
+    <result column="ac_time_state" property="acTimeState" jdbcType="INTEGER" />
+    <result column="ac_each" property="acEach" jdbcType="INTEGER" />
+    <result column="ac_each_rule" property="acEachRule" jdbcType="INTEGER" />
+    <result column="ac_time_offset" property="acTimeOffset" jdbcType="INTEGER" />
+    <result column="ac_time_type" property="acTimeType" jdbcType="INTEGER" />
+    <result column="ac_time_day" property="acTimeDay" jdbcType="DECIMAL" />
+    <result column="ac_time_mould" property="acTimeMould" jdbcType="INTEGER" />
+    <result column="pass_max" property="passMax" jdbcType="INTEGER" />
+    <result column="tally_max_m" property="tallyMaxM" jdbcType="INTEGER" />
+    <result column="tally_max_t" property="tallyMaxT" jdbcType="INTEGER" />
+    <result column="ac_regserial" property="acRegserial" jdbcType="NVARCHAR" />
+    <result column="regserial" property="regserial" jdbcType="NVARCHAR" />
+    <result column="ac_timeeach_type" property="acTimeeachType" jdbcType="INTEGER" />
+    <result column="ac_timeeach_day" property="acTimeeachDay" jdbcType="INTEGER" />
+    <result column="ac_timeeach_mould" property="acTimeeachMould" jdbcType="INTEGER" />
+    <result column="ac_each_auto" property="acEachAuto" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ac_bh, ac_name, money_type, reg_money, reg_manage, reg_ratio, ac_limit, ac_jssj, 
+    ac_pass, ac_pass_rule, ac_subsidy, ac_sub_rule, ac_sub_limit, discount_rate, money_max, 
+    money_min, day_max_m, day_max_t, meal_max_m, meal_max_t, time_max_m, ac_unit, ac_sub_unit, 
+    ac_earmark, ac_sub_auto, sub_money, ac_overdraw, sub_max_m, make_max_m, ac_time_state, 
+    ac_each, ac_each_rule, ac_time_offset, ac_time_type, ac_time_day, ac_time_mould, 
+    pass_max, tally_max_m, tally_max_t, ac_regserial, regserial, ac_timeeach_type, ac_timeeach_day, 
+    ac_timeeach_mould, ac_each_auto
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select <include refid="Base_Column_List" />
+    from dbo.dt_ac_type
+    where ac_bh = #{acBh,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dbo.dt_ac_type
+    where ac_bh = #{acBh,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cecep.model.DtAcType" >
+    insert into dbo.dt_ac_type (ac_bh, ac_name, money_type, 
+      reg_money, reg_manage, reg_ratio, 
+      ac_limit, ac_jssj, ac_pass, 
+      ac_pass_rule, ac_subsidy, ac_sub_rule, 
+      ac_sub_limit, discount_rate, money_max, 
+      money_min, day_max_m, day_max_t, 
+      meal_max_m, meal_max_t, time_max_m, 
+      ac_unit, ac_sub_unit, ac_earmark, 
+      ac_sub_auto, sub_money, ac_overdraw, 
+      sub_max_m, make_max_m, ac_time_state, 
+      ac_each, ac_each_rule, ac_time_offset, 
+      ac_time_type, ac_time_day, ac_time_mould, 
+      pass_max, tally_max_m, tally_max_t, 
+      ac_regserial, regserial, ac_timeeach_type, 
+      ac_timeeach_day, ac_timeeach_mould, ac_each_auto
+      )
+    values (#{acBh,jdbcType=CHAR}, #{acName,jdbcType=NVARCHAR}, #{moneyType,jdbcType=INTEGER}, 
+      0, #{regManage,jdbcType=INTEGER}, #{regRatio,jdbcType=INTEGER}, 
+      #{acLimit,jdbcType=INTEGER}, #{acJssj,jdbcType=TIMESTAMP}, '123456', 
+      #{acPassRule,jdbcType=VARCHAR}, 0, 0, 
+      1, '100', 0, 
+      0, #{dayMaxM,jdbcType=DECIMAL}, #{dayMaxT,jdbcType=INTEGER}, 
+      #{mealMaxM,jdbcType=INTEGER}, #{mealMaxT,jdbcType=INTEGER}, #{timeMaxM,jdbcType=DECIMAL}, 
+      #{acUnit,jdbcType=INTEGER}, 0, #{acEarmark,jdbcType=INTEGER}, 
+      0, #{subMoney,jdbcType=DECIMAL}, 0, 
+      #{subMaxM,jdbcType=DECIMAL}, #{makeMaxM,jdbcType=DECIMAL}, 0, 
+      0, 0, 0, 
+      0, 0, 0, 
+      1, #{tallyMaxM,jdbcType=INTEGER}, #{tallyMaxT,jdbcType=INTEGER}, 
+      #{acRegserial,jdbcType=NVARCHAR}, #{regserial,jdbcType=NVARCHAR}, 0, 
+      0, 0, 0
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cecep.model.DtAcType" >
+    <selectKey resultType="java.lang.String" keyProperty="acBh" order="BEFORE" >
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into dbo.dt_ac_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ac_bh,
+      <if test="acName != null" >
+        ac_name,
+      </if>
+      <if test="moneyType != null" >
+        money_type,
+      </if>
+      <if test="regMoney != null" >
+        reg_money,
+      </if>
+      <if test="regManage != null" >
+        reg_manage,
+      </if>
+      <if test="regRatio != null" >
+        reg_ratio,
+      </if>
+      <if test="acLimit != null" >
+        ac_limit,
+      </if>
+      <if test="acJssj != null" >
+        ac_jssj,
+      </if>
+      <if test="acPass != null" >
+        ac_pass,
+      </if>
+      <if test="acPassRule != null" >
+        ac_pass_rule,
+      </if>
+      <if test="acSubsidy != null" >
+        ac_subsidy,
+      </if>
+      <if test="acSubRule != null" >
+        ac_sub_rule,
+      </if>
+      <if test="acSubLimit != null" >
+        ac_sub_limit,
+      </if>
+      <if test="discountRate != null" >
+        discount_rate,
+      </if>
+      <if test="moneyMax != null" >
+        money_max,
+      </if>
+      <if test="moneyMin != null" >
+        money_min,
+      </if>
+      <if test="dayMaxM != null" >
+        day_max_m,
+      </if>
+      <if test="dayMaxT != null" >
+        day_max_t,
+      </if>
+      <if test="mealMaxM != null" >
+        meal_max_m,
+      </if>
+      <if test="mealMaxT != null" >
+        meal_max_t,
+      </if>
+      <if test="timeMaxM != null" >
+        time_max_m,
+      </if>
+      <if test="acUnit != null" >
+        ac_unit,
+      </if>
+      <if test="acSubUnit != null" >
+        ac_sub_unit,
+      </if>
+      <if test="acEarmark != null" >
+        ac_earmark,
+      </if>
+      <if test="acSubAuto != null" >
+        ac_sub_auto,
+      </if>
+      <if test="subMoney != null" >
+        sub_money,
+      </if>
+      <if test="acOverdraw != null" >
+        ac_overdraw,
+      </if>
+      <if test="subMaxM != null" >
+        sub_max_m,
+      </if>
+      <if test="makeMaxM != null" >
+        make_max_m,
+      </if>
+      <if test="acTimeState != null" >
+        ac_time_state,
+      </if>
+      <if test="acEach != null" >
+        ac_each,
+      </if>
+      <if test="acEachRule != null" >
+        ac_each_rule,
+      </if>
+      <if test="acTimeOffset != null" >
+        ac_time_offset,
+      </if>
+      <if test="acTimeType != null" >
+        ac_time_type,
+      </if>
+      <if test="acTimeDay != null" >
+        ac_time_day,
+      </if>
+      <if test="acTimeMould != null" >
+        ac_time_mould,
+      </if>
+      <if test="passMax != null" >
+        pass_max,
+      </if>
+      <if test="tallyMaxM != null" >
+        tally_max_m,
+      </if>
+      <if test="tallyMaxT != null" >
+        tally_max_t,
+      </if>
+      <if test="acRegserial != null" >
+        ac_regserial,
+      </if>
+      <if test="regserial != null" >
+        regserial,
+      </if>
+      <if test="acTimeeachType != null" >
+        ac_timeeach_type,
+      </if>
+      <if test="acTimeeachDay != null" >
+        ac_timeeach_day,
+      </if>
+      <if test="acTimeeachMould != null" >
+        ac_timeeach_mould,
+      </if>
+      <if test="acEachAuto != null" >
+        ac_each_auto,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{acBh,jdbcType=CHAR},
+      <if test="acName != null" >
+        #{acName,jdbcType=NVARCHAR},
+      </if>
+      <if test="moneyType != null" >
+        #{moneyType,jdbcType=INTEGER},
+      </if>
+      <if test="regMoney != null" >
+        #{regMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="regManage != null" >
+        #{regManage,jdbcType=INTEGER},
+      </if>
+      <if test="regRatio != null" >
+        #{regRatio,jdbcType=INTEGER},
+      </if>
+      <if test="acLimit != null" >
+        #{acLimit,jdbcType=INTEGER},
+      </if>
+      <if test="acJssj != null" >
+        #{acJssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acPass != null" >
+        #{acPass,jdbcType=VARCHAR},
+      </if>
+      <if test="acPassRule != null" >
+        #{acPassRule,jdbcType=VARCHAR},
+      </if>
+      <if test="acSubsidy != null" >
+        #{acSubsidy,jdbcType=INTEGER},
+      </if>
+      <if test="acSubRule != null" >
+        #{acSubRule,jdbcType=INTEGER},
+      </if>
+      <if test="acSubLimit != null" >
+        #{acSubLimit,jdbcType=INTEGER},
+      </if>
+      <if test="discountRate != null" >
+        #{discountRate,jdbcType=VARCHAR},
+      </if>
+      <if test="moneyMax != null" >
+        #{moneyMax,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyMin != null" >
+        #{moneyMin,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxM != null" >
+        #{dayMaxM,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxT != null" >
+        #{dayMaxT,jdbcType=INTEGER},
+      </if>
+      <if test="mealMaxM != null" >
+        #{mealMaxM,jdbcType=INTEGER},
+      </if>
+      <if test="mealMaxT != null" >
+        #{mealMaxT,jdbcType=INTEGER},
+      </if>
+      <if test="timeMaxM != null" >
+        #{timeMaxM,jdbcType=DECIMAL},
+      </if>
+      <if test="acUnit != null" >
+        #{acUnit,jdbcType=INTEGER},
+      </if>
+      <if test="acSubUnit != null" >
+        #{acSubUnit,jdbcType=INTEGER},
+      </if>
+      <if test="acEarmark != null" >
+        #{acEarmark,jdbcType=INTEGER},
+      </if>
+      <if test="acSubAuto != null" >
+        #{acSubAuto,jdbcType=INTEGER},
+      </if>
+      <if test="subMoney != null" >
+        #{subMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="acOverdraw != null" >
+        #{acOverdraw,jdbcType=DECIMAL},
+      </if>
+      <if test="subMaxM != null" >
+        #{subMaxM,jdbcType=DECIMAL},
+      </if>
+      <if test="makeMaxM != null" >
+        #{makeMaxM,jdbcType=DECIMAL},
+      </if>
+      <if test="acTimeState != null" >
+        #{acTimeState,jdbcType=INTEGER},
+      </if>
+      <if test="acEach != null" >
+        #{acEach,jdbcType=INTEGER},
+      </if>
+      <if test="acEachRule != null" >
+        #{acEachRule,jdbcType=INTEGER},
+      </if>
+      <if test="acTimeOffset != null" >
+        #{acTimeOffset,jdbcType=INTEGER},
+      </if>
+      <if test="acTimeType != null" >
+        #{acTimeType,jdbcType=INTEGER},
+      </if>
+      <if test="acTimeDay != null" >
+        #{acTimeDay,jdbcType=DECIMAL},
+      </if>
+      <if test="acTimeMould != null" >
+        #{acTimeMould,jdbcType=INTEGER},
+      </if>
+      <if test="passMax != null" >
+        #{passMax,jdbcType=INTEGER},
+      </if>
+      <if test="tallyMaxM != null" >
+        #{tallyMaxM,jdbcType=INTEGER},
+      </if>
+      <if test="tallyMaxT != null" >
+        #{tallyMaxT,jdbcType=INTEGER},
+      </if>
+      <if test="acRegserial != null" >
+        #{acRegserial,jdbcType=NVARCHAR},
+      </if>
+      <if test="regserial != null" >
+        #{regserial,jdbcType=NVARCHAR},
+      </if>
+      <if test="acTimeeachType != null" >
+        #{acTimeeachType,jdbcType=INTEGER},
+      </if>
+      <if test="acTimeeachDay != null" >
+        #{acTimeeachDay,jdbcType=INTEGER},
+      </if>
+      <if test="acTimeeachMould != null" >
+        #{acTimeeachMould,jdbcType=INTEGER},
+      </if>
+      <if test="acEachAuto != null" >
+        #{acEachAuto,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cecep.model.DtAcType" >
+    update dbo.dt_ac_type
+    <set >
+      <if test="acName != null" >
+        ac_name = #{acName,jdbcType=NVARCHAR},
+      </if>  
+      <if test="dayMaxM != null" >
+        day_max_m = #{dayMaxM,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxT != null" >
+        day_max_t = #{dayMaxT,jdbcType=INTEGER},
+      </if>
+      <if test="timeMaxM != null" >
+        time_max_m = #{timeMaxM,jdbcType=DECIMAL},
+      </if>
+      <if test="tallyMaxM != null" >
+        tally_max_m = #{tallyMaxM,jdbcType=INTEGER},
+      </if>
+      <if test="tallyMaxT != null" >
+        tally_max_t = #{tallyMaxT,jdbcType=INTEGER},
+      </if>
+      <if test="acLimit != null" >
+        ac_limit = #{acLimit,jdbcType=INTEGER},
+      </if>   
+      <if test="acUnit != null" >
+        ac_unit = #{acUnit,jdbcType=INTEGER},
+      </if>
+      <if test="acJssj != null" >
+        ac_jssj = #{acJssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acJssj == null" >
+        ac_jssj = null
+      </if>
+    </set>
+    where ac_bh = #{acBh,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cecep.model.DtAcType" >
+    update dbo.dt_ac_type
+    set ac_name = #{acName,jdbcType=NVARCHAR},
+      money_type = #{moneyType,jdbcType=INTEGER},
+      reg_money = #{regMoney,jdbcType=DECIMAL},
+      reg_manage = #{regManage,jdbcType=INTEGER},
+      reg_ratio = #{regRatio,jdbcType=INTEGER},
+      ac_limit = #{acLimit,jdbcType=INTEGER},
+      ac_jssj = #{acJssj,jdbcType=TIMESTAMP},
+      ac_pass = #{acPass,jdbcType=VARCHAR},
+      ac_pass_rule = #{acPassRule,jdbcType=VARCHAR},
+      ac_subsidy = #{acSubsidy,jdbcType=INTEGER},
+      ac_sub_rule = #{acSubRule,jdbcType=INTEGER},
+      ac_sub_limit = #{acSubLimit,jdbcType=INTEGER},
+      discount_rate = #{discountRate,jdbcType=VARCHAR},
+      money_max = #{moneyMax,jdbcType=DECIMAL},
+      money_min = #{moneyMin,jdbcType=DECIMAL},
+      day_max_m = #{dayMaxM,jdbcType=DECIMAL},
+      day_max_t = #{dayMaxT,jdbcType=INTEGER},
+      meal_max_m = #{mealMaxM,jdbcType=INTEGER},
+      meal_max_t = #{mealMaxT,jdbcType=INTEGER},
+      time_max_m = #{timeMaxM,jdbcType=DECIMAL},
+      ac_unit = #{acUnit,jdbcType=INTEGER},
+      ac_sub_unit = #{acSubUnit,jdbcType=INTEGER},
+      ac_earmark = #{acEarmark,jdbcType=INTEGER},
+      ac_sub_auto = #{acSubAuto,jdbcType=INTEGER},
+      sub_money = #{subMoney,jdbcType=DECIMAL},
+      ac_overdraw = #{acOverdraw,jdbcType=DECIMAL},
+      sub_max_m = #{subMaxM,jdbcType=DECIMAL},
+      make_max_m = #{makeMaxM,jdbcType=DECIMAL},
+      ac_time_state = #{acTimeState,jdbcType=INTEGER},
+      ac_each = #{acEach,jdbcType=INTEGER},
+      ac_each_rule = #{acEachRule,jdbcType=INTEGER},
+      ac_time_offset = #{acTimeOffset,jdbcType=INTEGER},
+      ac_time_type = #{acTimeType,jdbcType=INTEGER},
+      ac_time_day = #{acTimeDay,jdbcType=DECIMAL},
+      ac_time_mould = #{acTimeMould,jdbcType=INTEGER},
+      pass_max = #{passMax,jdbcType=INTEGER},
+      tally_max_m = #{tallyMaxM,jdbcType=INTEGER},
+      tally_max_t = #{tallyMaxT,jdbcType=INTEGER},
+      ac_regserial = #{acRegserial,jdbcType=NVARCHAR},
+      regserial = #{regserial,jdbcType=NVARCHAR},
+      ac_timeeach_type = #{acTimeeachType,jdbcType=INTEGER},
+      ac_timeeach_day = #{acTimeeachDay,jdbcType=INTEGER},
+      ac_timeeach_mould = #{acTimeeachMould,jdbcType=INTEGER},
+      ac_each_auto = #{acEachAuto,jdbcType=INTEGER}
+    where ac_bh = #{acBh,jdbcType=CHAR}
+  </update>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="com.cecep.model.DtAcType" >
+   	select u.*
+   	from ( 	
+		    select row_number() over(order by ac_bh) as rowNumber,<include refid="Base_Column_List" />
+		    from dbo.dt_ac_type
+			<where>	
+		    	<if test="acName != null and acName != ''" >
+		        	ac_name like '%${acName}%'
+		      	</if>
+		     </where> ) as u		   
+	<where>
+			<if test="start != null and rows != null"> 
+				<![CDATA[ u.rowNumber >= #{start} and u.rowNumber < (#{rows} + #{start})]]> 
+			</if>
+	</where>	
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" parameterType="com.cecep.model.DtUser" >      
+    select count(1)
+    from dbo.dt_ac_type
+	<where>	
+    	<if test="acName != null and acName != ''" >
+        	ac_name like '%${acName}%'
+      	</if>
+    </where> 
+   </select>	   
+   
+   <select id="load" resultType="java.util.Map" parameterType="com.cecep.model.DtAcType" >
+    select ac_bh as value,ac_name as text
+    from dbo.dt_ac_type
+  </select>	
+  
+  <select id="selectDtAcUser" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(1)
+    from dbo.dt_ac_user
+    where ac_type = #{acBh,jdbcType=CHAR}
+  </select>
+  
+  <delete id="deleteXfAcTime" parameterType="java.lang.String" >
+    delete 
+    from dbo.xf_ac_time
+    where ac_type = #{acBh,jdbcType=CHAR}
+  </delete>
+   
+</mapper>
